@@ -1,0 +1,245 @@
+%\ProvidesPackageRCS $Header: beamerinnerthemecircles.sty,v 1.0 2007/08/25 $
+
+%    by J.I. Montijano <monti@unizar.es>
+%   and Teresa Mu\~{n}oz  <teresa@unizar.es>
+%
+% This program can be redistributed and/or modified under the terms
+% of the GNU Public License, version 2.
+
+\RequirePackage{tikz}
+
+\newdimen\beamer@titleheight
+\beamer@titleheight=2.5\baselineskip
+
+%\newdimen\beamer@myheadheight
+\ifdefined\beamer@headheight\else\newdimen\beamer@headheight\beamer@headheight=0pt\fi
+
+\DeclareOptionBeamer{height}{\beamer@titleheight=#1}
+\ProcessOptionsBeamer
+
+%\ifdim\beamer@headheight>0pt\beamer@titleheight=\beamer@headheight
+%\beamer@myheadheight=\beamer@headheight\else%
+%\beamer@myheadheight=0pt\beamer@titleheight=2.5\baselineskip\fi
+
+%\ifdim\beamer@headheight>0pt\beamer@myheadheight=\beamer@headheight\else%
+%\beamer@myheadheight=0pt\fi
+
+
+%\beamer@titleheight=5.0em
+\reset@font
+
+\mode<presentation>
+
+\setbeamertemplate{blocks}[rounded][shadow=true]
+\ifdefined\initial\else\newcount\initial\fi
+
+
+\ifbeamercolorempty[bg]{cylinders}{
+\setbeamercolor*{cylinders}{use=palette primary, fg=palette primary.fg!15,bg=palette primary.bg!80!white}}{}
+\usebeamercolor{cylinders}\colorlet{oscuro}{cylinders.bg}\colorlet{claro}{cylinders.fg}
+
+
+\setbeamercolor{block body}{use=cylinders,fg=black,bg=cylinders.fg}
+\setbeamercolor{block title}{use=cylinders,fg=cylinders.fg,bg=cylinders.bg!60}
+%
+% =================================     Title page: Cylinders    ======================================
+%
+\setbeamertemplate{title page}{\global\initial=1%
+\usebeamercolor{palette primary}\colorlet{oscuro}{palette primary.bg}\colorlet{claro}{palette primary.bg!20}%
+\def\titlecontent{\vbox to 5.2cm{
+\begin{centering}
+\vfill
+\usebeamerfont{title}\inserttitle\\
+\ifx\insertsubtitle\@empty%
+\else%
+\vskip0.25em%
+{\usebeamerfont{subtitle}\usebeamercolor[fg]{subtitle}\insertsubtitle\\}%
+\fi\vskip0.8em plus 0.5 fil
+\usebeamerfont{author}\insertauthor
+\vskip0.5em
+\usebeamerfont{institute}\insertinstitute
+\vskip0.5em plus 0.5 fil
+\usebeamerfont{date}\insertdate
+\vskip0.5em
+{\usebeamercolor[fg]{titlegraphic}\inserttitlegraphic}
+\vfill
+\end{centering}
+}}
+\ifdefined\beamer@sidebarwidth%
+%
+%  Sidebar option is being used
+%
+\begin{tikzpicture}
+   \ifx\beamer@sidebarside\beamer@lefttext%
+      \useasboundingbox (\beamer@leftmargin,0.0cm) rectangle (\beamer@leftmargin,6.0cm);
+   \else
+      \useasboundingbox (\beamer@leftmargin,0.0cm) rectangle (\beamer@leftmargin,6.0cm);
+   \fi%
+   \shade[top color=oscuro, bottom color=oscuro, middle color=claro,rounded corners=10pt]
+   (\beamer@leftmargin,\beamer@titleheight-3cm+2.1cm) rectangle node {\titlecontent}
+   (\paperwidth-\beamer@leftmargin-\beamer@sidebarwidth,\beamer@titleheight+3cm+2.1cm);
+\end{tikzpicture}%
+\vskip -\beamer@titleheight
+\ifx\beamer@sidebarside\beamer@lefttext \parindent -0.5\beamer@sidebarwidth\else
+\parindent 0.5\beamer@sidebarwidth\fi%
+\else
+%
+% No Sidebar option is being used
+%
+\begin{tikzpicture}
+   \useasboundingbox (\beamer@leftmargin,0.0cm) rectangle (\beamer@leftmargin,6.0cm);
+   \shade[top color=oscuro, bottom color=oscuro, middle color=claro,rounded corners=10pt]
+   (\beamer@leftmargin,0.6\beamer@headheight-3cm+2.2cm) rectangle node {\titlecontent}
+   (\paperwidth-\beamer@leftmargin,0.6\beamer@headheight+3cm+2.2cm);
+\end{tikzpicture}
+\fi%
+\vbox {}
+\vfill\vfill
+}
+%
+%  ==============================     Frame title: Cylinders    ====================================
+%
+\defbeamertemplate*{frametitle}{cylinders theme}{%
+\usebeamercolor{palette primary}\colorlet{oscuro}{palette primary.bg}\colorlet{claro}{palette primary.bg!20}
+\ifdefined\beamer@sidebarwidth%
+%
+%  Sidebar option is being used
+%
+\begin{tikzpicture}
+   \useasboundingbox (\beamer@leftmargin,-\beamer@titleheight) rectangle (\beamer@leftmargin,0.0cm);
+   \shade[top color=oscuro, bottom color=oscuro, middle color=claro,rounded corners=8pt]
+   (0.2cm,0.15cm) rectangle node
+   {\vbox{\vfill%
+\usebeamerfont{frametitle}\insertframetitle%
+\ifx\insertframesubtitle\@empty%
+\else\vskip -\baselineskip\vskip 0.75em%
+{\usebeamerfont{framesubtitle}\usebeamercolor[fg]{framesubtitle}\insertframesubtitle}%
+\fi\vfill}
+} (\paperwidth-\beamer@sidebarwidth-0.2cm,\beamer@titleheight-0.05cm);
+\draw [color=oscuro!80!black,line width=1.7pt] (0.9cm,0.027cm)--(\paperwidth-\beamer@sidebarwidth-0.9cm,0.027cm);
+\end{tikzpicture}
+\vskip -1.1\beamer@titleheight
+\else%
+%
+%   NO sidebar option is being used
+\usebeamercolor{palette primary}
+\begin{tikzpicture}
+   \useasboundingbox (\beamer@leftmargin,-\beamer@headheight) rectangle (\beamer@leftmargin,-\beamer@headheight+\beamer@titleheight+0.0cm);
+%   \useasboundingbox (\beamer@leftmargin,0.0cm) rectangle
+%   (\beamer@leftmargin,\beamer@titleheight);
+   \shade[top color=oscuro, bottom color=oscuro, middle color=claro,rounded corners=8pt]
+   (0.2cm,0.cm) rectangle node
+   {\vbox{\vfill%
+\usebeamerfont{frametitle}\insertframetitle%
+\ifx\insertframesubtitle\@empty%
+\else\vskip -\baselineskip\vskip 0.75em%
+{\usebeamerfont{framesubtitle}\usebeamercolor[fg]{framesubtitle}\insertframesubtitle}%
+\fi\vfill}
+   }
+   (\paperwidth-0.2cm,\beamer@titleheight-0.05cm);
+      \draw [color=oscuro!80!black,line width=1.7pt] (0.9cm,-0.085cm)--(\paperwidth-0.9cm,-0.085cm);
+\end{tikzpicture}
+\vskip -1.0\beamer@headheight
+%\vskip 0.9cm
+\fi%
+
+}
+%
+%   ============================    Itemize items, cylinders    =================================
+
+\def\cylitem{%
+\usebeamercolor{palette primary}\colorlet{oscuro}{palette primary.bg}\colorlet{claro}{palette primary.bg!20}%
+\begin{tikzpicture}
+   \fill[color=oscuro!50!black,rounded corners=1.5pt] (0,0) rectangle (1.5ex,1.1ex);
+   \shade[top color=oscuro, bottom color=oscuro, middle color=claro,rounded corners=1.5pt]
+   (0.04,0.04) rectangle (1.8ex,1.4ex);
+\end{tikzpicture}
+}
+
+\def\cylitemitem{%
+\usebeamercolor{palette primary}\colorlet{oscuro}{palette primary.bg}\colorlet{claro}{palette primary.bg!20}%
+\begin{tikzpicture}
+   \fill[color=oscuro!50!black,rounded corners=1.2pt] (0,0) rectangle (1.1ex,0.8ex);
+   \shade[top color=oscuro, bottom color=oscuro, middle color=claro,rounded corners=1.2pt]
+   (0.04,0.04) rectangle (1.4ex,1.1ex);
+\end{tikzpicture}
+}
+
+\setbeamertemplate{itemize item}{\cylitem}
+\setbeamertemplate{itemize subitem}{\cylitemitem}
+\setbeamertemplate{itemize subsubitem}{\cylitemitem}
+
+
+\def\cylenum{%
+\usebeamercolor{palette primary}\colorlet{oscuro}{palette primary.bg}\colorlet{claro}{palette primary.bg!20}%
+\begin{tikzpicture}
+   \useasboundingbox (0cm,0.05cm) rectangle (2.0ex,0.05cm);
+   \fill[color=oscuro!50!black,rounded corners=1.5pt] (0,0) rectangle (1.8ex,1.3ex);
+   \shade[top color=oscuro, bottom color=oscuro, middle color=claro,rounded corners=1.5pt]
+   (0.04,0.04) rectangle node[text centered]
+{{\color{oscuro!50!black}\scriptsize\insertenumlabel
+}}(2.1ex,1.6ex);
+\end{tikzpicture}
+}
+
+\def\cylsubenum{%
+\usebeamercolor{palette primary}\colorlet{oscuro}{palette primary.bg}\colorlet{claro}{palette primary.bg!20}%
+\begin{tikzpicture}
+\useasboundingbox (0cm,0.03cm) rectangle (2.0ex,0.03cm);
+\fill[color=oscuro!50!black,rounded corners=1.5pt] (0,0) rectangle (1.8ex,1.3ex);
+\shade[top color=oscuro, bottom color=oscuro, middle color=claro,rounded corners=1.5pt]
+(0.04,0.04) rectangle
+node[text centered]
+{{\color{oscuro!50!black}\scriptsize$\ {}_{\insertsubenumlabel}$
+}}(2.1ex,1.6ex);
+\end{tikzpicture}
+}
+
+\defbeamertemplate*{enumerate item}{cylinders}{\cylenum}
+\defbeamertemplate*{enumerate subitem}{cylinders}{\cylsubenum}
+\defbeamertemplate*{enumerate subsubitem}{cylinders}{\cylsubenum}
+
+%  =============================    (sub-)section in toc: circle    ===============================
+
+\defbeamertemplate*{section in toc}{cylinders}{%
+\usebeamercolor{palette primary}\colorlet{oscuro}{palette primary.bg}\colorlet{claro}{palette primary.bg!20}%
+\leavevmode\leftskip=2ex%
+\usebeamerfont*{section number projected}%
+\begin{tikzpicture}
+   \fill[color=oscuro!50!black,rounded corners=2pt] (0,0) rectangle (3.52ex,2.2ex);
+   \shade[top color=oscuro, bottom color=oscuro, middle color=claro,rounded corners=2pt]
+   (0.05,0.05) rectangle
+   node[text centered]
+   {\color{oscuro!50!black}\inserttocsectionnumber}(3.82ex,2.5ex);
+\end{tikzpicture}
+\kern1.25ex%
+\raise 0.6ex\hbox{\normalsize\inserttocsection}\par}
+[action]
+{\setbeamerfont{section number projected}{size=\scriptsize}}
+
+\defbeamertemplate*{subsection in toc}{cylinders}{%
+\usebeamercolor{palette primary}\colorlet{oscuro}{palette primary.bg}\colorlet{claro}{palette primary.bg!20}%
+\leavevmode\normalsize\usebeamerfont{subsection in toc}\leftskip=7ex%
+\begin{tikzpicture}
+   \fill[color=oscuro!50!black,rounded corners=2pt] (0,0) rectangle (1.6ex,1.0ex);
+   \shade[top color=oscuro, bottom color=oscuro, middle color=claro,rounded corners=2pt]
+   (0.05,0.05) rectangle (1.8ex,1.2ex);
+\end{tikzpicture}
+\kern1.25ex%
+\raise 0.2ex\hbox{\scriptsize\inserttocsubsection}\par%
+}
+
+\defbeamertemplate*{subsubsection in toc}{cylinders}{%
+\usebeamercolor{palette primary}\colorlet{oscuro}{palette primary.bg}\colorlet{claro}{palette primary.bg!20}%
+\leavevmode\normalsize\usebeamerfont{subsection in toc}\leftskip=7ex%
+\begin{tikzpicture}
+   \fill[color=oscuro!50!black,rounded corners=2pt] (0,0) rectangle (1.6ex,1.0ex);
+   \shade[top color=oscuro, bottom color=oscuro, middle color=claro,rounded corners=2pt]
+   (0.05,0.05) rectangle (1.8ex,1.2ex);
+\end{tikzpicture}
+\kern1.25ex%
+\raise 0.2ex\hbox{\scriptsize\inserttocsubsubsection}\par%
+}
+
+\mode
+<all>

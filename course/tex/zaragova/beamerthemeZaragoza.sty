@@ -1,0 +1,86 @@
+\ProvidesPackageRCS $Header: beamerthemeZaragoza.sty,v 1.0 2007/08/25 $
+
+%    by Juan I. Montijano <monti@unizar.es>
+%   and Teresa Mu\~{n}oz  <teresa@unizar.es>
+%
+% This program can be redistributed and/or modified under the terms
+% of the GNU Public License, version 2.
+
+\RequirePackage{tikz}
+
+\mode<presentation>
+
+\ifdefined\beamer@headheight\else\newdimen\beamer@headheight\beamer@headheight=2.5\baselineskip\fi
+
+\newif\ifbeamer@theme@sidebar
+\beamer@theme@sidebarfalse
+\DeclareOptionBeamer{height}{\PassOptionsToPackage{height=#1}{beamerouterthemecylinders}\PassOptionsToPackage{height=#1}{beamerinnerthemecylinders}%
+\beamer@headheight=#1}
+\DeclareOptionBeamer{width}{\PassOptionsToPackage{width=#1}{beamerouterthemesidebar}}
+
+\DeclareOptionBeamer{sidebar}{\csname beamer@theme@sidebartrue\endcsname\PassOptionsToPackage{#1}{beamerouterthemesidebar}}
+\DeclareOptionBeamer{hidesections}{\PassOptionsToPackage{hidesections}{beamerouterthemecylinders}}
+\DeclareOptionBeamer{showsections}{\PassOptionsToPackage{showsections}{beamerouterthemecylinders}}
+\DeclareOptionBeamer{left}{\PassOptionsToPackage{left}{beamerouterthemesidebar}}
+\DeclareOptionBeamer{right}{\PassOptionsToPackage{right}{beamerouterthemesidebar}}
+\ExecuteOptionsBeamer{height=2.5\baselineskip, width=2.5\baselineskip,  hidesections}
+\ProcessOptionsBeamer
+
+
+%\usecolortheme[rgb={0.20, 0.40, 0.20}]{structure}     %  Dark green
+%\usecolortheme[rgb={0.42, 0.62, 0.89}]{structure}     %  Light blue
+\usecolortheme[rgb={0.32, 0.52, 0.80}]{structure}     %  Light blue
+\usebeamercolor{structure}
+
+\ifbeamer@theme@sidebar
+   \useoutertheme{sidebar}
+   \usecolortheme{sidebartab}
+\else
+\fi
+
+\useinnertheme{cylinders}
+\useoutertheme{cylinders}
+
+
+
+
+\setbeamercolor{titlelike}{use=structure,fg=structure.fg!70!black}
+
+%\definecolor{cilindros}{rgb}{0.20, 0.40, 0.20}
+\definecolor{cilindros}{rgb}{0.32, 0.52, 0.80}
+\setbeamercolor*{cylinders}{fg=cilindros!15!white,bg=cilindros!80!white}
+\usebeamercolor{cylinders}
+\colorlet{oscuro}{cylinders.bg}
+\colorlet{claro}{cylinders.fg}
+
+\setbeamercolor*{normal text}{fg=black,bg=white}
+\setbeamercolor*{palette primary}{use=structure,fg=blue,bg=structure.fg}
+\setbeamercolor*{palette secondary}{use=structure,fg=white,bg=structure.fg!95}
+\setbeamercolor*{palette tertiary}{use=structure,fg=white,bg=structure.fg!65!black}
+\setbeamercolor*{palette quaternary}{fg=white,bg=structure.fg!50!black}
+
+\setbeamercolor{frametitle}{ fg=structure.fg!70!black}
+\setbeamercolor*{framesubtitle}{fg=structure.fg!70!black}
+
+\ifbeamer@theme@sidebar
+\setbeamertemplate{sidebar canvas \beamer@sidebarside}[vertical shading][top=palette primary.bg,bottom=palette primary.bg!40]
+\else
+\fi
+
+
+\def\tone#1{%
+\setbeamercolor{structure}{fg=#1}
+\setbeamercolor{cylinders}{fg=#1!15!white,bg=#1!80!white}
+\usebeamercolor{cylinders}\colorlet{oscuro}{cylinders.bg}\colorlet{claro}{cylinders.fg}
+\ifbeamer@theme@sidebar
+\setbeamertemplate{sidebar canvas \beamer@sidebarside}[vertical shading][top=structure.fg,bottom=structure.fg!40]
+\else
+\fi\usebeamercolor{normal text}}
+
+\setbeamersize{text margin left=0.5cm,text margin right=0.5cm}
+
+
+
+
+\mode
+<all>
