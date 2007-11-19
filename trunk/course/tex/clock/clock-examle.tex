@@ -1,0 +1,151 @@
+\documentclass{beamer}
+\usepackage{clock}
+
+\usetheme{Madrid}
+
+
+\title[A clock in beamer]{An example of using Clock in beamer}
+\author{Luis R\'{a}ndez \& Juan I. Montijano}
+\institute[IUMA]{IUMA \\ Universidad de Zaragoza }
+\date{\today}
+
+
+\begin{document}
+
+
+\frame{\titlepage}
+
+%\frame{\tableofcontents}
+
+
+\begin{frame}[t]
+
+\frametitle{Introduction}
+
+\initclock  % This must be used one time to initialize the clock
+
+We are putting here a clock with the macro  \quad
+\structure{\texttt{$\backslash$insertclock}}
+
+\medskip
+
+The default settings are used:  \insertclock
+
+\medskip
+
+Before that, the macro \quad  \structure{\texttt{$\backslash$initclock}}
+\quad must have been used (only one time !).
+
+\end{frame}
+
+% This is an example for inserting
+% the clock at the place reserved to the date, the foot line in the
+% case of Madrid theme.
+%  Colors are adjusted according the theme.
+%
+\date{\insertclock}
+\usebeamercolor{palette primary}
+\clockbg{bg}
+\clockbdcolor{bg}
+\clockfontcolor{fg}
+
+
+\begin{frame}
+
+Here we have inserted the clock at the place reserved to the date, the foot line in the case of Madrid theme.
+
+\medskip
+
+To do that, we have redefined the date contents with the order
+\medskip
+
+\centerline{\structure{\texttt{$\backslash$date\{$\backslash$insertclock\}}} }
+
+\medskip
+
+Colors are adjusted according to the theme.
+
+\medskip
+
+Look at the foot!, the clock must be running.
+\end{frame}
+
+\date{\inserttogglebutton{}\insertclock\insertresetbutton{}}
+
+\begin{frame}
+
+Now, in addition to the clock, we also insert a button to toggle between clock and stopwatch (left button), and a button to reset the stopwatch to zero (right button).
+
+\medskip
+
+To do that, we have redefined the date with the order
+
+\medskip
+
+\structure{
+\texttt{$\backslash$date\{$\backslash$inserttogglebutton\{\}%
+$\backslash$insertclock$\backslash$insertresetbutton\{\}\}}
+}
+
+\medskip
+
+The clock must be running at the foot. Click at the left button, see what happens,
+and click at the right button and see the result.
+\end{frame}
+
+
+%
+% Here we change the colors and size of the clock
+%
+\definecolor{myred}{rgb}{0.8,0,0} % rojo
+\definecolor{mycolor}{rgb}{0.80,0.50,0.20} %  darkorangere
+
+\clockbg{mycolor}
+\clockbdcolor{myred}
+\clockfontcolor{black}
+\clockheight{0.20cm}
+\clockwidth{2.0cm}
+\clockfontsize{5pt}
+
+
+\begin{frame}[fragile]
+Here we have just changed the colors and the size of the clock using the next sentences
+
+\begin{verbatim}
+\definecolor{myred}{rgb}{0.8,0,0}
+\definecolor{mycolor}{rgb}{0.80,0.50,0.20}
+\clockbg{mycolor}
+\clockbdcolor{myred}
+\clockfontcolor{black}
+\clockheight{0.20cm}
+\clockwidth{2.0cm}
+\clockfontsize{5pt}
+\end{verbatim}
+
+
+\end{frame}
+
+\begin{frame}
+
+Next, we insert a toggle button, with a text:
+
+\medskip
+
+\clocktogglecolor{red}
+\quad \inserttogglebutton{\bf Click here to toggle clock-stopwatch}
+
+\medskip
+
+Here the clock \quad \insertclock
+
+Here just a stopwatch \quad \insertcrono
+
+Here just the current time \quad \inserttime
+
+Here just the current date \quad \insertcurrentdate
+
+\end{frame}
+
+
+\end{document}
+

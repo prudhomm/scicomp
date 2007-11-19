@@ -1,0 +1,133 @@
+\documentclass[12pt]{beamer}
+
+\usetheme{Zaragoza}
+%\usetheme[height=3.5\baselineskip]{Zaragoza}%
+%\usetheme[height=1.9cm]{Zaragoza}%
+%\usetheme[sidebar, height=1.9cm, right]{Zaragoza}
+%\usetheme[sidebar, height=1.6cm, left]{Zaragoza}
+%\usetheme[showsections, height=1.3cm]{Zaragoza}
+
+\title{Zaragoza Beamer Theme}
+\author{J.I. Montijano \& T. Mu\~{n}oz}
+\institute[Univ. Zaragoza]{University of Zaragoza \\  Spain}
+\date{\today}
+
+%\logo{\includegraphics[width=1.3cm]{unizar.jpg}}
+
+\begin{document}
+
+\frame{\titlepage}
+
+\section[]{}
+
+\frame[t]{\tableofcontents}
+
+\section[Use of the theme]{Use of the Zaragoza beamer theme}
+
+\parskip 5pt
+
+\frame[c]{\frametitle{Theme Zaragoza}
+
+The theme is used in the standard way
+
+\begin{itemize}
+\item \texttt{ \structure{ $\backslash$usetheme[``options'']\{Zaragoza\}  }}
+\end{itemize}
+}
+
+\subsection[Theme options]{Zaragoza beamer theme options}
+
+\frame[t]{%\frametitle{Theme Zaragoza}\framesubtitle{Options}
+
+Several options are available:
+\structure{
+\begin{enumerate}
+\item \texttt{showsections}
+\item \texttt{hidesections} \quad (default)
+\item \texttt{height = <dimension>}
+\item \texttt{sidebar}
+\begin{itemize}
+\item \texttt{width = <dimension>}
+\item \texttt{left}  \quad (default if sidebar is set)
+\item \texttt{right}
+\end{itemize}
+\end{enumerate}
+}
+
+Example:
+
+\texttt{ \structure{ $\backslash$usetheme[sidebar,left,width=1.8 cm]\{Zaragoza\}  }}
+}
+
+\section[General color]{Control of the general color}
+
+\frame{\frametitle{How to change the color}
+The following macro is provided to change the color of the frames:
+
+\begin{block}{Changing the color}
+\texttt{ $\backslash$tone\{``color''\} }
+\end{block}
+
+For example the orders (written outside the frames)
+
+\qquad \texttt{$\backslash$definecolor\{mygreen\}\{rgb\}\{0.20, 0.40, 0.20\} }\\
+\qquad \texttt{$\backslash$tone\{mygreen\}}
+
+change the color of the following frames to myblue
+
+}
+
+%\definecolor{myblue}{rgb}{0.42, 0.62, 0.89}
+%\tone{myblue}
+\definecolor{mygreen}{rgb}{0.20, 0.40, 0.20}
+\tone{mygreen}
+
+\section[Other title page]{Other title page}
+
+\title{Part II}
+\frame{\titlepage}
+
+\section[Customization]{Customizing the theme}
+
+\setbeamertemplate{background}{}
+
+\begin{frame}
+\frametitle{Customizing the theme}
+
+If you don't like the background, you can ``remove'' it with
+
+\texttt{ $\backslash$setbeamertemplate\{background\}\{\} }
+
+and you can recover it later with
+
+\texttt{ $\backslash$setbeamertemplate\{background\}[cylinder theme] }
+
+\end{frame}
+
+\setbeamertemplate{footline}{}
+\setbeamertemplate{background}[cylinder theme]
+
+\begin{frame}
+\frametitle{Customizing the theme}
+
+If you don't like the footline, you can ``remove'' it with
+
+\texttt{ $\backslash$setbeamertemplate\{footline\}\{\} }
+
+and you can recover it later with
+
+\texttt{ $\backslash$setbeamertemplate\{footline\}[cylinder theme] }
+
+\end{frame}
+
+\setbeamertemplate{footline}[cylinder theme]
+
+\begin{frame}[plain]
+
+The option \texttt{[plain]} added to the frame
+eliminates almost everything in the frame
+
+\end{frame}
+
+\end{document}
+
