@@ -124,25 +124,23 @@
   \frametitle{Scientific Computing~(S.C.) = $\cap $\{Math.,Comp.Sci,Model.\}}
   \begin{columns}
     \begin{column}{.6\textwidth}
-       \begin{tikzpicture}[thick, scale=.8]
-    % \draw (0,2) node[fill=red,fill opacity=0.5,draw,shape=circle,name=cs,minimum size=3cm] {};
-%     \draw (2,2) node[fill=green,fill opacity=0.5,draw,shape=circle,name=math,minimum size=3cm] {};
-%     \draw (1,0) node[fill=blue,fill opacity=0.5,draw,shape=circle,name=model,minimum size=3cm] {};
-
-%     \begin{scope}{fill=white,fill opacity=1}
-%        \clip      (0,2) circle (1.8cm)
-%        \clip
-%        (2,2) circle (1.8cm)
-%        \clip
-%        (1,0) circle (1.8cm);
-%        \fill[white] (1,0) circle (3cm);
-%      \end{scope}
-     %% write label
-%      \draw[shift=(cs.north west)] plot[mark=x] coordinates{(0,0)} node[anchor=north east,text width=2cm,text ragged,above left] {Mathematics};
-%      \draw[shift=(math.north east)] plot[mark=x] coordinates{(0,0)} node[anchor=north west,text width=2cm,text ragged,above right] {Computer Science};
-%      \draw[shift=(model.south east)] plot[mark=x] coordinates{(0,0)} node[anchor=south west,text width=2cm,text ragged,below right] {Modeling};
-%      \draw[shift=(model.north)] plot[mark=x] coordinates{(0,0)} node[below] {S.C.};
-  \end{tikzpicture}
+      \begin{tikzpicture}[thick, scale=.8]
+        \draw (0,2) node[fill=red,fill opacity=0.5,draw,shape=circle,name=cs,minimum size=3cm] {};
+        \draw (2,2) node[fill=green,fill opacity=0.5,draw,shape=circle,name=math,minimum size=3cm] {};
+        \draw (1,0) node[fill=blue,fill opacity=0.5,draw,shape=circle,name=model,minimum size=3cm] {};
+        
+         \begin{scope}{fill=white,fill opacity=1}
+           \clip (0,2) circle (1.8cm);
+           \clip (2,2) circle (1.8cm);
+           \clip (1,0) circle (1.8cm);
+           \fill[white] (1,0) circle (3cm);
+         \end{scope}
+         write label
+         \draw[shift=(cs.north west)] plot[mark=x] coordinates{(0,0)} node[anchor=north east,text width=2cm,text ragged,above left] {Mathematics};
+         \draw[shift=(math.north east)] plot[mark=x] coordinates{(0,0)} node[anchor=north west,text width=2cm,text ragged,above right] {Computer Science};
+         \draw[shift=(model.south east)] plot[mark=x] coordinates{(0,0)} node[anchor=south west,text width=2cm,text ragged,below right] {Modeling};
+         \draw[shift=(model.north)] plot[mark=x] coordinates{(0,0)} node[below] {S.C.};
+      \end{tikzpicture}
     \end{column}
     \begin{column}{.4\textwidth}
       \begin{itemize}
@@ -217,76 +215,76 @@
      child[concept,scale=.6] { node[concept,scale=.7] (cs) {Computer Science} }
      child[concept,scale=.6] { node[concept,scale=.7] (va) {Validation} }
      ;
-%     \node [annotation,right] at (phys.south east)
-%     {
-%       \begin{itemize}
-%       \item Geophysics
-%       \item Astrophysics
-%       \item Weather forecast
-%       \item Global Change
-%       \item Plasma physics
-%       \item Aerodynamics
-%       \item Hydrodynamics
-%       \item MHD
-%       \item Rheology
-%       \item Materials processing
-%       \item Molten metals
-%       \item Finance
-%       \end{itemize}
-%     }
-%     \node [annotation,right] at (am.south east)
-%     {
-%       \begin{itemize}
-%       \item Statistics
-%       \item Functional Analysis
-%       \item Partial differential equations,
-%       \item Stochastic equations, etc.
-%       \end{itemize}
-%     }
-%     \node [annotation,left] at (nm.south west)
-%     {
-%       \begin{itemize}
-%       \item Numerical Analysis:
-%         Convergence, Errors
-%       \item Approximation methods:
-%         Space/time discretization
-%         FD, FE, FV, spectral
-%         method, particle
-%         simulation
-%       \item Algorithms: complexity, accuracy
-%       \item Mesh Generation, CAD
-%       \item Direct / iterative solvers
-%       \end{itemize}
-%     }
-%     \node [annotation,left] at (cs.south west)
-%     {
-%     \begin{itemize}
-%     \item Architecture: vector, parallel,  scalar, cluster.
-%     \item Systems, Compilers. Libraries
-%       \item Data management, Visualisation
-%       \item Parallelisation: MPI, OpenMP
-%       \item Optimisation, Parameterisation
-%       \end{itemize}
-%     }
-%     \node [annotation,right] at (va.east)
-%     {
-%       \begin{itemize}
-%       \item Interpretation of numerical experiment
-%       \item Comparison with experiment
+     \node [annotation,right] at (phys.south east)
+     {
+       \begin{itemize}
+       \item Geophysics
+       \item Astrophysics
+       \item Weather forecast
+       \item Global Change
+       \item Plasma physics
+       \item Aerodynamics
+       \item Hydrodynamics
+       \item MHD
+       \item Rheology
+       \item Materials processing
+       \item Molten metals
+       \item Finance
+       \end{itemize}
+     };
+     \node [annotation,right] at (am.south east)
+     {
+       \begin{itemize}
+       \item Statistics
+       \item Functional Analysis
+       \item Partial differential equations,
+       \item Stochastic equations, etc.
+       \end{itemize}
+     };
+     \node [annotation,left] at (nm.south west)
+    {
+      \begin{itemize}
+      \item Numerical Analysis:
+        Convergence, Errors
+      \item Approximation methods:
+        Space/time discretization
+        FD, FE, FV, spectral
+        method, particle
+        simulation
+      \item Algorithms: complexity, accuracy
+      \item Mesh Generation, CAD
+      \item Direct / iterative solvers
+      \end{itemize}
+    };
+    \node [annotation,left] at (cs.south west)
+    {
+    \begin{itemize}
+    \item Architecture: vector, parallel,  scalar, cluster.
+    \item Systems, Compilers. Libraries
+      \item Data management, Visualisation
+      \item Parallelisation: MPI, OpenMP
+      \item Optimisation, Parameterisation
+      \end{itemize}
+    };
+    \node [annotation,right] at (va.east)
+    {
+      \begin{itemize}
+      \item Interpretation of numerical experiment
+      \item Comparison with experiment
 
-%       \item \alert{Correction of models}
-%       \end{itemize}
-%     }
-%     ;
+      \item \alert{Correction of models}
+      \end{itemize}
+    }
+    ;
 
-%     \begin{pgfonlayer}{background}
-%       \draw [concept connection]
-%       (phys) edge node[above,sloped]{Analyze} (am)
-%       (am) edge node[above,sloped]{Analyze} (nm)
-%       (nm) edge node[above,sloped]{Implement} (cs)
-%       (cs) edge node[above,sloped]{Run} (va)
-%       (va) edge node[above,sloped]{Correct} (phys);
-%      \end{pgfonlayer}
+    \begin{pgfonlayer}{background}
+      \draw [concept connection]
+      (phys) edge node[above,sloped]{Analyze} (am)
+      (am) edge node[above,sloped]{Analyze} (nm)
+      (nm) edge node[above,sloped]{Implement} (cs)
+      (cs) edge node[above,sloped]{Run} (va)
+      (va) edge node[above,sloped]{Correct} (phys);
+     \end{pgfonlayer}
 
 \end{tikzpicture}
 \end{frame}
@@ -421,8 +419,7 @@
 \end{frame}
 %% Edsger W. Dijkstra (1930-2002) was a Dutch Computer Scientist,
 %% invented the concept of "structured programming".
-
-\end{frame}
+%%\end{frame}
 
 \subsection{Objectives of the Course}
 \begin{frame}
@@ -481,7 +478,7 @@
     child[concept,scale=.7] { node[concept,scale=.7] (post) {Post Processing} }
     child[concept,scale=.7] { node[concept,scale=.7] (pre) {Pre Processing} }
     ;
-    \node [annotation,down] at (proc.south)
+    \node [annotation] at (proc.south)
     {
       \begin{itemize}
       \item Approximation methods: Space time discretisation, FE, FV,
@@ -489,14 +486,14 @@
       \item Linear Algebra
       \end{itemize}
     };
-    \node [annotation,down] at (pre.south)
+    \node [annotation] at (pre.south)
     {
       \begin{itemize}
       \item Computer Aided Design (CAD)
       \item Mesh generation
       \end{itemize}
     };
-    \node [annotation,down] at (post.south)
+    \node [annotation] at (post.south)
     {
       \begin{itemize}
       \item Interpretation of results
