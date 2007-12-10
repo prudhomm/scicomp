@@ -1,0 +1,294 @@
+\usepackage[french]{babel}
+\usepackage[latin1]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath,amssymb,amsthm}
+%\usefonttheme{professionalfonts}
+\usepackage[colorlinks]{hyperref}
+
+\mode<article>
+{
+  \usepackage{times}
+  \usepackage{mathptmx}
+  \usepackage[left=1.5cm,right=6cm,top=1.5cm,bottom=3cm]{geometry}
+
+  
+  \def\figwidth{.7}
+}
+\mode<presentation>{
+  \def\figwidth{1.}
+}
+% \mode<presentation>
+% {
+
+% %\usetheme{Berlin}
+% %\usetheme[secheader]{Boadilla}
+% \usetheme{UJF}
+% %\usetheme{Antibes}                  % Beamer theme v 3.0
+% %\usecolortheme{lily}                % Beamer color theme
+% \setbeamercovered{transparent}
+% %%\includeonly{nonlineareq}
+% }
+%\usepackage{translator} % comment this, if not available
+%\usepackage[xcolor=pst]{xcolor}
+\usepackage{xcolor}
+%\usepackage{pstricks}
+\usepackage{pgfpages}
+%\pgfpagesuselayout{1 on 1}[a4paper]
+%\pgfpagesuselayout{4 on 1}[a4paper,border shrink=5mm]
+\usepackage{subfigure}
+\usepackage{colortbl}
+\newcommand{\goodgap}{%
+  \hspace{\subfigtopskip}%
+  \hspace{\subfigbottomskip}}
+\usepackage{xspace}
+\usepackage[nofancy]{svninfo}
+\svnInfo $Id: lecture.tex 64 2006-12-19 08:24:41Z prudhomm $
+
+\pdfinfo {
+  /Title    (Presentation)
+  /Author   (Christophe Prud'homme <christophe.prudhomme@ujf-grenoble.fr>)
+  /Keywords   (Numerical Methods, Scientific Computing)
+  /ModifiedDate ( \svnInfoDate \svnInfoTime)
+ }
+
+\usepackage{multimedia,xmpmulti}
+\DeclareGraphicsRule{*}{mps}{*}{}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usetikzlibrary{arrows,patterns,plotmarks,shapes,snakes,er,3d,automata,backgrounds,topaths,trees,petri,mindmap}
+
+\usepackage[]{movie15}
+\usepackage{filecontents,listings}
+\definecolor{lbcolor}{rgb}{0.95,0.95,0.95}
+\definecolor{cblue}{rgb}{0.,0.0,0.6}
+\definecolor{lblue}{rgb}{0.1,0.1,0.4}
+%%
+%% Listing configuration for matlab/octave
+%% Author: Christophe Prud'homme
+%%
+\renewcommand{\lstlistingname}{Program}
+\lstset{language=Matlab,showspaces=false,showstringspaces=false,captionpos=t,literate={>>}{\ensuremath{>>}}1}
+%\lstset{float}
+\lstset{basicstyle=\small\ttfamily}
+\lstset{lineskip=-2pt}
+\lstset{keywordstyle=\color{red}\bfseries}
+%\lstset{keywordstyle=\mdseries\color{red}}
+\lstset{emph={inline},emphstyle=\color{red}\bfseries}
+%\lstset{stringstyle=\ttfamily}
+\lstset{commentstyle=\ttfamily\color{cblue}}
+\lstset{backgroundcolor=\color{lbcolor},rulecolor=}
+%\lstset{numbers=left}
+%\lstset{numbers={none}}
+%\lstset{numberstyle=\tiny}
+%\lstset{numbersep=1pt}
+\lstset{frame=single,framerule=0.5pt}
+\lstset{belowskip=\smallskipamount}
+\lstset{aboveskip=\smallskipamount}
+\lstset{emph={inline,ones,global,whos,clear,save,load,fprintf,format,pause,title,
+xlabel,ylabel,zlabel,axis,hold,clg,replot,polyfit,polyval}}
+
+
+% Common settings for all lectures in this course
+
+\def\lecturename{Calcul Scientifique en C++ et MPI}
+\def\beamer@shortlecturename{SCICOMP}
+
+
+\title{\insertlecture}
+
+\author[C. Prud'homme]{Pr. Christophe Prud'homme\\
+  \url{christophe.prudhomme@ujf-grenoble.fr}\\
+  Dr. Mourad Ismail\\
+  \url{ismail@ujf-grenoble.fr}\\
+} 
+\institute[UJF]{
+  Université Joseph Fourier Grenoble 1
+}
+
+\date[2007-2008\xspace Rev: \svnInfoRevision]{2nd Semestre 2007-2008} 
+
+\subject{Cours \lecturename}
+
+
+
+%% Macros
+\newcommand{\ddx}[1]{\ensuremath{\frac{\partial #1}{\partial x}}}
+\newcommand{\ddy}[1]{\ensuremath{\frac{\partial #1}{\partial y}}}
+\newcommand{\ddz}[1]{\ensuremath{\frac{\partial #1}{\partial z}}}
+\newcommand{\dddxdx}[1]{\ensuremath{\frac{\partial^2 #1}{\partial x \partial x}}}
+\newcommand{\dddxdy}[1]{\ensuremath{\frac{\partial^2 #1}{\partial x \partial y}}}
+\newcommand{\dddydy}[1]{\ensuremath{\frac{\partial^2 #1}{\partial y \partial y}}}
+\renewcommand{\div}{\operatorname{div}}
+\newcommand{\rot}{\operatorname{rot}}
+
+\newcommand{\uu}{\mathbf}
+\newcommand{\ve}{\varepsilon}
+\newcommand{\x}[1]{x^{(#1)}}
+
+\newcommand{\N}{\ensuremath{\mathbb{N}}}
+\newcommand{\Pol}{\ensuremath{\mathbb{P}}}
+\newcommand{\pvec}[1]{\begin{pmatrix} #1\end{pmatrix}}
+\newcommand{\vect}{\mathbf}
+\newcommand{\p}{\partial}
+\newcommand{\secQSS}[1]{\vspace{-0.6cm}\centerline{#1}\medskip}
+\newcommand{\rr}{\mathbb{R}} %was \R
+\newcommand{\cond}{K}%{K_2}
+\newcommand{\pol}{\Pi}
+\newcommand{\octave}{\textsc{Octave} }
+\newcommand{\tableau}[1][{ }]{
+    \rightline{#1\includegraphics[width=0.08\textwidth]{tableau}}
+}
+\newcommand{\verify}[1][{ }]{
+  %%\hfill{#1\includegraphics[width=0.08\textwidth]{verify}}
+  \hfill\square{}
+}
+\newcommand{\CommentLines}[1]{ }
+\newcommand{\In}{\operatorname{in}}
+\newcommand{\Out}{\operatorname{out}}
+
+
+\newtheorem{proposition}{Proposition}
+
+%% Lecture
+%\AtBeginLecture{\frame{Le Cours d'Aujourd'hui:\\[1cm] \insertlecture}}
+%\AtBeginSubsection[]{\frame{\frametitle{Outline}\tableofcontents[current]}}
+
+% Beamer version theme settings
+\definecolor{darkred}{rgb}{1.0,0.15,0.15}
+
+\useoutertheme[height=0pt,width=2cm,right]{sidebar}
+\usecolortheme{rose,sidebartab}
+\useinnertheme{circles}
+\usefonttheme[only large]{structurebold}
+
+\setbeamercolor{sidebar right}{bg=black!15}
+%\setbeamercolor{structure}{fg=darkred}
+\setbeamercolor{structure}{fg=blue}
+\setbeamercolor{author}{parent=structure}
+
+\setbeamerfont{title}{series=\normalfont,size=\LARGE}
+\setbeamerfont{title in sidebar}{series=\bfseries}
+\setbeamerfont{author in sidebar}{series=\bfseries}
+\setbeamerfont*{item}{series=}
+\setbeamerfont{frametitle}{size=}
+\setbeamerfont{block title}{size=\small}
+\setbeamerfont{subtitle}{size=\normalsize,series=\normalfont}
+
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{bibliography item}[book]
+\setbeamertemplate{sidebar right}
+{
+  {\usebeamerfont{title in sidebar}%
+    \vskip1.5em%
+    \hskip3pt%
+    \usebeamercolor[fg]{title in sidebar}%
+    \insertshorttitle[width=2cm-6pt,center,respectlinebreaks]\par%
+    \vskip1.25em%
+  }%
+  {%
+    \hskip3pt%
+    \usebeamercolor[fg]{author in sidebar}%
+    \usebeamerfont{author in sidebar}%
+    \insertshortauthor[width=2cm-2pt,center,respectlinebreaks]\par%
+    \vskip1.25em%
+  }%
+  \hbox to2cm{\hss\insertlogo\hss}
+  \vskip1.25em%
+  \insertverticalnavigation{2cm}%
+  \vfill
+  \hbox to 2cm{\hfill\usebeamerfont{subsection in
+      sidebar}\strut\usebeamercolor[fg]{subsection in
+      sidebar}\insertshortlecture.\insertframenumber\hskip5pt}%
+  \vskip3pt%
+}%
+
+\setbeamertemplate{title page}
+{
+  \vbox{}
+  \vskip1em
+  {\huge Chapitre \insertshortlecture\par}
+  {\usebeamercolor[fg]{title}\usebeamerfont{title}\inserttitle\par}%
+  \ifx\insertsubtitle\@empty%
+  \else%
+    \vskip0.25em%
+    {\usebeamerfont{subtitle}\usebeamercolor[fg]{subtitle}\insertsubtitle\par}%
+  \fi%     
+  \vskip1em\par
+  Course \emph{\lecturename}\ , \insertdate\par
+  \vskip0pt plus1filll
+  \leftskip=0pt plus1fill\insertauthor\par
+  \insertinstitute\vskip1em
+}
+
+\pgfdeclareimage[height=1cm]{logo}{../../../figures/ujf-logo-color-circle}
+\logo{\pgfuseimage{logo}}
+
+%%\logo{\includegraphics[width=2cm]{beamerexample-lecture-logo.pdf}}
+
+
+
+% Article version layout settings
+
+\mode<article>
+
+\makeatletter
+\def\@listI{\leftmargin\leftmargini
+  \parsep 0pt
+  \topsep 5\p@   \@plus3\p@ \@minus5\p@
+  \itemsep0pt}
+\let\@listi=\@listI
+
+
+\setbeamertemplate{frametitle}{\paragraph*{\insertframetitle\
+    \ \small\insertframesubtitle}\ \par
+}
+\setbeamertemplate{frame end}{%
+  \marginpar{\scriptsize\hbox to 1cm{\sffamily%
+      \hfill\strut\insertshortlecture.\insertframenumber}\hrule height .2pt}}
+\setlength{\marginparwidth}{1cm}
+\setlength{\marginparsep}{4.5cm}
+
+\def\@maketitle{\makechapter}
+
+\def\makechapter{
+  \newpage
+  \null
+  \vskip 2em%
+  {%
+    \parindent=0pt
+    \raggedright
+    \sffamily
+    \vskip8pt
+    {\fontsize{36pt}{36pt}\selectfont Chapitre \insertshortlecture \par\vskip2pt}
+    {\fontsize{24pt}{28pt}\selectfont \color{blue!50!black} \insertlecture\par\vskip4pt}
+    {\Large\selectfont \color{blue!50!black} \insertsubtitle\par}
+    \vskip10pt
+
+    \normalsize\selectfont Printed version of the 
+    course \emph{\lecturename}, \@date\par\vskip1.5em
+    \hfill Christophe Prud'homme \& Mourad Ismail, Université Joseph Fourier Grenoble 1
+  }
+  \par
+  \vskip 1.5em%
+}
+
+\let\origstartsection=\@startsection
+\def\@startsection#1#2#3#4#5#6{%
+  \origstartsection{#1}{#2}{#3}{#4}{#5}{#6\normalfont\sffamily\color{blue!50!black}\selectfont}}
+
+\makeatother
+
+\mode
+<all>
+
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-PDF-mode: t
+%%% TeX-parse-self: t
+%%% x-symbol-8bits: nil
+%%% TeX-auto-regexp-list: TeX-auto-full-regexp-list
+%%% TeX-master: t
+%%% ispell-local-dictionary: "french"
+%%% End:
+
