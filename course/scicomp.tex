@@ -129,7 +129,12 @@ C{\kern-.0em\lower+.4ex\hbox{$^{\text{\sl\sffamily ++}}$}}}\xspace}
 
 
 %% Lecture
-%\includeonlylecture{semaine 3}
+\ifcase\thelecture
+
+\or
+\includeonlylecture{week 1}
+\fi
+
 \AtBeginLecture{\frame{Today's Course:\\[1cm] \insertlecture}}
 \AtBeginSection[]{\frame{\frametitle{Outline}\tableofcontents[current]}}
 
