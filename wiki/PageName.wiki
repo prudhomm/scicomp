@@ -1,13 +1,6 @@
-#summary One-sentence summary of this page.
+#summary Other references
 
-= Introduction =
+= References =
 
-A test page
-
-
-= Details =
-
-Add your content here.  Format your content with:
-  * Text in *bold* or _italic_
-  * Headings, paragraphs, and lists
-  * Automatic links to other wiki pages
+  * Simulation numérique en C++. _I. Danaila, F. Hecht and O. Pironneau_ ([http://www.ann.jussieu.fr/~danaila/ home] | [http://www.amazon.fr/exec/obidos/ASIN/2100069756 amazon])
+  * Solving PDEs in C++ : Numerical Methods in a Unified Object-Oriented Approach. _Y. Shapira_ ([http://www.ec-securehost.com/SIAM/CS01.html home] | [http://www.amazon.fr/Solving-Pdes-Numerical-Object-Oriented-Approach/dp/0898716012 amazon])
