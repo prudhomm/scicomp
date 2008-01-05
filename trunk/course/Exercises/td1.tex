@@ -1,0 +1,272 @@
+%
+%
+% SUMMARY:
+% USAGE:
+%
+% AUTHOR:       Christophe Prud'homme
+% ORG:          Christophe Prud'homme
+% E-MAIL:       prudhomm@zion
+%
+% ORIG-DATE:  7-Apr-04 at 16:48:32
+% LAST-MOD:  7-Apr-04 at 23:07:19 by Christophe Prud'homme
+%
+% DESCRIPTION:
+% DESCRIP-END.
+
+%\documentclass[slidestop,compress,mathserif]{beamer}
+\documentclass{article}
+\usepackage[colorlinks=true]{hyperref}
+\pdfinfo {
+  /Title    (Presentation)
+  /Author   (Christophe Prud'homme <christophe.prudhomme@imag.fr>)
+  /Keywords   (Numerical Methods, Scientific Computing)
+ }
+
+\usepackage{multimedia,xmpmulti}
+\usepackage[latin1]{inputenc}
+\usepackage{graphicx}
+\usepackage{amsmath,amssymb}
+\usepackage{exercise}
+\usepackage{xcolor}
+\definecolor{lbcolor}{rgb}{0.95,0.95,0.95}
+\definecolor{cblue}{rgb}{0.,0.0,0.6}
+\usepackage{filecontents,listings}
+
+
+\lstset{language=c++,showspaces=false,showstringspaces=false,captionpos=t,literate={>>}{\ensuremath{>>}}1}
+%\lstset{float}
+\lstset{basicstyle=\small\ttfamily}
+\lstset{lineskip=-2pt}
+\lstset{keywordstyle=\color{red}\bfseries}
+%\lstset{keywordstyle=\mdseries\color{red}}
+\lstset{emph={inline},emphstyle=\color{red}\bfseries}
+%\lstset{stringstyle=\ttfamily}
+\lstset{commentstyle=\ttfamily\color{cblue}}
+\lstset{backgroundcolor=\color{lbcolor},rulecolor=}
+%\lstset{numbers=left}
+%\lstset{numbers={none}}
+%\lstset{numberstyle=\tiny}
+%\lstset{numbersep=1pt}
+\lstset{frame=single,framerule=0.5pt}
+\lstset{belowskip=\smallskipamount}
+\lstset{aboveskip=\smallskipamount}
+
+
+\title{Calcul Scientifique\\
+  M2R \& M2P}
+
+\author{Christophe Prud'homme} 
+\date{UJF, 2006-2007} 
+
+\begin{document}
+\maketitle
+
+\begin{Exercise}[label={exo1},title={Blitz++ versus Matlab}]
+\Question Write a code using Blitz++ that would replicate the
+following Octave commands:
+
+\begin{filecontents*}{programs/td1.m}
+N =10 ;
+A = zeros(10 ,10)
+A = ones(10 ,10)
+A = eye(10 ,10)
+A ( N /2 ,:) = -1
+A (1:3 , N /2) = -2
+A'
+\end{filecontents*}
+\lstinputlisting[language=octave]{programs/td1.m}
+
+\end{Exercise}
+
+\begin{Answer}
+
+Here is the C++ code and the Makefile:
+\lstinputlisting[language=c++,caption={Code for exercise 1}]{programs/td1_exo1.cpp}
+\lstinputlisting[language=make,caption={Makefile to compile exercise 1}]{programs/Makefile}
+
+\end{Answer}
+
+\begin{Exercise}[title={Heat Equation}]
+  \Question Write a code using Blitz++ to solve the following equation in 2D
+  on $\Omega = ] 0, 1 [ \times ]0, 1 [$, find $u(x,t)$ such that
+  \begin{align}
+    \label{eq:1}
+    \displaystyle \frac{\partial u}{\partial t} - \Delta u &= 1 \mbox{ on } \Omega\\
+    u(\cdot,t) &= 0 \mbox{ on } \partial \Omega,\ \forall t \geq 0 \\
+    u(x,0) &= 0  \mbox{ on }  \Omega
+  \end{align}
+  Write the code in vectorial form, save results in column format
+  and use octave or gnuplot to visualize the isovalues of $u(x,t)$
+  when it reaches a steady state
+  
+\end{Exercise}
+
+\begin{Answer}
+  We use the so called stencils in Blitz documentation, let's define
+  the stencil for the Heat Equation: Let's $T_n$ be the temperature at
+  the time $t_n$ and $T_{n+1}$ at time $t_{n+1}$ and $dt$ be the time
+  step. The stencil to construct at each iteration writes as follows:
+\begin{lstlisting}
+double spatialStep; 
+BZ_DECLARE_STENCIL2(heat_stencil, Tnp1, Tn)
+  Tnp1 += Tn / dt - Laplacian2D(Tn)/(spatialStep*spatialStep);
+BZ_END_STENCIL
+\end{lstlisting}
+
+  We implement also a conjuguate gradient solver to solve $u^{n+1}/dt
+  - \Delta u^{n+1} = F + u^n/dt$ at each iteration in time.
+\begin{lstlisting}
+template<typename T_stencil, typename T_numtype, 
+         int N_rank, typename T_BCs>
+int 
+conjugateGradientSolver(T_stencil stencil,
+                        Array<T_numtype,N_rank>& x,
+			Array<T_numtype,N_rank>& rhs, 
+                        double haltrho,
+			const T_BCs& boundaryConditions)
+{
+  // Calculate initial residual
+  Array<T_numtype,N_rank> r = rhs.copy();
+  r *= -1.0;
+
+  boundaryConditions.apply(x);
+
+  applyStencil(stencil, r, x);
+
+  r *= -1.0;
+
+  // Allocate the descent direction arrays
+  Array<T_numtype,N_rank> p, q;
+  allocateArrays(x.shape(), p, q);
+
+  int iteration = 0;
+  int converged = 0;
+  T_numtype rho = 0.;
+  T_numtype oldrho = 0.;
+
+  const int maxIterations = 1000;
+
+  while (iteration < maxIterations)
+    {
+      rho = sum(r * r);
+
+      if ((iteration % 20) == 0)
+	std::cout << "CG: Iter " << iteration 
+                  << "\t rho = " << rho << std::endl;
+
+      // Check halting condition
+      if (rho < haltrho)
+        {
+	  converged = 1;
+	  break;
+        }
+
+      if (iteration == 0)
+        {
+	  p = r;
+        }
+      else {
+	T_numtype beta = rho / oldrho;
+	p = beta * p + r;
+      }
+      q = 0.;
+      boundaryConditions.apply(p);
+      applyStencil(stencil, q, p);
+      T_numtype pq = sum(p*q);
+
+      T_numtype alpha = rho / pq;
+      x += alpha * p;
+      r -= alpha * q;
+      oldrho = rho;
+      ++iteration;
+    }
+
+  if (!converged)
+    std::cout << "Warning: CG solver did not converge" 
+              << std::endl;
+
+  return iteration;
+}
+\end{lstlisting}
+
+  We note the presence of the \lstinline!boundaryConditions! argument,
+  it implements and imposes  the Dirichlet conditions, it reads as follows:
+\begin{lstlisting}
+typedef Array<double,2>   scalarField;
+class HeatBC {
+public:
+  HeatBC()
+  {}
+  void apply(scalarField& T) const
+  {
+    // retrieve the dimension of the box
+    int xN = T.ubound(firstDim);
+    int yN = T.ubound(secondDim);
+    Range all = Range::all();
+    //apply Dirichlet BC on domain boundary
+    // lower x
+    T(0,all) = 0;
+    // upper x
+    T(xN,all) = 0;
+
+    // lower y
+    T(all,0) = 0;
+    // upper y
+    T(all,yN) = 0;
+  }
+};
+\end{lstlisting}
+
+The main program looks like this:
+
+\begin{lstlisting}
+// Elapsed seconds
+  double time_now = 0;
+
+  // Arrays are NxN
+  int N = 10;
+
+  // Allocate arrays: scalar fields
+  scalarField T(N,N), nextT(N,N), F(N,N), rhs(N,N);
+
+  T=0;
+  F=0;
+  F(Range(1,N-2),Range(1,N-2)) = 1;
+
+  int i = 0;
+  do
+    {
+      nextT = T;
+      cout << "Iteration " << i << " Time = " 
+           << time_now << " s" << endl;
+
+      // update the right hand side
+      rhs = F + T/delta_t;
+      conjugateGradientSolver(heat_stencil(), T, rhs, 
+                              1e-8, HeatBC());
+
+      double oldtime_now = time_now;
+      time_now += delta_t;
+
+      snapshot( T );
+    }
+  while ( sum((nextT-T)*(nextT-T)) > 1e-3);
+\end{lstlisting}
+\lstinline!snapshot! saves the temperature at each time step for
+visualization and in octave/matlab format.
+
+To visualize in Octave one can use the following script:
+\lstinputlisting[language=octave]{programs/td1_exo2.m}
+\end{Answer}
+\end{document}
+
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-PDF-mode: t
+%%% TeX-parse-self: t
+%%% x-symbol-8bits: nil
+%%% TeX-auto-regexp-list: TeX-auto-full-regexp-list
+%%% TeX-master: t
+%%% ispell-local-dictionary: "french"
+%%% End:
