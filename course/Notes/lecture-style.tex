@@ -11,7 +11,7 @@
   \usepackage{mathptmx}
   \usepackage[left=1.5cm,right=6cm,top=1.5cm,bottom=3cm]{geometry}
 
-  
+
   \def\figwidth{.7}
 }
 \mode<presentation>{
@@ -53,7 +53,10 @@
 
 \usepackage{multimedia,xmpmulti}
 \DeclareGraphicsRule{*}{mps}{*}{}
+
 \usepackage{graphicx}
+\graphicspath{../figures/}
+
 \usepackage{tikz}
 \usetikzlibrary{arrows,patterns,plotmarks,shapes,snakes,er,3d,automata,backgrounds,topaths,trees,petri,mindmap}
 
@@ -100,12 +103,12 @@ xlabel,ylabel,zlabel,axis,hold,clg,replot,polyfit,polyval}}
   \url{christophe.prudhomme@ujf-grenoble.fr}\\
   Dr. Mourad Ismail\\
   \url{ismail@ujf-grenoble.fr}\\
-} 
+}
 \institute[UJF]{
   Université Joseph Fourier Grenoble 1
 }
 
-\date[2007-2008\xspace Rev: \svnInfoRevision]{2nd Semestre 2007-2008} 
+\date[2007-2008\xspace Rev: \svnInfoRevision]{2nd Semestre 2007-2008}
 
 \subject{Cours \lecturename}
 
@@ -212,7 +215,7 @@ xlabel,ylabel,zlabel,axis,hold,clg,replot,polyfit,polyval}}
   \else%
     \vskip0.25em%
     {\usebeamerfont{subtitle}\usebeamercolor[fg]{subtitle}\insertsubtitle\par}%
-  \fi%     
+  \fi%
   \vskip1em\par
   Course \emph{\lecturename}\ , \insertdate\par
   \vskip0pt plus1filll
@@ -264,7 +267,7 @@ xlabel,ylabel,zlabel,axis,hold,clg,replot,polyfit,polyval}}
     {\Large\selectfont \color{blue!50!black} \insertsubtitle\par}
     \vskip10pt
 
-    \normalsize\selectfont Printed version of the 
+    \normalsize\selectfont Printed version of the
     course \emph{\lecturename}, \@date\par\vskip1.5em
     \hfill Christophe Prud'homme \& Mourad Ismail, Université Joseph Fourier Grenoble 1
   }
