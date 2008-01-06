@@ -1,0 +1,2776 @@
+\lecture[]{Introduction au langage C++ }{lecture-text}
+
+\date{Janvier  2008}
+
+
+\begin{document}
+
+\begin{frame}
+  \maketitle
+\end{frame}
+
+\begin{frame}[allowframebreaks]\frametitle<presentation>{Plan}
+  \tableofcontents
+\end{frame}
+
+
+\section{Introduction}
+\begin{frame}[containsverbatim,allowframebreaks]{À la découverte du langage C++}
+
+\begin{itemize}
+\item Compilation : \texttt{g++ -o monExecutable monProgramme.cpp}
+\item {\it Hello World !}
+(\texttt{hello\_C1.cpp})
+\begin{lstlisting}
+#include <iostream> // pour les entrees sorties
+using namespace std;
+
+int main ()
+{
+   cout << "Hello World" << endl;
+}
+\end{lstlisting}
+
+\alt<presentation>{\newpage}
+
+\item Quelques types de variables (\texttt{types\_C1.cpp})
+\begin{lstlisting}
+#include <iostream>
+using namespace std;
+
+int main ()
+{
+   cout << "nombre d'octets d'un short = " << sizeof(short int) << endl;
+   cout << "nombre d'octets d'un int = " << sizeof(int) << endl;
+   cout << "nombre d'octets d'un long int = " << sizeof(long int) << endl;
+   cout << "nombre d'octets d'un float = " << sizeof(float) << endl;
+   cout << "nombre d'octets d'un double = " << sizeof(double) << endl;
+   cout << "nombre d'octets d'un long double = " << sizeof(long double) << endl;
+}
+\end{lstlisting}
+
+\alt<presentation>{\newpage}
+
+\item Où sont mes variables ? (\texttt{adresse\_C1.cpp})
+\begin{lstlisting}
+#include <iostream>
+using namespace std;
+
+int main ()
+{
+   int x = 1; // declaration et initialisation de x
+   cout << "La variable x est stockee a l'adresse " << &x
+        << " " << " et sa valeur est " << x << endl;
+}
+\end{lstlisting}
+
+\alt<presentation>{\newpage}
+
+\item Leurs portées (\texttt{portee\_C1.cpp})
+\begin{lstlisting}
+#include <iostream>
+using namespace std;
+
+int main ()
+{
+   int n;
+     {      //cette paire d'accolade introduit une nouvelle portee
+        int m = 10; // m est accessible uniquement a l'interieur de cette portee
+        n = m + 1; // OK, n est accessible
+     }
+   int m ; //OK la compilation car declaration d'une nouvelle variable
+   n = m ; // Erreur de compilation, m est en dehors de la presente portee
+   cout << " la valeur de n est " << n << endl;
+}
+\end{lstlisting}
+
+\alt<presentation>{\newpage}
+
+\texttt{portee2\_C1.cpp}
+
+\begin{lstlisting}
+#include <iostream>
+using namespace std;
+double x = 1.; // la variable x est globale (exterieure a tout bloc)
+int main ()
+{
+   double x = 10.; // variable locale x cachant la variable globale x
+   double y = ::x; // y = 1, ::x renvoie a la variable globale x
+     {
+        double m = x; // m = 10, x est la variable de la precedente portee
+        double x = 20; // masque la variable locale precedente
+        double t = ::x; // t=1, ::x renvoie a la variable globale x
+        t  =  x; // t=20, x est locale a cette portee
+     }
+   double t = x; // t = 10, t a la meme portee que y
+
+}
+\end{lstlisting}
+
+\item mot clé \texttt{const} (\texttt{const\_C1.cpp})
+\begin{lstlisting}
+#include <iostream>
+using namespace std;
+
+int main ()
+{
+   const double pi = 3.1415926535897;
+   const int dimension = 10;
+   const int nombre_elements = 100 * dimension;
+
+   pi = 3.1; //illegal, une constante ne peut etre modifiee
+   const int size; //illegal, une constante doit etre initialisee
+}
+\end{lstlisting}
+
+\alt<presentation>{\newpage}
+
+\item Un premier programme (\texttt{sommeEntiers\_C1.cpp})
+\begin{lstlisting}
+/* Un premier programme illustrant quelques
+ fonctionalités du  C++
+*/
+
+#include <iostream> // pour les entrees sorties
+using namespace std;
+
+int main ()
+{
+   int n, m; // declaration de deux entiers
+   cout << "Entrez deux entiers" << endl;  //sortie ecran
+   cin >> n >> m; //entree clavier
+
+   if (n > m) // test conditionnel echangeant si besoin n et m
+     {
+        int temp = n;
+        n = m;
+        m = temp;
+     }
+   double sum = 0.0; // declaration et initialisation de sum
+
+   for (int i=n; i<=m; i++) sum +=i;  //boucle iterative avec compteur
+
+   cout << "La somme des entiers compris entre " << n << " et " << m
+        << " vaut : " << sum << endl; // affichage ecran
+
+}
+\end{lstlisting}
+\end{itemize}    
+\end{frame}
+
+\section{Expressions et opérateurs}
+\frame{\frametitle{Opérateur d'affectation. Opérateurs arithmétiques}
+\begin{itemize}
+\item \fbt{i = j} désigne une expression qui réalise une action : affecte la
+valeur de j à i
+\item addition +, soustraction -, multiplication *, division /, l'opérateur
+modulo
+\end{itemize}
+{\bf\color{red}Exemples :}
+\begin{itemize}
+\item \fbt{double x = 3/4 ; } $\Longrightarrow$ x = 0, le reste est
+  ignoré
+\item \fbt{double y = double(3)/4;} $\Longrightarrow$ y = 0.75, 3
+  étant converti en 3.
+\item \fbt{double y = 3/4.;} $\Longrightarrow$ y = 0.75
+\item \fbt{int n = 4\%3;} $\Longrightarrow$ n = 1, le reste de la
+  division euclidienne de 4 par 3 est 1
+\end{itemize}
+}
+
+
+\frame{\frametitle{{Les opérateurs d'affectation élargie}}
+\begin{itemize}
+\item\fbt{i += k;} équivalent à \fbox{i = i + k;}
+\item\fbt{i -= 2*n;} équivalent à \fbox{i = i - 2*n;}
+\item\fbt{a *= b;} équivalent à \fbox{a = a * b;}
+\item\fbt{a /= (b+1);} équivalent à \fbox{a = a / (b+1);}
+\end{itemize}
+}
+
+
+\frame{\frametitle{Les opérateurs d'incrémentation et de décrémentation}
+\begin{itemize}
+\item \fbt{ int i = 4, j = 4;}
+\item\fbt{i++;}  i = i + 1. Soit i = 5
+\item\fbt{++j;}  j = j + 1. Soit j = 5
+\item\fbt{int m = i++;}
+\begin{description}
+\item[1)] m = i
+\item[2)] i = i + 1. 
+\item Soit m = 5, i = 6
+\end{description}
+\item\fbt{int n = ++j;}
+\begin{description}
+\item[1)] j = j + 1
+\item[2)] n = j
+\item Soit j = 6, n = 6
+\end{description}
+\end{itemize}
+}
+
+\frame{\frametitle{Les opérateurs relationnels}
+\begin{itemize}
+\item \fbt{$>$}  (strictement supérieur à)
+\item \fbt{$<$}  (strictement inférieur à)
+\item \fbt{$>=$} (supérieur ou égal à)
+\item \fbt{$<=$} (inférieur ou égal à)
+\item \fbt{$==$} (égal à)
+\item \fbt{$!=$} (différent de)
+\end{itemize}
+
+\begin{alertblock}{ATTENTION!}
+Il convient de distinguer l'opérateur d'affectation  $=$
+de l'opérateur de test à l'égalité $==$
+\end{alertblock}
+}
+
+\frame{\frametitle{Les opérateurs logiques}
+\begin{itemize}
+\item \fbt{\&\&} : opérateur {\it et}
+\item \fbt{$\|$} : opérateur {\it ou}
+\item \fbt{$!$} : opérateur non
+\end{itemize}
+}
+
+\frame{\frametitle{Les opérateurs binaires}
+\begin{itemize}
+\item \fbt{$\&$} : {\it et} binaire
+\item \fbt{$|$} : {\it ou} binaire
+\item \fbt{$\widehat{}$} {ou exclusif} bit à bit
+\item \fbt{$\widetilde{}$} : complément à $1$
+\item \fbt{$<<$} : décalage de $n$ bits vers la gauche
+\item \fbt{$>>$} : décalage de $n$ bits vers la droite
+\end{itemize}
+}
+
+\section{Les instructions}
+\subsection{Les instructions conditionnelles}
+
+\begin{alertblock}{L'instruction {\it if-else}}
+\begin{minipage}{0.9\linewidth}
+\begin{lstlisting}[language=C++,frame=single]
+if(condition_1) instruction_1
+else
+  {
+     if(condition_2) instruction_2
+     else
+       {
+           if(condition_3) instruction_3
+           else instruction_4
+       }
+  }
+\end{lstlisting}
+\end{minipage}
+\end{alertblock}
+\vspace*{1mm}
+\begin{alertblock}{équivalence avec une instruction conditionnelle ternaire}
+\begin{minipage}{0.4\linewidth}
+\begin{lstlisting}[language=C++,frame=single]
+i = a > b ? a : b;
+\end{lstlisting}
+\end{minipage}\qquad
+\begin{minipage}{0.4\linewidth}
+\begin{lstlisting}[language=C++,frame=single]
+if (a > b) i = a;
+else       i = b;
+\end{lstlisting}
+\end{minipage}
+\end{alertblock}
+
+\vspace*{-.9cm}
+
+\begin{alertblock}{L'instruction {\it switch}}
+\begin{minipage}{0.8\linewidth}
+{\small
+\begin{lstlisting}[language=C++,frame=single]
+int i, j, k
+// suite des instructions attribuant, 
+// entre autre, une valeur à i
+switch(i)
+{
+  case 0 :       //exécution si i = 0
+          j = 1;
+          k = 2;
+          break; // sortie du switch
+  case 2 :       //exécution si i = 0
+          j = 3;
+          k = 4;
+          break; // sortie du switch
+  default ://exec si i diff. de 0 et  2
+          j = 0;
+          k = 0;
+          break;   // sortie du switch        
+}
+\end{lstlisting}
+}
+\end{minipage}
+\end{alertblock}
+
+\subsection{Les instructions d'itérations}
+
+
+\begin{alertblock}{L'instruction {\it for}}
+\begin{lstlisting}
+for(expr_1 ; expr_2 ; expr_3) instruction
+\end{lstlisting}
+\end{alertblock}
+\begin{alertblock}{L'instruction {\it while}. Faire tant que}
+\begin{lstlisting}
+while(expression)instruction
+\end{lstlisting}
+\end{alertblock}
+\begin{alertblock}{L'instruction {\it do . . . while}. Faire jusqu'à}
+\begin{lstlisting}
+do
+instruction
+while(expression);
+\end{lstlisting}
+\end{alertblock}
+
+\section{Le type tableau}
+\frame{\frametitle{Tableaux statiques}
+\begin{itemize}
+\item \fbt{double vec[10] = \{0\};} : définit un vecteur de doubles de taille 10
+dont toutes les composantes sont initialisées à 0
+\item \fbt{vec[0] = 1.0;} : affectation sur le 1er élément de vec
+\item \fbt{vec[9] = 11.0;} : affectation du dernier élément de vec
+\item \fbt{const int dim = 5; int a[2*dim] = \{\};} : définit un vecteur
+  d'entiers de taille 10 dont toutes les composantes sont initialisées à 0
+\fbt{for(int i = 0; i<2*dim; i++) a[i] = i*i;}
+\end{itemize}
+}
+
+\section{Pointeurs}
+\frame{\frametitle{Définition}
+Une variable de type {\bf T*} est une variable automatique destinée à
+recevoir l'adresse d'une variable de type {\bf T}
+}
+{\small
+\begin{alertblock}{Exemple}
+\begin{lstlisting}[language=C++]
+#include<iostream>
+using namespace std;
+
+int main()
+{
+  double x = 0., y = 1.;
+  double* ptr = 0; // ptr est initialisé par  
+    //le pointeur nul. Il ne pointe sur rien !
+  ptr = &x; // on affecte l'adresse de x 
+            //au pointeur ptr
+  cout << "je pointe sur l'objet d'adresse "<< ptr
+       <<" et ma valeur est "<< *ptr <<endl;
+  
+  double z = *ptr;
+  cout << "je suis un double d'adresse "<< &z
+       <<" et de valeur " << z <<endl;
+\end{lstlisting} 
+\end{alertblock}
+\begin{alertblock}{Exemple. Suite}
+\begin{lstlisting}[language=C++]
+  ptr = &y;
+  z = *ptr;
+  cout <<"je pointe sur l'objet d'adresse "<< ptr
+       <<" et ma valeur est " << *ptr <<endl;
+  
+  /* 
+     Notons que les deux dernières opérations 
+     équivalent à z = y mais elles ont été 
+     réalisées via un pointeur
+  */
+}
+\end{lstlisting} 
+\end{alertblock}
+{\bf Le résultat d'exécution :}\\
+je pointe sur l'objet d'adresse 0xbfedbe20 et ma valeur est 0\\
+je suis un double d'adresse 0xbfedbe10 et de valeur 0\\
+je pointe sur l'objet d'adresse 0xbfedbe18 et ma valeur est 1
+}
+\newpage
+\subsection{Tableaux et pointeurs}
+\frame{\frametitle{Deux règles}
+\begin{itemize}
+\item Une expression désignant un objet de type tableau est convertie
+  par le compilateur en un pointeur constant sur son premier élément
+\item L'opérateur [ ] est défini de sorte que si exp1 et exp2 désignent
+  des expressions, la première de type pointeur et la seconde de type
+  entier. Alors les expressions suivantes sont équivalentes :
+\fbt{exp1[exp2]} et \fbt{*(exp1+exp2)}
+\end{itemize}
+}
+
+\begin{alertblock}{Pointeur versus tableau}
+\begin{center}
+\begin{minipage}{1\linewidth}
+\begin{lstlisting}[language=C++]
+ int tabEntiers[20];
+ int* ptab;
+ ptab = tabEntiers;
+ *tabEntiers = 1;
+ ptab[0] = 1;
+ *(tabEntiers+1) = 2;
+ ptab[1] = 2;
+\end{lstlisting} 
+\end{minipage}
+\end{center}
+\end{alertblock}
+\newpage
+
+\frame{\frametitle{Tableaux à 2 dimensions}
+\fbt{double a[5][7];}
+
+Le tableau a est stocké en mémoire ligne par ligne.
+
+{\bf a[0][0]}, a[0][1], a[0][2], a[0][3], a[0][4], a[0][5], a[0][6],
+{\bf a[1][0]}, a[1][1] . . .
+\begin{itemize}
+\item 'a' pointe vers a[0][0]
+\item 'a+7*i+j' pointe vers a[i][j]
+\end{itemize}
+
+Le tableau a aurait pu être déclaré comme un pointeur de pointeur
+double** a
+}
+\section{Les références}
+\frame{\frametitle{Définition}
+\begin{itemize}
+\item une référence est un alias pour un objet déjà déclaré
+\item {\bf T\&} désigne une référence sur un objet de type {\bf T}
+\item {\bf Syntaxe :}
+\fbt{T\& ref\_v = v;}
+\end{itemize}
+}
+\begin{alertblock}{Exemple}
+\begin{lstlisting}
+int n = 5;
+int& r = n; // r est une réf. sur un entier. 
+            //r réfère à n
+int m =r; // m = 5 puisque r est un alias de n
+r = 1; // n = 1 puisque r est un synonyme de n
+\end{lstlisting}
+\end{alertblock}
+\newpage
+\section{Allocation dynamique}
+{\small
+\begin{alertblock}{Les opérateurs {\it new} et {\it delete}}
+\begin{lstlisting}
+T* ptr = 0; // déclaration d'un pointeur sur un
+            // type T et son initialisation à 0
+ptr = new T;// demande d'allocation de mémoire 
+            //pour un type T
+// forme condensée : T* ptr = new T; 
+*ptr = 1;    // utilisation de la variable dynamique
+             // par le biais du pointeur
+delete ptr;  // libération de l'espace mémoire
+\end{lstlisting}
+\end{alertblock}
+}
+{\bf\color{red} Recommandation :}
+\begin{lstlisting}
+delete ptr;
+ptr = 0;
+\end{lstlisting}
+\newpage 
+\begin{alertblock}{Les opérateurs {\it new[]} et {\it delete[]}. Tableaux
+  dynamiques}
+\begin{lstlisting}
+T* ptr = 0;     // déclaration d'un pointeur 
+                //sur un type T 
+ptr = new T[n]; // allocation de mémoire pour 
+                //un tableau de type T
+                // et de taille n
+// forme condensée : T* ptr = new T[n]; 
+delete[] ptr; // libération de l'espace mémoire
+ptr = 0;
+\end{lstlisting}
+\end{alertblock}
+\newpage
+{\small
+\begin{alertblock}{Exemple}
+\begin{lstlisting}
+#include <iostream>
+#include <iomanip>
+using namespace std;
+
+int main()
+{
+  int max = 0;  //Nbr de nombres premiers demandés
+  int count = 3;//Nbr de nombres premiers trouvés
+  long test = 5;//Candidat à être un nbr premier
+  bool est_premier = true;//indique qu'un nbr 
+                          //premier est trouvé
+  
+  cout << "Entrez le nbr de nombres premiers désirés 
+           > 3" << endl ; 
+  cin >> max;
+  if (max < 4) exit(0);
+
+\end{lstlisting}
+\end{alertblock}
+\begin{alertblock}{Suite}
+\begin{lstlisting}
+  long* premiers = new long[max]; // allocation 
+  //dynamique du tableau des nbrs premiers
+
+  *premiers = 2;
+  *(premiers+1) = 3;
+  *(premiers+2) = 5;
+
+  do
+    {
+      test += 2;
+      int i = 0;
+
+      do
+	{
+	    est_premier =  (test % premiers[i]) > 0;
+	} while ( (++i < count) && est_premier);
+\end{lstlisting}
+\end{alertblock}
+\begin{alertblock}{Suite}
+\begin{lstlisting}
+      if (est_premier)
+	premiers[count++] = test;
+    } while (count < max);
+
+  for (int i = 0; i<max; i++)
+    {
+      if(i%5 == 0) cout << endl;
+      cout << setw(10) << *(premiers+i);
+    }
+  cout << endl;
+  delete[] premiers;
+  //premiers = 0;
+}
+\end{lstlisting}
+\end{alertblock}
+}
+
+
+%%%%%%%%%%%%%%
+
+\section{Fonctions}
+\subsection{Déclaration}
+\begin{frame}[containsverbatim,shrink]{Déclaration}
+  \begin{alertblock}{Prototype}
+    \begin{lstlisting}
+      type_de_retour identificateur (liste_de_paramètres);
+    \end{lstlisting}
+  \end{alertblock}
+  \begin{exemple}\only<article>{\hspace*{1mm}\\}
+    \begin{lstlisting}
+      double func_1 (double x);
+      void   func_2 (double x);
+      void   func_3 ();
+    \end{lstlisting}
+  \end{exemple}
+  \begin{alertblock}{Prototype complet}
+    \begin{lstlisting}
+      double func_4 (int nb_iter, double initial, double solution);
+      double func_4 (int, double, double);
+    \end{lstlisting}
+  \end{alertblock}
+\end{frame}
+
+\subsection{Définition}
+
+\defverbatim[colored]\expleABS{
+\begin{lstlisting}
+      double abs_som (double u, double v)
+        {
+          double result = u + v;
+          if(result > 0) return result;
+          else return -result;
+        }
+\end{lstlisting}
+}
+
+\begin{frame}[containsverbatim,allowframebreaks]{Définition d'une fonction}
+  \begin{alertblock}{En-tête ({\it prototype \underline{complet}})}
+    \begin{lstlisting}
+      type_de_retour identificateur (liste_de_paramètres)
+    \end{lstlisting}
+  \end{alertblock}
+  \begin{alertblock}{Le corps d'une fonction}
+    \begin{lstlisting}
+      {
+        ...
+        return expression; // si type_de_retour n'est pas void
+      }
+    \end{lstlisting}
+  \end{alertblock}
+  \begin{exemple} \only<article>{\hspace*{1mm}\\}
+    \expleABS
+  \end{exemple}
+  \begin{alertblock}{Ordre de déclatation}
+    Pour être utilisée, une fonction doit être déclarée avant son utilisation
+  \end{alertblock}
+\end{frame}
+
+\subsection{Transmission d'arguments}
+
+\defverbatim[colored]\standard{
+  \begin{lstlisting}
+    double f(double x);
+    ...
+    ...
+    double y = f(3*x+2);
+  \end{lstlisting}
+}
+
+\defverbatim[colored]\expleVal{
+  \begin{lstlisting}
+#include <iostream>
+using namespace std;
+int main ()
+  {
+    void echange (int a, int b);
+    int n = 1, p = 2;
+
+    cout << "avant appel " << n << " " << p << endl;
+    echange (n,p);
+    cout << "apres appel " << n << " " << p << endl;          
+  }
+
+void echange (int a, int b)
+  {
+    int c;
+    cout << "debut echange " << a << " " << b << endl;
+    c = a;
+    a = b;
+    b = c;
+    cout << "fin echange " << a << " " << b << endl;
+  }
+    \end{lstlisting}
+}
+
+\defverbatim[colored]\execExpleVal{
+\begin{lstlisting}
+    avant appel 1 2
+    debut echange 1 2
+    fin echange 2 1
+    apres appel 1 2
+\end{lstlisting}
+}
+
+\begin{frame}[shrink]{Passage par valeur}
+
+\only<1>{\standard}
+\only<2>{
+{\bf\color{red}{Exemple : }}\texttt{echange\_C3.cpp}
+
+\expleVal
+}
+\only<3>{
+\mode<presentation>{\expleVal}
+{\bf Exécution : }
+
+\execExpleVal
+}
+\only<4>{
+\mode<presentation>{\execExpleVal}
+\lhdbend\hspace*{2mm} \alert<4>{Pas d'échange à la sortie de la fonction !!}\\
+
+\vspace*{1cm}
+
+{\Large Solution ?}
+}
+\end{frame}
+
+\defverbatim[colored]\expleAdr{
+  \begin{lstlisting}
+#include <iostream>
+using namespace std;
+int main ()
+  {
+    void echange (int* a, int* b);
+    int n = 1, p = 2;
+
+    cout << "avant appel " << n << " " << p << endl;
+    echange (&n,&p);
+    cout << "apres appel " << n << " " << p << endl;          
+  }
+
+void echange (int* a, int* b)
+  {
+    int c;
+    cout << "debut echange " << *a << " " << *b << endl;
+    c = *a;
+    *a = *b;
+    *b = c;
+    cout << "fin echange " << *a << " " << *b << endl;
+  }
+   \end{lstlisting}
+}
+
+\defverbatim[colored]\execExpleAdr{
+\begin{lstlisting}
+    avant appel 1 2
+    debut echange 1 2
+    fin echange 2 1
+    apres appel 2 1
+\end{lstlisting}
+}
+
+\begin{frame}[shrink]{Transmission par pointeur}
+\only<1>{
+\texttt{echangeAdr\_C3.cpp}
+
+\expleAdr
+}
+\only<2>{
+\mode<presentation>{\expleAdr}
+{\bf Exécution : }
+
+\execExpleAdr
+}
+
+\end{frame}
+
+
+\begin{frame}{Tableaux transmis en arguments}
+\begin{alertblock}{Rappel}
+L'appel \fbt{f(tab);} est èquivalent à \fbt{f(\&tab[0]);}
+\end{alertblock}
+
+\begin{block}{Définition}
+Si \texttt{tab} est un tableau d'entiers, le prototype d'une fonction
+compatible peut être 
+\fbt{void (int* t);} ou \fbt{void (int t[]);} ou 
+\fbt{void (int taille, int t[]);}
+\end{block}
+\end{frame}
+
+\defverbatim[colored]\expleRef{
+  \begin{lstlisting}
+#include <iostream>
+using namespace std;
+int main ()
+  {
+    void echange (int& a, int& b);
+    int n = 1, p = 2;
+
+    cout << "avant appel " << n << " " << p << endl;
+    echange (n,p);
+    cout << "apres appel " << n << " " << p << endl;          
+  }
+
+void echange (int& a, int& b)
+  {
+    int c;
+    cout << "debut echange " << a << " " << b << endl;
+    c = a;
+    a = b;
+    b = c;
+    cout << "fin echange " << a << " " << b << endl;
+  }
+   \end{lstlisting}
+}
+
+\defverbatim[colored]\execExpleRef{
+\begin{lstlisting}
+    avant appel 1 2
+    debut echange 1 2
+    fin echange 2 1
+    apres appel 2 1
+\end{lstlisting}
+}
+
+\begin{frame}[shrink]{Transmission par référence}
+\only<1>{
+\texttt{echangeRef\_C3.cpp}
+
+\expleRef
+}
+\only<2>{
+\mode<presentation>{\expleRef}
+{\bf Exécution : }
+
+\execExpleRef
+}
+
+\end{frame}
+
+\subsection{Valeurs de retour}
+
+\defverb\tpre! type_de_retour !
+
+\begin{frame}[containsverbatim]{Valeurs de retour}
+\begin{alertblock}{Rappel}
+Une fonction dont le type de retour n'est pas \fbt{void} doit contenir
+une instruction \fbt{return}
+\end{alertblock}
+\begin{block}{Remarque}
+\tpre = T \\
+\lightning \tpre = T*, T\& 
+\end{block}
+
+\begin{alertblock}{Attention!}
+Retourner un pointeur ou une référence sur une variable automatique
+locale à la fonction est une erreur
+\end{alertblock}
+\end{frame}
+
+\begin{frame}[containsverbatim,allowframebreaks]{Retour par
+    pointeur. Exemple}
+\texttt{funcRetourPoint\_C3.cpp}
+\begin{lstlisting}
+#include <iostream>
+#include <iomanip>
+#include <cstdlib>
+#include <string> // pour le traitement des chaines de caracteres
+using namespace std;
+
+const int taille = 10;
+
+void hasard (double max, int size, double * tab)
+{   
+   for (int i=0; i<size; i++)
+     tab[i] = double(rand()) * max / RAND_MAX;
+}
+int main ()
+{  
+  //declaration des fonctions a utiliser
+   void hasard (double max, int size, double tab[]);
+   void affiche(int size, const double tab[],
+		const string & titre ="Valeurs ",
+		int largeur = 10, int par_ligne = 5);
+   double * largest (int size, double *tab);
+   double * smallest(int size, double *tab);
+   
+   double vec[taille] = {0};
+   
+   double maximum = 0.;
+   cout << "Entrez la valeur d'initialisation maximale " << endl;
+   cin >> maximum; 
+   hasard(maximum, taille, vec);
+   cout << endl;
+   affiche(taille, vec, "Valeurs initiales");
+   double min = *smallest (taille, vec);
+   //decale les valeurs de sorte a annuler la plus petite
+   for(int i=0; i<taille; i++) vec[i] -= min;
+   double max = *largest(taille, vec);
+
+   //renormalise les valeurs a 1
+   for(int i=0; i<taille; i++) vec[i] /= max;   
+   affiche(taille, vec, "Valeurs renormalisees", 12);
+}
+//suite des definitions des fonctions
+double * largest(int size, double * tab) //trouver l'adresse de
+{                           //l'element possedant la plus grande valeur
+   int indexMax = 0;
+   for(int i=0; i<size; i++)
+     indexMax = tab[indexMax] < tab[i] ? i : indexMax;
+   return &tab[indexMax];
+}
+double * smallest(int size, double * tab) //trouver l'adresse de
+{                         //l'element possedant la plus petite valeur
+   int indexMin = 0;
+   for(int i=0; i<size; i++)
+     indexMin = tab[indexMin] > tab[i] ? i : indexMin;
+   return &tab[indexMin];
+}
+void affiche(int size, const double * tab, const string & titre,
+	     int largeur, int par_ligne)
+{
+   cout << endl << titre;
+   for(int i=0; i<size; i++)
+     {
+	if(!(i%par_ligne)) cout << endl;
+	cout << setw(largeur) << tab[i];
+     }  
+   cout << endl;
+}
+\end{lstlisting}
+
+\alt<presentation>{\newpage}
+
+{\bf Exécution : }
+\begin{lstlisting}
+Entrez la valeur d initialisation maximale
+2
+
+Valeurs initiales
+   1.68038  0.788766    1.5662   1.59688   1.82329
+  0.395103  0.670446   1.53646  0.555549   1.10794
+
+Valeurs renormalisees
+     0.89993    0.275637    0.819985    0.841468           1
+           0    0.192791    0.799162    0.112343    0.499119
+\end{lstlisting}
+
+\end{frame}
+
+\subsection{Fonctions mathématiques}
+\begin{frame}[containsverbatim]{Bibliothèque standard de fonctions
+    mathématiques}
+  \begin{lstlisting}
+    double abs(double); //valeur absolue
+    double ceil(double d); // plus petit entier >= à d
+    double floor(double d); //plus grand entier >= à d
+    double sqrt(double); //racine carrée
+    double pow(double d, double e);// d à la puissance e
+    double pow(double d, int n); // d à la puissance n
+    double exp(double); //exponentielle
+    double log(double); //logarithme neperien
+    double cos(double); //cosinus
+    double sin(double); //sinus
+    double tan(double); //tangente
+    double acos(double); //arccosinus
+    double asin(double); //arcsinus
+    double atan(double); //arctangente    
+  \end{lstlisting}
+\end{frame}
+
+\subsection{Fonctions récursives}
+
+\begin{frame}[containsverbatim]{Un exemple}
+\texttt{factoriel\_C3.cpp}
+\begin{lstlisting}
+  long double factoriel (int n)
+  {
+    if (n == 0) return 1L;
+    return n*factoriel(n-1);
+  }
+\end{lstlisting}
+
+{\bf Version non récursive}. \texttt{factoriel\_2\_C3.cpp}
+
+\begin{lstlisting}
+long double factoriel (int n)
+{
+  if(n == 0) return 1L;
+  long double result = n;
+  for( ; n>1; ) result *= --n;
+  return result;
+}
+\end{lstlisting}
+\end{frame}
+
+\subsection{Variables locales de la classe static}
+\begin{frame}[containsverbatim,shrink]{Combien de fois la fonction
+    \texttt{factoriel} est appelé?}
+\begin{lstlisting}
+long double factoriel (int n)
+{
+ static int compteur = 1;
+ if (n == 0) return 1;
+ cout <<"la fonction factoriel est appele "<<compteur++ <<" fois"<<endl;
+ return n*factoriel(n-1);
+}  
+\end{lstlisting}
+{\bf Exécution avec le mot clef} \texttt{static}
+\begin{lstlisting}
+Donnez un entier positif n = 3
+la fonction factoriel est appele 1 fois
+la fonction factoriel est appele 2 fois
+la fonction factoriel est appele 3 fois
+3!= 6
+\end{lstlisting}
+{\bf Exécution sans le mot clef} \texttt{static}
+\begin{lstlisting}
+Donnez un entier positif n = 3
+la fonction factoriel est appele 1 fois
+la fonction factoriel est appele 1 fois
+la fonction factoriel est appele 1 fois
+3!= 6
+\end{lstlisting}
+\end{frame}
+
+\subsection{Fonctions en ligne}
+\begin{frame}[containsverbatim]{Fonctions en ligne}
+\begin{block}{Modèle}
+\begin{lstlisting}
+inline type_de_retour identificateur(liste_de_parametres)
+{
+ // ... corps de la fonction
+}
+\end{lstlisting}
+\end{block}
+\begin{itemize}
+\item Fonctions ne comportant pas beaucoup d'instructions et qui sont
+  fréquemment appelées
+\item[\ok] Amélioration de  la vitesse d'exécution
+\item[\db] Augmentation de la taille de l'exécutable
+\end{itemize}
+\end{frame}
+
+\subsection{Surdéfinition de fonctions}
+
+\defverbatim[colored]\surcharge{
+\begin{lstlisting}
+#include <iostream>
+#include <iomanip>
+using namespace std;
+
+double larger (double a, double b);
+long int larger (long int a, long int b);
+int main()
+{
+   cout << "La plus grande valeur de 1.5 et 2.5 est "<< larger(1.5, 2.5) << endl;
+   cout << "La plus grande valeur de 2.5 et 3.5 est "<< larger(2.5f, 3.5f) << endl;
+   cout << "La plus grande valeur de 15 et 25 est "  << larger(15L , 25L) << endl;
+   int val1 = 35, val2 = 45;
+//   cout << "La plus grande valeur de "<< val1 <<" et "<< val2 <<" est "  << larger(val1 , val2) << endl;
+   cout << "La plus grande valeur de "<< val1 <<" et "<< val2 <<" est "  
+   << larger(static_cast<long int>(val1) , static_cast<long int>(val2)) << endl;
+}
+
+double larger (double a, double b)
+{
+   return a>b ? a : b;
+}
+
+long int larger (long int a, long int b)
+{
+   return a>b ? a : b;
+}
+\end{lstlisting}
+}
+\begin{frame}[containsverbatim,allowframebreaks]{Surcharge de
+    fonctions}
+\texttt{surchargeFonction\_C3.cpp}
+\surcharge
+\end{frame}
+
+\section{Fichiers d'en-tête {\it(headers)}}
+
+\begin{frame}[containsverbatim]{Fichiers d'en-tête}
+\begin{block}{Définition}
+fichiers \texttt{.h} ou \texttt{.hpp} destinés à contenir les
+déclarations de fonctions
+\end{block}  
+\begin{itemize}
+\item Ils sont à inclure dans les fichiers sources \texttt{.c} ou
+\texttt{.cpp} :
+\begin{lstlisting}
+#include "nomFichier.hpp"
+\end{lstlisting}
+\item Pour éviter les doublons, on utilise les directives
+  \texttt{(\#ifndef, \#define, \#endif)}
+\begin{lstlisting} 
+#ifndef FIC_HPP
+#define FIC_HPP
+ // contenu du fichier en-tête fic.hpp
+#endif // FIC_HPP
+\end{lstlisting}
+\end{itemize}
+\end{frame}
+
+\subsection{ Makefile. Exemple simple}
+\begin{frame}[containsverbatim,shrink]
+\begin{beamerboxesrounded}[upper=block head,lower=block
+  body,shadow=true]{}
+%\begin{lstlisting}
+\begin{semiverbatim}
+{\color{brown}IDIR} = /usr/include/blitz
+{\color{brown}ODIR} = . 
+{\color{brown}Cxx} = g++ 
+{\color{brown}CFLAGS} = -I$(IDIR) -Wall 
+{\color{brown}LIBS} = -L/usr/lib -lblitz 
+{\color{brown}OBJ} = fic_1.o fic_2.o
+{\color{blue}\%.o}: \%.cpp 
+         $({\color{green}Cxx}) -c -o ${\color{green}@} ${\color{green}<} $({\color{green}CFLAGS})
+{\color{blue}executable} : $({\color{green}OBJ}) 
+         $({\color{green}Cxx}) -o ${\color{green}@} ${\color{green}^} $({\color{green}CFLAGS}) $({\color{green}LIBS})
+{\color{blue}clean}: 
+         rm -f $({\color{green}ODIR})/*.o *\~{} core
+\end{semiverbatim}
+%\end{lstlisting}
+\end{beamerboxesrounded}
+
+\begin{semiverbatim}
+\$make
+\$g++ -c -o fic_1.o fic_1.cpp -I/usr/include/blitz -Wall 
+\$g++ -c -o fic_2.o fic_2.cpp -I/usr/include/blitz -Wall 
+\$g++ -o executable fic_1.o fic_2.o -I/usr/include/blitz
+                      -Wall  -L/usr/lib -lblitz
+\$./executable
+\end{semiverbatim}
+
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%
+
+\section{Les structures}
+\begin{frame}[containsverbatim,allowframebreaks]{Modéliser une information}
+  \begin{alertblock}{Syntaxe générale}
+    \begin{lstlisting}
+      struct  identificateur
+      {
+        type_1 identificateur_1;
+        type_j identificateur_j;
+        type_n identificateur_n;
+      };
+    \end{lstlisting}
+  \end{alertblock}
+  \begin{block}{Exemple. \texttt{complexe\_C4.cpp}}
+    \begin{lstlisting}
+      struct Complexe
+      {
+        double Re;
+        double Im;
+      };
+      int main()
+      {
+        Complexe z1; // Declaration d'une variable z1 de type Complexe
+        Complexe z2 = {1,1}; 
+        Complexe z3 = {1}; 
+        Complexe z4 = z2; // equivalent a Complexe z4(z2);
+        z4.Im = z4.Re + 2.*z3.Im;
+        Complexe * ptr = &z1;
+        (*ptr).Re = 2.;
+        (*ptr).Im = 1.; // z1 = 2 + i
+        ptr->Re = 3.;
+        ptr->Im = 4.; // z1 = 3 + i4
+      }
+    \end{lstlisting}
+  \end{block}
+\end{frame}
+\begin{frame}[containsverbatim,allowframebreaks]{Structures et
+    fonctions}
+  \texttt{structFunc\_C4.cpp}
+  \begin{lstlisting}
+#include <iostream>
+#include <cmath>
+using namespace std;
+
+struct Complexe
+{
+   double Re;
+   double Im;
+};
+
+int main ()
+{
+   Complexe conjugue(Complexe z);
+   Complexe addition(const Complexe & z1, const Complexe & z2);
+   void affiche(const Complexe & z);
+
+   Complexe z1 = {1.,2.};
+   Complexe z2 = conjugue(z1);
+   Complexe z3;
+   z3 = addition(z1,z2);
+   affiche(z1); affiche(z2); affiche(z3);
+   cout << endl;
+}
+
+Complexe addition(const Complexe & z1, const Complexe & z2)
+{
+   Complexe result;
+   result.Re = z1.Re + z2.Re;
+   result.Im = z1.Im + z2.Im;
+   return result;
+}
+Complexe conjugue(Complexe z)
+{
+   z.Im = -z.Im;
+   return z;
+}
+void affiche(const Complexe & z)
+{
+   cout << z.Re;
+   if(z.Im > 0) cout << " + i ";
+   else if(z.Im < 0) cout << " - i ";
+   if(z.Im) cout << abs(z.Im)<< endl;
+}    
+  \end{lstlisting}
+{\bf Exécution :}
+\begin{lstlisting}
+1 + i 2
+1 - i 2
+2
+\end{lstlisting}
+\end{frame}
+\begin{frame}[containsverbatim,allowframebreaks]{Fonctions membres}
+  \texttt{structFuncMbre\_C4.cpp}
+  \begin{lstlisting}
+#include <iostream>
+#include <cmath>
+using namespace std;
+
+struct Complexe
+{
+   // declarations des donnees membres
+   double Re;
+   double Im;
+   //declaration des fonctions membres
+   void affiche();
+   Complexe conjugue();
+   Complexe addition(const Complexe & z);
+};
+
+
+
+void Complexe::affiche()
+{
+   cout << Re;
+   if(Im > 0) cout << " + i ";
+   else if(Im < 0) cout << " - i ";
+   if(Im) cout << abs(Im)<< endl;
+}
+Complexe Complexe::conjugue()
+{
+   Complexe result;
+   result.Re = Re;
+   result.Im =-Im;
+   return result;
+}
+Complexe Complexe::addition(const Complexe & z)
+{
+   Complexe result = {Re+z.Re, Im+z.Im};
+   return result;
+}
+
+
+int main ()
+{
+   void affiche();
+   affiche();
+
+   Complexe z1 = {1.,2.};
+   z1.affiche();
+   cout << endl;
+}
+void affiche(){ cout << " Voici un exemple " << endl; }
+  \end{lstlisting}
+{\bf Exécution :}
+\begin{lstlisting}
+Voici un exemple
+1 + i 2
+\end{lstlisting}
+\end{frame}
+\begin{frame}[containsverbatim]{Pointeur
+    d'auto-référence : \texttt{this}}
+\begin{lstlisting}
+Complexe Complexe::addition(const Complexe & z)
+{
+  Complexe result = {this->Re + z.Re, this->Im + z.Im};
+  return result;
+}
+Complexe Complexe::conjugue_moi()
+{
+  Im = -Im;
+  return *this;
+}
+\end{lstlisting}
+{\bf Utilisation :}
+\begin{lstlisting}
+ Complexe z4 = {2., 3.}; // z4 = 2 + i 3
+ z4.conjugue_moi(); // z4 = 2 - i 3
+\end{lstlisting}
+\end{frame}
+
+\section{Les classes}
+\begin{frame}[containsverbatim,allowframebreaks]{Les classes versus
+    structures}
+\texttt{classVstruct\_C4.cpp}
+\begin{lstlisting}
+#include <iostream>
+#include <cmath>
+using namespace std;
+
+class Complexe
+{
+  // declarations des donnees membres
+  double Re;
+  double Im;
+  //declaration des fonctions membres
+  void affiche();
+  Complexe addition(const Complexe & z);
+  Complexe conjugue_moi(){Im = -Im; return *this;};
+};
+
+
+
+void Complexe::affiche()
+{
+  cout << Re;
+  if(Im) {
+    if(Im > 0) cout << " + i ";
+    else if(Im < 0) cout << " - i ";
+    cout << abs(Im)<< endl; }
+  cout << endl;
+}
+Complexe Complexe::addition(const Complexe & z)
+{
+  Complexe result;
+  result.Re = Re+z.Re;
+  result.Im = Im+z.Im;
+  return result;
+}
+
+
+
+int main ()
+{
+  Complexe z1; // OK
+  z1.Re = 4.; //Erreur, donnee membre prive
+  z1.conjugue_moi(); //Erreur, fonction membre prive
+  Complexe z2 = {1.,2.}; //Erreur, liste d'initialisation interdite
+  Complexe z3; //OK
+  z3 = z1; //OK
+}
+\end{lstlisting}
+\begin{alertblock}{Modèle}
+\begin{lstlisting}
+class A
+{
+  // membres (donnees ou fonctions) par défaut private
+
+public :
+  // membres (donnees ou fonctions) public
+
+private :
+  // membres (donnees ou fonctions) private
+
+};
+\end{lstlisting}
+\end{alertblock}
+\newpage
+\texttt{classPublic\_C4.cpp}
+\begin{lstlisting}
+#include <iostream>
+#include <cmath>
+using namespace std;
+
+class Complexe
+{
+  //membres par defaut private
+  double Re;
+  double Im;
+  
+  //fonctions membres publiques
+public :
+  void initialise (double x=0, double y=0) {Re = x; Im = y;}
+  Complexe conjugue_moi(){Im = -Im; return *this;};
+  void affiche();
+  Complexe addition(const Complexe & z);
+};
+
+void Complexe::affiche()
+{
+  cout << Re;
+  if(Im) {
+    if(Im > 0) cout << " + i ";
+    else if(Im < 0) cout << " - i ";
+    cout << abs(Im)<< endl; }
+  cout << endl;
+}
+Complexe Complexe::addition(const Complexe & z)
+{
+  Complexe result;
+  result.Re = Re+z.Re;
+  result.Im = Im+z.Im;
+  return result;
+}
+
+
+int main ()
+{
+  Complexe z1; 
+  z1.initialise(1.,2.); // z1 = 1 + i 2
+  z1.affiche();
+  z1.conjugue_moi(); // z1 = 1 - i 2
+  Complexe z2;
+  z2 = z1;
+  Complexe z3(z1); 
+  z3 = z1.addition(z3.conjugue_moi()); // z3 = 0 ou z3 = 2 ?
+  z1.affiche(); z3.affiche();
+}
+\end{lstlisting}
+{\bf Exécution :}
+\begin{lstlisting}
+1 + i 2
+1 - i 2
+2
+\end{lstlisting}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%
+
+\section{Constructeurs}
+\subsection{Définition et exemple}
+\begin{frame}{Définition}
+\begin{block}{Définition}
+Un constructeur est une fonction membre particulière. Il
+\begin{itemize}
+\item possède le même nom que la classe,
+\item ne possède pas de valeur de retour (même pas \texttt{void}).
+\end{itemize}
+\end{block}
+\end{frame}
+\begin{frame}[containsverbatim,allowframebreaks]{Un constructeur simple}
+  \begin{lstlisting}
+#include <iostream>
+using namespace std;
+class A
+{
+public :
+  A(); //declaration d'un constructeur
+};
+
+A::A()
+{
+  cout << "Creation d'un objet A d'adresse " << this << endl;
+}
+
+int main()
+{
+  void f();
+  A a;
+  A b;
+  cout << endl;
+  f();
+}
+void f()
+{
+  cout <<"Entree dans la fonction f"<< endl;
+  A temp;
+  cout <<"Sortie de la fonction f"<< endl;
+}
+  \end{lstlisting}
+{\bf Exécution :}
+\begin{lstlisting}
+Creation d un objet A d adresse 0xbfa1f153
+Creation d un objet A d adresse 0xbfa1f152
+
+Entree dans la fonction f
+Creation d un objet A d adresse 0xbfa1f127
+Sortie de la fonction f
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}{Encapsulation}
+\begin{itemize}
+\item regrouper les données et les fonctions au sein d'une classe
+\item association à un système de protection par mots clés :
+\begin{itemize}
+\item \texttt{public} : niveau le plus bas de protection, toutes les
+  données ou fonctions membres d'une classe sont utilisables par
+  toutes les fonctions
+\item \texttt{private} : niveau le plus élevé de protection, données
+  (ou fonctions membres) d'une classe 
+  utilisables uniquement par les fonctions 
+  membre de la même classe
+\item \texttt{protected} : comme \texttt{private} avec extension aux classes
+  dérivées (voir héritage)
+\end{itemize}
+\end{itemize}
+\end{frame}
+
+\subsection{Exemple de conception}
+
+\begin{frame}{Classe Cmpx. Cahier des charges}
+\begin{itemize}
+\item représentation interne (données privées représentant le
+  complexe) sous forme polaire : module $\geq0$ et phase
+  $\in[-\pi,\pi]$
+\item initialisation sous la forme polaire ou cartésienne
+\item une initialisation par défaut
+\item accès au module et à la phase
+\item affichage sous la forme polaire et la forme cartésienne
+\item fonctions émulant *, / et l'exponentiation
+\end{itemize}
+\end{frame}
+
+\begin{frame}[containsverbatim,allowframebreaks]{Première approche}
+\texttt{cmpx\_C5.cpp}
+\begin{lstlisting}
+#include <iostream>
+#include <cmath>
+using namespace std;
+
+class Cmpx
+{
+public :
+  //Fonctions membres
+  inline Cmpx(double rho = 0, double theta = 0); //Constructeur  
+  void affiche();
+  inline Cmpx Multiplication(const Cmpx &);
+  inline Cmpx Division(const Cmpx &);
+
+private :
+  double Module;
+  double Phase;
+};
+
+inline Cmpx::Cmpx(double rho, double theta) {Module = rho; Phase = theta;}
+
+inline Cmpx Cmpx::Division(const Cmpx & z)
+{
+  if(!z.Module)
+    {
+      cout << "Division par le complexe 0" << endl;
+      exit(1);
+    }
+  double x = Module / z.Module;
+  double y = Phase - z.Phase;
+  Cmpx result(x,y);
+  return result;
+}
+inline Cmpx Cmpx::Multiplication(const Cmpx & z)
+{
+  return Cmpx(Module * z.Module, Phase + z.Phase);
+}
+void Cmpx::affiche()
+{
+  cout << "(" << Module << ", " << Phase << ")" << endl;
+}
+
+int main()
+{
+  const double Pi = atan(1.)*4.;
+
+  Cmpx z1(2,Pi/4.); // z = 1 + i
+  z1.affiche();
+  Cmpx z;
+
+  z = 2.; // z= 2. ????
+  z.affiche();
+  cout << endl;
+
+  Cmpx z3 = z1.Multiplication(z); // z3 = z1*2 = 2 + 2 i
+
+  cout << endl << "Resultat de la multiplication :";
+  z3.affiche(); 
+  cout << endl;
+
+  z3 = z1.Multiplication(2); // ????
+  cout << "La meme multiplication mais avec un appel different :";
+  z3.affiche();
+  cout << endl;
+}
+\end{lstlisting}
+{\bf Exécution :}
+\begin{lstlisting}
+(2, 0.785398)
+(2, 0)
+
+Resultat de la multiplication :(4, 0.785398)
+
+La meme multiplication mais avec un appel different :(4, 0.785398)
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[containsverbatim]{Mot clé \texttt{explicit}}
+\begin{lstlisting}
+class Cmpx
+{
+public :
+  //Fonctions membres
+  explicit Cmpx(double rho = 0, double theta = 0); //Constructeur  
+  void affiche();
+  inline Cmpx Multiplication(const Cmpx &);
+  inline Cmpx Division(const Cmpx &);
+
+private :
+  double Module;
+  double Phase;
+};
+\end{lstlisting}
+\end{frame}
+\begin{frame}[containsverbatim,allowframebreaks]{Utilisation d'une liste d'initialisation}
+\begin{lstlisting}
+ inline Cmpx(double rho = 0, double theta = 0)
+                    : Module(rho), Phase(theta)  {}
+\end{lstlisting}
+{\bf Cas où la liste d'initialisation est très utile :}
+\begin{lstlisting}
+class A
+{
+  const double x;
+  double y;
+};
+\end{lstlisting}
+
+\newpage
+\texttt{listInitUtils\_C5.cpp}
+\begin{lstlisting}
+#include <iostream>
+using namespace std;
+
+class A
+{
+ public :
+   const double x;
+   double y;
+   A( const double a, double b) : x(a) {y = b;}
+};
+
+int main ()
+{
+   A a(2,1);
+   cout << a.x << " " << a.y << endl;
+}
+\end{lstlisting}
+\end{frame}
+\begin{frame}[containsverbatim,allowframebreaks]{Constructeur et
+    validation des données} 
+\begin{lstlisting}
+inline Cmpx Cmpx::Exponentiation(const double & exposant)
+{
+   return Cmpx(pow(Module, exposant), exposant * Phase);
+}
+\end{lstlisting}
+\begin{lstlisting}
+   Cmpx z4(2);
+   z4.affiche();
+   (z4.Exponentiation(0.5)).affiche();
+
+   Cmpx z5(-2);
+   z5.affiche();
+   (z5.Exponentiation(0.5)).affiche();
+
+   Cmpx z6;
+   z6.affiche();
+   (z6.Exponentiation(-0.5)).affiche();
+\end{lstlisting}
+{\bf Exécution}
+\begin{lstlisting}
+(2, 0)
+(1.41421, 0)
+(-2, 0)
+(nan, 0)
+(0, 0)
+(inf, -0)
+\end{lstlisting}
+\end{frame}
+\begin{frame}[containsverbatim,allowframebreaks]{Corrections pour
+    respecter le cahier des charges} 
+\begin{lstlisting}
+inline Cmpx::Cmpx(double rho, double theta) 
+                    : Module(rho), Phase(theta)
+{
+  if(Module < 0)
+  {
+    cout << "constructeur invoque avec un module < 0 " << endl;
+    exit(1);
+  }
+}
+
+\end{lstlisting}
+\begin{lstlisting}
+inline Cmpx Cmpx::Exponentiation(const double & exposant)
+{
+  if((exposant < 0) && (Module == 0) )
+  {
+    cout << "Elevation de 0 a une puissance negatice " << endl;
+    exit(1);
+  }
+  return Cmpx(pow(Module, exposant), exposant * Phase);
+}
+\end{lstlisting}
+
+plus "rigoureusement" 
+
+\begin{lstlisting}
+inline Cmpx Cmpx::Exponentiation(const double & exposant)
+{
+  static const double epsilon_double = (10., -16);
+  if((exposant < 0) && (abs(Module) <= epsilon_double) )
+. . .
+\end{lstlisting}
+\end{frame}
+
+%%%%%%%%%%%%%%%%
+
+\section{Accesseurs}
+
+\begin{frame}[containsverbatim,allowframebreaks]{Accesseurs en lecture et en écriture
+    des données membres 
+    privées} 
+\begin{itemize}
+\item Accès en lecture à des données membres privées depuis
+  l'extérieur de la classe
+\item Éventuellement en écriture ! 
+\end{itemize}
+\texttt{cmpx\_C6.hpp}
+\begin{lstlisting}
+#ifndef CMPX_HPP
+# define CMPX_HPP
+
+class Cmpx
+{
+ public :
+   Cmpx(double rho = 0, double theta = 0);
+   void affiche();
+   Cmpx Multiplication(const Cmpx &);
+   Cmpx Division(const Cmpx &);
+   Cmpx Exponentiation(const double & exposant);
+   // Accesseurs en lecture
+   inline double GetModule(){return Module;}
+   inline double GetPhase(){return Phase;}
+   // Accesseurs en ecriture
+   void SetModule(double rho);
+ private :
+   double Module;
+   double Phase;
+};
+
+#endif // CMPX_HPP
+\end{lstlisting}
+\alt<presentation>\newpage
+\texttt{cmpx\_C6.cpp}
+\begin{lstlisting}
+...
+...
+void Cmpx::SetModule(double rho)
+{
+   if(rho<0)
+     {
+        cout << " Module negatif en argument de SetModule " << endl;
+        exit(1);
+     }
+   Module = rho;
+}
+\end{lstlisting}
+\end{frame}
+
+\section{Destructeurs}
+
+\begin{frame}[containsverbatim,allowframebreaks]{Destructeur et
+    allocation dynamique} 
+\begin{block}{Définition}
+Un destructeur est une fonction membre particulière. Elle
+\begin{itemize}
+\item possède le même nom que la classe précédé de  \hspace*{2mm}{\Large$\widetilde{}$}
+\item ne possède pas de valeur de retour (même pas \texttt{void})
+\end{itemize}
+\end{block}
+
+Le destructeur par défaut ne suffit toujours pas ! \\
+
+{\bf Exemple :}
+
+\texttt{destructeur\_C6.cpp}
+\begin{lstlisting}
+#include <iostream>
+using namespace std;
+
+class A
+{
+ public :
+   static int * LastAd;
+   A(); //constructeur
+   ~A(); //destructeur
+
+ private :
+   int * ptr; // Pointeur pour allocation dynamique d'un entier
+};
+
+int * A::LastAd = 0;
+
+A::A()
+{
+   ptr = new int;  // Allocation dynamique d'un entier
+   cout << "Construction d'un objet A d'adresse : " << this << endl;
+   cout << "             d'entier dynamique : " << ptr << endl;
+
+   LastAd = ptr; // sauvegarde de l'adresse de la partie dynamique
+}
+
+
+A::~A()
+{
+   cout << "Destruction partie automatique de l'objet A d'adresse : " <<
+     this << endl;
+   cout << "                                   d'entier dynamique : " <<
+     ptr << endl;
+}
+int main()
+{  //Definition d'une nouvelle portee
+     {
+        A a;
+     }
+   cout << endl << "La deallocation va t elle se traduire par un
+   message  d'erreur ?" << endl;
+   delete A::LastAd;
+   cout << "Le destructeur n'avait pas fait son travail !" << endl;
+}
+\end{lstlisting}
+{\bf Exécution :}
+\begin{lstlisting}
+Construction d un objet A d adresse : 0xbf9b29d0
+             d entier dynamique : 0x804a008
+Destruction partie automatique de l objet A d adresse : 0xbf9b29d0
+                                   d entier dynamique : 0x804a008
+
+La deallocation va t elle se traduire par un message d erreur ?
+
+Le destructeur n avait pas fait son travail !
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[containsverbatim,shrink]
+
+{\bf Modification du corps du destructeur :}
+\begin{lstlisting}
+A::~A()
+{
+   delete ptr; // destruction de la partie dynamique
+   cout << "Destruction partie automatique de l'objet A d'adresse : " <<
+     this << endl;
+   cout << "                                   d'entier dynamique : " <<
+     ptr << endl;
+}
+\end{lstlisting}
+{\small
+{\bf Exécution :}
+\begin{lstlisting}
+Construction d un objet A d adresse : 0xbfeafed0
+             d entier dynamique : 0x804a008
+Destruction partie automatique de l objet A d adresse : 0xbfeafed0
+                                   d entier dynamique : 0x804a008
+
+La deallocation va t elle se traduire par un message d erreur ?
+*** glibc detected *** ./a.out: 
+double free or corruption (fasttop): 0x0804a008 ***
+======= Backtrace: =========
+/lib/i686/cmov/libc.so.6[0xb7d0dcf5]
+/lib/i686/cmov/libc.so.6(cfree+0x90)[0xb7d11790]
+/usr/lib/libstdc++.so.6(_ZdlPv+0x21)[0xb7ed3ea1]
+./a.out[0x8048b34]
+/lib/i686/cmov/libc.so.6(__libc_start_main+0xe0)[0xb7cba050]
+./a.out(__gxx_personality_v0+0x39)[0x8048751]
+\end{lstlisting}
+}
+\end{frame}
+
+\section{Surcharge d'opérateurs}
+\begin{frame}[containsverbatim,allowframebreaks]
+\texttt{cmpxSurchargeOperateurs\_C6.cpp}
+\begin{lstlisting}
+#include <iostream>
+#include <cmath>
+using namespace std;
+
+class Cmpx
+{
+ public :
+   //Constructeur en ligne
+   Cmpx (double x= 0, double y = 0) {Re = x; Im = y;}
+   //Operateurs d affectation elargie
+   inline Cmpx & operator+= (Cmpx); //operateur += , z1 += z2
+   inline Cmpx & operator-= (Cmpx); //operateur -= , z1 -= z2   
+   
+   //Operateurs binaires
+   inline friend Cmpx operator+ (Cmpx, Cmpx); // z1 + z2
+   inline friend Cmpx operator- (Cmpx, Cmpx); // z1 - z2
+   inline friend Cmpx operator* (Cmpx, Cmpx); // z1 * z2
+   
+
+   //Operateurs de flots d entree-sortie
+   inline friend ostream & operator<< (ostream & sortie, Cmpx z) // cout << z
+    {
+      sortie << "(" << z.Re << ", " << z.Im << ")";
+      return sortie;
+    }
+   inline friend istream & operator>> (istream & entree, Cmpx z) // cin >> z
+    {
+      entree >> z.Re >> z.Im;
+      return entree;
+    }
+   
+ private :
+   //Donnees membres
+   double Re;
+   double Im;
+};
+
+
+
+
+//Operateurs d affectation elargie
+inline Cmpx & Cmpx::operator+= (Cmpx z)
+{
+   Re += z.Re; Im += z.Im;
+   return *this;
+}
+inline Cmpx & Cmpx::operator-= (Cmpx z)
+{
+   Re -= z.Re; Im -= z.Im;
+   return *this;
+}  
+
+//Operateurs binaires
+inline Cmpx operator+ (Cmpx z1, Cmpx z2) 
+{
+   return z2 += z1; //Utilise l'affectation elargie et le passage par valeur
+}
+inline Cmpx operator- (Cmpx z1, Cmpx z2) 
+{
+   return z1 -= z2; //Utilise l'affectation elargie et le passage par valeur
+   //attention il faut retourner z1 -= z2 et non pas z2 -= z1
+}
+inline Cmpx operator* (Cmpx z1, Cmpx z2)
+{
+   return Cmpx(z1.Re*z2.Re - z1.Im*z2.Im, z1.Re*z2.Im + z1.Im*z2.Re);
+}
+
+
+int main ()
+{
+  Cmpx z(1,1);
+  Cmpx a = z;
+  Cmpx b = a + z;
+
+  cout << b << endl;
+
+  b += a;
+
+  cout << b*a - z << endl;
+}
+\end{lstlisting}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%
+
+\section{Vecteurs modélisés par une classe}
+\begin{frame}[containsverbatim]{Classe Vtr}
+\texttt{classeVtr\_C7.hpp}
+\begin{lstlisting}
+class Vtr{
+ public :
+   //Constructeurs.
+   explicit Vtr (int, double init = 0); //Tous les elements sont 
+                                    //initialises a la valeure init
+   Vtr (const Vtr &); // Constructeur par recopie
+   //Destructeur
+   ~Vtr();
+   //Surcharge de l'oprateur =
+   Vtr & operator= (const Vtr &);
+   //Accesseur en lecture
+   int GetDim () const; // *** pourquoi const ? ***
+ private :
+   //Donnees membres
+   int Dim;
+   double * Tab;
+   //Methodes internes
+  static void Erreur(char *);
+};
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[containsverbatim,allowframebreaks]{\texttt{classeVtr\_C7.cpp}}
+\begin{lstlisting}
+#include <iostream>
+#include "classeVtr_C7.hpp"
+using namespace std;
+
+Vtr::Vtr (int size, double init)
+{
+   if(size <= 0)
+     Erreur ("Tentative de creation d'un objet Vtr de taille <= 0");
+   Tab = new double [Dim = size];
+   if(!Tab)
+     Erreur ("L'allocation dynamique d'un objet de type Vtr a echoue");
+   for (int i=0; i<Dim ; i++) *(Tab+i) = init;
+}
+
+Vtr::Vtr (const Vtr & v)
+{
+   Tab = new double [Dim = v.Dim];
+   if(!Tab)
+     Erreur ("L'allocation dynamique d'un objet de type Vtr a echoue");
+   for (int i=0; i<Dim ; i++) *(Tab+i) = *(v.Tab+i);
+}
+
+Vtr::~Vtr()
+{
+   delete [] Tab;
+}
+
+Vtr & Vtr::operator= (const Vtr & v)
+{
+   if(this == &v) return *this; //pour eviter l'auto-affectation
+   if(v.Dim != Dim)
+     Erreur("Dimensions de vecteurs incompatibles pour l'affectation");
+   for (int i=0; i<Dim; i++) *(Tab+i) = *(v.Tab+i);
+   return *this;
+}
+
+
+int Vtr::GetDim () const
+  {
+     return Dim;
+  }
+
+void Vtr::Erreur (char * message)
+{
+   cout << message << ".\n";
+   cout << "Arrêt du programme a la demande de la classe Vtr\n";
+   exit(1);
+}
+\end{lstlisting}
+
+Comment accéder à la classe Vtr ?
+
+\end{frame}
+
+\begin{frame}[containsverbatim]{Surcharge de l'opérateur[]}
+\begin{lstlisting}
+//Surcharges de l'operateur []
+double & operator[] (int );
+double  operator[] (int ) const;
+
+double & Vtr::operator[] (int i)
+{
+   if( (i < 0) || (i >= Dim) )
+     Erreur("Tentative de debordement de tableaux");
+   return *(Tab+i);
+}
+
+double  Vtr::operator[] (int i) const
+{
+   if( (i < 0) || (i >= Dim) )
+     Erreur("Tentative de debordement de tableaux");
+   double result = *(Tab+i);
+   return result;
+}
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[containsverbatim]{Exemple d'utilisation}
+\texttt{mainVtr\_C7.cpp}
+\begin{lstlisting}
+#include <iostream>
+#include "classeVtr_C7.hpp"
+using namespace std;
+
+int main()
+{
+   const Vtr a(5,1);
+   Vtr b(5,1);
+   a.GetDim();
+   b.GetDim();
+   b[0] = 2.;
+   for(int i=1; i<5; i++) b[i] += b[i-1] + a[i];
+   for(int i=0; i<5; i++) cout << b[i] << " ";
+   cout << endl;
+   cout << b[5];
+   //   a[0] = 2; // affectation sur l'objet constant a
+}
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[containsverbatim]{Exécution}
+\begin{lstlisting}
+2 4 6 8 10
+Tentative de debordement de tableaux.
+Arrêt du programme a la demande de la classe Vtr
+\end{lstlisting}
+\end{frame}
+
+\section{Héritage}
+
+\begin{frame}[containsverbatim,allowframebreaks]{Classe Polygone}
+\begin{block}{Définition}
+On caractérise un polygone  par une liste ordonnée de {\it NbPoints} points
+coordonnées 
+\end{block}  
+\begin{itemize}
+\item Classe Point <\texttt{classePoint\_C7.hpp}>
+\begin{lstlisting}
+class Point
+{
+ public :
+   Point (double x=0, double y=0);
+   double GetX() const;
+   double GetY() const;
+   double Distance (const Point & p) const;
+
+   friend std::ostream & operator<< (std::ostream &, const Point &);
+   friend Point operator+ (const Point &, const Point &);
+
+ private :
+   double X;
+   double Y;
+};
+\end{lstlisting}
+\item Classe Point <\texttt{classePoint\_C7.cpp}>
+\begin{lstlisting}
+#include <iostream>
+#include <cmath>
+#include "classePoint_C7.hpp"
+
+Point::Point (double x, double y) {X=x; Y=y;}
+double Point::GetX() const {return X;}
+double Point::GetY() const {return Y;}
+double Point::Distance (const Point & p) const
+     { return pow((X-p.X)*(X-p.X) + (Y-p.Y)*(Y-p.Y), 0.5);}
+
+std::ostream & operator<< (std::ostream & s, const Point & p)
+{ return s << "[" << p.X << "," << p.Y << "]";}
+
+Point operator+ (const Point & p1, const Point & p2)
+{ return Point(p1.X + p2.X, p1.Y + p2.Y);}
+\end{lstlisting}
+\item Classe Polygone <\texttt{classePolygone\_C7.hpp}>
+\begin{lstlisting}
+#include "classePoint_C7.hpp"
+
+class Polygone
+{
+ private :
+   Point * TabPoints;
+   int NbPoints;
+   //Methode interne
+   void Dimensionner(int, const Point *);
+ public :
+   Polygone(int);
+   Polygone(const Polygone &);
+   ~Polygone();
+
+   Polygone & operator= (const Polygone &);
+   inline int GetNbPoints () const {return NbPoints;}
+   Point & operator[] (int);
+   Point   operator[] (int) const;
+   void DecrisToi() const;
+   double Surface() const;
+   double Perimetre() const;
+};
+\end{lstlisting}
+\alt<presentation>\newpage
+\item Classe Polygone <\texttt{classePolygone\_C7.cpp}>
+\begin{lstlisting}
+#include <iostream>
+#include <cmath>
+#include "classePolygone_C7.hpp"
+using namespace std;
+
+void Polygone::Dimensionner(int nbp, const Point * tabp)
+{
+   if (TabPoints != 0)
+     {  delete [] TabPoints;
+        TabPoints = 0;}
+   if (nbp <= 0) // en cas d'erreur
+     { NbPoints = 0;
+       return;}
+   TabPoints = new Point [NbPoints = nbp];
+   for (int i=0; i<NbPoints; i++) TabPoints[i] = tabp[i];
+}
+
+Polygone::Polygone(int nbPoints) : NbPoints(0), TabPoints(0)
+{
+   if (nbPoints > 0) //sinon Polygone vide
+     {
+
+        Point tabp[nbPoints]; //par defaut ne contient que (0,0)
+        Dimensionner(nbPoints, tabp);
+     }
+}
+
+Polygone::Polygone(const Polygone & p)
+{
+   Dimensionner(p.NbPoints, p.TabPoints);
+}
+
+Polygone::~Polygone()
+{
+   delete [] TabPoints;
+}
+
+Polygone & Polygone::operator= (const Polygone & rhs)
+{
+   //protection contre l'auto-affectation
+   if (this == &rhs) return *this;
+   Dimensionner(rhs.NbPoints,rhs.TabPoints);
+   return *this;
+}
+
+Point & Polygone::operator[] (int i)
+{
+   return TabPoints[i];
+}
+Point  Polygone::operator[] (int i) const
+{
+   return TabPoints[i];
+}
+
+
+void Polygone::DecrisToi() const
+{
+   cout << "\n Je suis un polygone : " << endl;
+   cout << " constitue de " << NbPoints << " sommets ";
+   cout << "(";
+   for (int i=0; i<NbPoints; i++) cout << TabPoints[i] << " ";
+   cout << ")" << endl;
+}
+
+double Polygone::Perimetre() const
+{
+   if (NbPoints <=1) return 0;
+   double perimetre = 0;
+   for (int i=0; i<NbPoints-1; i++)
+     perimetre += TabPoints[i].Distance(TabPoints[i+1]);
+   //derniere arrete liant l origine
+   perimetre += TabPoints[NbPoints-1].Distance(TabPoints[0]);
+   return perimetre;
+}
+double Polygone::Surface() const 
+{  /* Algo : somme sur les arretes [a, b] des surfaces signees 
+    * formees par les trapezes orientes definis par 
+    * ([b.x,0], b, a, [a.x,0])*/
+   if(NbPoints <= 2) return 0;
+   double surface = 0;
+   double dx, dy;
+   for(int i=0; i<NbPoints-1; i++)
+   {    dx = TabPoints[i+1].GetX() - TabPoints[i].GetX();
+        dy = TabPoints[i+1].GetY() - TabPoints[i].GetY();
+        surface += dx*dy*0.5;}
+   //contribution derniere arrete
+   dx = TabPoints[0].GetX() - TabPoints[NbPoints-1].GetX();
+   dy = TabPoints[0].GetY() - TabPoints[NbPoints-1].GetY();
+   surface += dx*dy*0.5;
+   return fabs(surface);
+}
+\end{lstlisting}
+\end{itemize}
+\end{frame}
+
+\subsection{Une première classe dérivée. Rectangle}
+
+\begin{frame}
+\begin{block}{Rectangle}
+\begin{itemize}
+\item Un nombre fixe de sommets : 4
+\item Une largeur
+\item Une longueur
+\end{itemize}
+\end{block}
+
+\begin{alertblock}{Conception}
+Nous définissons un rectangle par la donnée d'une origine, d'une
+longueur et d'une largeur 
+\end{alertblock}
+
+\begin{block}{Modèle d'héritage}
+\texttt{class B : specificateur A}
+\end{block}
+\texttt{specificateur = public}, \texttt{private} ou \texttt{protected}
+\end{frame}
+
+\begin{frame}[containsverbatim]
+\texttt{Rectangle\_C7.hpp}
+\begin{lstlisting}
+class Rectangle : public Polygone
+{
+   //aucune donnee membre en plus de celles heritees de Polygone
+   //methodes d'implementation
+   double Dx() const;
+   double Dy() const;
+ public :
+   //constructeur specialise
+   Rectangle(const Point & origine = Point(0,0),
+             double dx = 0, double dy = 0);
+   //fonctions membres specialisees
+   void DecrisToi() const;
+   double Perimetre() const;
+   double Surface() const;
+   //nouvelles fonctions membres
+   double Largeur() const;
+   double Longueur() const;
+};
+\end{lstlisting}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%
+
+\section{Fonctions virtuelles}
+
+\begin{frame}[containsverbatim,allowframebreaks]{Typage dynamique}
+On considère le programme suivant :\\
+\texttt{mainVirtual\_C8.cpp}
+\begin{lstlisting}
+#include <iostream>
+#include "Rectangle_C7.hpp"
+using namespace std;
+
+int main()
+{
+   Rectangle rect(Point(0),2,1);
+   Rectangle * prect = &rect;
+   prect -> DecrisToi();
+   cout << endl;
+   
+   Polygone * pPoly = prect;
+   // legal car un rectangle est un polygone particulier
+   pPoly -> DecrisToi();
+}
+\end{lstlisting}
+\begin{itemize}
+\item Quelle fonction \texttt{DecrisToi} est appelée? 
+
+{\bf Exécution :}
+\begin{lstlisting}
+ Je suis un polygone :
+ constitue de 4 sommets ([0,0] [2,0] [2,1] [0,1] )
+ Mais je suis aussi un Rectangle :
+ de longueur 2 et de largeur 1
+
+ Je suis un polygone :
+ constitue de 4 sommets ([0,0] [2,0] [2,1] [0,1] )
+\end{lstlisting}
+
+\item \texttt{virtual void DecrisToi() const;} 
+dans \texttt{classePolygone\_C7.hpp} et \texttt{Rectangle\_C7.hpp}
+\begin{lstlisting}
+ Je suis un polygone :
+ constitue de 4 sommets ([0,0] [2,0] [2,1] [0,1] )
+ Mais je suis aussi un Rectangle :
+ de longueur 2 et de largeur 1
+
+
+ Je suis un polygone :
+ constitue de 4 sommets ([0,0] [2,0] [2,1] [0,1] )
+ Mais je suis aussi un Rectangle :
+ de longueur 2 et de largeur 1
+\end{lstlisting}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Règles générales}
+\begin{itemize}
+\item Seule une fonction membre peut être virtuelle
+\item Un constructeur ne peut être virtuel
+\item Un destructeur peut l'être
+\end{itemize}
+\end{frame}
+
+\begin{frame}[containsverbatim,allowframebreaks]{Encore une classe dérivée}
+\texttt{Carre\_C8.hpp}
+\begin{lstlisting}
+#ifndef CARRE_HPP
+# define CARRE_HPP
+
+#include "Rectangle_C7.hpp"
+
+class Carre : public Rectangle
+{
+ public :
+   //constructeur
+   Carre(const Point & origine = Point(0,0), double dx = 0);
+   //fonctions membres
+   virtual void DecrisToi() const;
+   //aucune donnee membre en plus de celles heritees de Rectangle
+};
+
+#endif // CARRE_HPP
+\end{lstlisting}
+\texttt{Carre\_C8.cpp}
+\begin{lstlisting}
+#include <iostream>
+#include <cmath>
+#include "Carre_C8.hpp"
+using namespace std;
+
+Carre::Carre (const Point & origine, double dx) : Rectangle(origine, dx, dx)
+{
+}
+
+void Carre::DecrisToi() const
+{
+   Polygone::DecrisToi();
+   cout << " Mais je suis aussi un Carre : " << endl;
+   cout << " de cote " << Longueur();
+   cout << endl;
+}
+\end{lstlisting}
+{\bf Exécution :}
+\begin{lstlisting}
+ Je suis un polygone :
+ constitue de 4 sommets ([1,1] [2,1] [2,2] [1,2] )
+ Mais je suis aussi un Carre :
+ de cote 1
+Ma surface est : 1 et mon cote vaut : 1
+ Destruction d un objet Rectangle
+\end{lstlisting}
+
+Le destructeur de la classe Rectangle est-il suffisant ?
+\end{frame}
+
+\section{Destructeur virtuel}
+
+\begin{frame}[allowframebreaks,containsverbatim]{Destructeur virtuel}
+\texttt{DestructeurVirtuel\_C8.cpp}
+\begin{lstlisting}
+#include <iostream>
+using namespace std;
+class A
+{
+ public :
+   A(int taille)
+     {
+        TabA = new int[Taille = taille];
+        cout << " construction d'un objet A de taille "
+          << Taille << endl;
+     }
+   ~A()
+     {
+        delete [] TabA;
+        cout << " Destruction d'un objet A de taille "
+          << Taille << endl;
+     }
+ private :
+   int Taille;
+   int * TabA;
+};
+class B : public A
+{
+ public :
+   B(int taille, int size) : A(taille)
+     {
+        TabB = new int[Size = size];
+        cout << " construction d'un objet B de taille "
+          << Size << endl;
+     }
+   ~B()
+     {
+        delete [] TabB;
+        cout << " Destruction d'un objet B de taille "
+          << Size << endl;
+     }
+ private :
+   int Size;
+   int * TabB;
+};
+
+int main()
+{
+     {
+        cout << " Vie et mort d'un objet B automatique " << endl;
+        B b(100,2000);
+     }
+     {
+        cout << endl << " Vie et Mort d'un objet B dynamique" << endl;
+        A * p = new B(10,5000);
+        delete p;
+     }
+}
+\end{lstlisting}
+{\bf Exécution :}
+\begin{lstlisting}
+ Vie et mort d un objet B automatique
+ construction d un objet A de taille 100
+ construction d un objet B de taille 2000
+ Destruction d un objet B de taille 2000
+ Destruction d un objet A de taille 100
+
+ Vie et Mort d un objet B dynamique
+ construction d un objet A de taille 10
+ construction d un objet B de taille 5000
+ Destruction d un objet A de taille 10
+\end{lstlisting}
+
+\begin{itemize}
+\item L'emplacement dynamique associé à la  partie  non héritée de A
+  n'a pas été libéré !! Seule la partie héritée de A est désallouée
+\item {\bf Solution :} ajouter le mot clés \texttt{virtual} aux
+  destructeurs
+\end{itemize}
+\begin{lstlisting}
+Vie et mort d un objet B automatique
+ construction d un objet A de taille 100
+ construction d un objet B de taille 2000
+ Destruction d un objet B de taille 2000
+ Destruction d un objet A de taille 100
+
+ Vie et Mort d un objet B dynamique
+ construction d un objet A de taille 10
+ construction d un objet B de taille 5000
+ Destruction d un objet B de taille 5000
+ Destruction d un objet A de taille 10
+\end{lstlisting}
+\begin{itemize}
+\item D'une manière générale, et dès qu'une classe doit être dérivée,
+  il est instamment conseillé de déclarer systématiquement le
+  destructeur \texttt{virtual} pour éviter les fuites de mémoire.
+\end{itemize}
+\end{frame}
+
+\section{Une bibliothèque élémentaire}
+\begin{frame}[containsverbatim,allowframebreaks]{Classe Cercle}
+\begin{itemize}
+\item On caractérise un cercle par son centre et son rayon
+\item Une instance de type \texttt{Point} et un \texttt{Rayon}
+\item On veut calculer son périmètre et sa surface
+\item Dériver \texttt{Cercle} de \texttt{Polygone} ? NON ! 
+\end{itemize}
+\texttt{Cercle\_C8.hpp}
+\begin{lstlisting}
+#ifndef CERCLE_HPP
+# define CERCLE_HPP
+
+#include "classePoint_C7.hpp"
+
+class Cercle
+{
+ private :
+   Point Centre;
+   double Rayon;
+
+ public :
+   //constructeur
+   Cercle (const Point & origine = Point(0,0), double rayon = 0);
+   Cercle (const Cercle &);
+   Cercle & operator= (const Cercle &);
+   //destructeur virtuel
+   virtual ~Cercle();
+   //fonctions membres
+   virtual void DecrisToi() const;
+   virtual double Surface() const;
+   virtual double Perimetre() const;
+
+ public :
+   static const double Pi;
+};
+
+#endif // CERCLE_HPP
+\end{lstlisting}
+\texttt{Cercle\_C8.cpp}
+\begin{lstlisting}
+#include <iostream>
+#include <cmath>
+#include "Cercle_C8.hpp"
+
+using namespace std;
+
+const double Cercle::Pi = atan(1.)*4.;
+Cercle::Cercle(const Point & origine, double rayon) : Centre(origine)
+{
+   if(rayon < 0) Rayon = 0;
+   else Rayon = rayon;
+}
+
+Cercle::~Cercle()
+{
+}
+
+Cercle::Cercle(const Cercle & c)
+{
+   Centre = c.Centre;
+   Rayon  = c.Rayon;
+}
+
+Cercle & Cercle::operator= (const Cercle & rhs)
+{
+   if (this == &rhs) return *this;
+   Centre = rhs.Centre;
+   Rayon = rhs.Rayon;
+   return *this;
+}
+
+void Cercle::DecrisToi() const
+{
+   cout << "Je suis un cercle : " << endl;
+   cout << " de centre : " << Centre;
+   cout << " et de rayon : " << Rayon << endl;
+}
+
+double Cercle::Surface() const
+{
+   return Pi*Rayon*Rayon;
+}
+
+double Cercle::Perimetre() const
+{
+   return 2*Pi*Rayon;
+}
+\end{lstlisting}
+\end{frame}
+
+\subsection{Classe abstraite et fonction virtuelle pure}
+
+\begin{frame}{Réunir \texttt{Cercle} et \texttt{Polygone}}
+\begin{itemize}
+\item Classe de généralisation \texttt{ObjetGeometrique}
+\item fonctionnalités attendues :
+\begin{itemize}
+\item Description
+\item Périmètre
+\item Surface
+\end{itemize}
+\item Enrichissement : couleur 
+\end{itemize}
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%
+
+
+
+\section{Classe abstraite et fonction virtuelle pure}
+
+\begin{frame}{Réunir \texttt{Cercle} et \texttt{Polygone}}
+  \begin{itemize}
+  \item Classe de généralisation \texttt{ObjetGeometrique}
+  \item fonctionnalités attendues :
+    \begin{itemize}
+    \item Description
+    \item Périmètre
+    \item Surface
+    \end{itemize}
+  \item Enrichissement : couleur 
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[containsverbatim]{Fonctions virtuelles pures}
+  \begin{itemize}
+  \item Déclaration (sans définition) dans la classe abstraite. Exemples :
+\begin{lstlisting}
+virtual double Surface() const = 0;
+virtual double Perimetre() const = 0;
+\end{lstlisting}
+\item possibilité de les invoquer par tout pointeur de type
+  \texttt{ObjetGeometrique} :
+\begin{lstlisting}
+pObjetGeometrique->Surface();
+\end{lstlisting}
+  \end{itemize}
+\end{frame}
+
+
+\begin{frame}[containsverbatim,allowframebreaks]{Classe abstraite
+    \texttt{ObjetGeometrique}} 
+  \texttt{ObjetGeometrique\_C9.hpp}
+  \begin{lstlisting}
+#ifndef OBJETGEOMETRIQUE_HPP
+# define OBJETGEOMETRIQUE_HPP
+#include <string>
+using namespace std;
+
+enum Couleur {Noir, Blanc, Gris};
+
+class ObjetGeometrique
+{
+ private :
+   Couleur LaCouleur;
+   string AfficheCouleur() const;
+ public :
+   ObjetGeometrique(Couleur = Noir);
+   //fonctions virtuelles
+   virtual ~ObjetGeometrique();
+   virtual void DecrisToi() const;
+
+   //fonctions virtuelles PURES
+   virtual double Surface() const = 0;
+   virtual double Perimetre() const = 0;
+
+   //fonctions membres
+   void SetCouleur(const Couleur & couleur);
+   Couleur GetCouleur() const;
+};
+#endif // OBJETGEOMETRIQUE_HPP
+\end{lstlisting}
+\alt<presentation>\newpage
+
+\texttt{ObjetGeometrique\_C9.cpp}
+\begin{lstlisting}
+#include <iostream>
+#include "ObjetGeometrique_C8.hpp"
+using namespace std;
+
+ObjetGeometrique::ObjetGeometrique(Couleur couleur) : LaCouleur(couleur){}
+ObjetGeometrique::~ObjetGeometrique(){}
+void ObjetGeometrique::DecrisToi() const
+{
+   cout << "Je suis un objet geometrique de couleur "
+     << AfficheCouleur();
+}
+
+string ObjetGeometrique::AfficheCouleur() const
+{
+   string result;
+   switch(LaCouleur)
+     {
+      case Noir : result = " Noire"; break;
+      case Blanc : result = " Blanche"; break;
+      case Gris : result = " Grise"; break;
+      default : result = " de couleur inconnue"; break;
+     }
+   return result;
+}
+
+void ObjetGeometrique::SetCouleur(const Couleur & couleur)
+{
+   LaCouleur = couleur;
+}
+Couleur ObjetGeometrique::GetCouleur() const
+{
+   return LaCouleur;
+}  
+\end{lstlisting}
+
+\end{frame}
+
+\begin{frame}[containsverbatim,allowframebreaks]{Exemple d'utilisation}
+
+voir nouveaux fichiers \texttt{classePolygone\_C9.*},
+\texttt{Rectangle\_C9.*} et \texttt{Cercle\_C9.*} \\
+
+\texttt{main\_C9.cpp}
+\begin{lstlisting}
+#include <iostream>
+#include "ObjetGeometrique_C9.hpp"
+#include "classePolygone_C9.hpp"
+#include "Rectangle_C9.hpp"
+#include "Cercle_C9.hpp"
+using namespace std;
+
+int main()
+{
+   Point tabp[3];
+   tabp[1] = Point(0,4);
+   tabp[2] = Point(3,0);
+   Polygone poly(3,Gris);
+   for(int i=0; i<3; i++) poly[i] = tabp[i];
+   Rectangle rect(Point(0),2,1);
+   Cercle rond(Point(0,0),1,Blanc);
+
+   ObjetGeometrique * pObjet[3];
+   pObjet[0] = new Rectangle(rect);
+   pObjet[1] = new Cercle(rond);
+   pObjet[2] = new Polygone(poly);
+
+   for(int i=0; i<3; i++)
+     {
+        pObjet[i]->DecrisToi();
+        cout << "Mon perimetre et ma surface sont : " <<
+          pObjet[i]->Perimetre() << " et "
+          << pObjet[i]->Surface() << endl;
+     }
+   for (int i=0; i<3; i++) delete pObjet[i];
+}
+
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[containsverbatim,shrink]{Exécution}
+\begin{lstlisting}
+Je suis un objet geometrique de couleur  Noire
+ et je suis en fait un polygone :
+ constitue de 4 sommets ([0,0] [2,0] [2,1] [0,1] )
+ Mais je suis aussi un Rectangle :
+ de longueur 2 et de largeur 1
+
+Mon perimetre et ma surface sont : 6 et 2
+
+Je suis un objet geometrique de couleur  Blanche
+et je suis en fait un cercle :
+ de centre : [0,0] et de rayon : 1
+
+Mon perimetre et ma surface sont : 6.28319 et 3.14159
+
+Je suis un objet geometrique de couleur  Grise
+ et je suis en fait un polygone :
+ constitue de 3 sommets ([0,0] [0,4] [3,0] )
+
+Mon perimetre et ma surface sont : 12 et 6
+\end{lstlisting}
+\end{frame}
+
+\end{document}
+

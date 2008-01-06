@@ -1,0 +1,227 @@
+% Common packages
+
+\usepackage[french]{babel}
+\usepackage[latin1]{inputenc}
+\usepackage{times}
+\mode<article>
+{
+  \usepackage{times}
+  \usepackage{mathptmx}
+  \usepackage[left=1.5cm,right=6cm,top=1.5cm,bottom=3cm]{geometry}
+}
+
+\usepackage{hyperref}
+\usepackage[T1]{fontenc}
+\usepackage{tikz}
+\usepackage{colortbl}
+\usepackage{yfonts}
+\usepackage{colortbl}
+\usepackage{manfnt} % danger symboles
+\usepackage{wasysym} % weather symbols
+\usepackage{pifont}
+%\usepackage{translator} % comment this, if not available
+
+
+% Common settings for all lectures in this course
+
+\def\lecturename{M2P IMSN, MSSPI et M2R MA}
+
+\title{\insertlecture}
+
+\author[M. Ismail]{Mourad Ismail et Christophe Prud'homme\\
+  \url{{ismail,christophe.prudhomme}@ujf-grenoble.fr}}
+
+\institute[UJF]{Université Joseph Fourier}
+
+\subject{Cours \lecturename}
+
+
+
+
+% Beamer version theme settings
+%Beamer version theme
+
+\usetheme{CambridgeUS}
+\usecolortheme{orchid}
+
+\usefonttheme[only large]{structurebold}
+
+\setbeamerfont{title}{series=\normalfont,size=\LARGE}
+\setbeamerfont{title in sidebar}{series=\bfseries}
+\setbeamerfont{author in sidebar}{series=\bfseries}
+\setbeamerfont*{item}{series=}
+\setbeamerfont{frametitle}{size=}
+\setbeamerfont{block title}{size=\small}
+\setbeamerfont{subtitle}{size=\normalsize,series=\normalfont}
+
+%\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{bibliography item}[book]
+
+
+\setbeamertemplate{title page}
+                         {
+  \vbox{}
+  \vskip1em
+  {\huge TD Calcul Scientifique \insertshortlecture\par}
+  {\usebeamercolor[fg]{title}\usebeamerfont{title}\inserttitle\par}%
+  \ifx\insertsubtitle\@empty%
+  \else%
+    \vskip0.25em%
+    {\usebeamerfont{subtitle}\usebeamercolor[fg]{subtitle}\insertsubtitle\par}%
+  \fi%     
+  \vskip1em\par
+  \emph{\lecturename}.\  \insertdate\par
+  \vskip0pt plus1filll
+  \leftskip=0pt plus1fill\insertauthor\par
+  \insertinstitute\vskip3em
+}
+
+
+
+\pgfdeclareimage[height=0.8cm]{logo}{ujf}
+\logo{\pgfuseimage{logo}}
+
+
+
+% Article version layout settings
+
+\mode<article>
+
+\makeatletter
+\def\@listI{\leftmargin\leftmargini
+  \parsep 0pt
+  \topsep 5\p@   \@plus3\p@ \@minus5\p@
+  \itemsep0pt}
+\let\@listi=\@listI
+
+
+\setbeamertemplate{frametitle}{\paragraph*{\insertframetitle\
+    \ \small\insertframesubtitle}\ \par
+}
+\setbeamertemplate{frame end}{%
+  \marginpar{\scriptsize\hbox to 1cm{\sffamily%
+      \hfill\strut\insertshortlecture.\insertframenumber}\hrule height .2pt}}
+\setlength{\marginparwidth}{1cm}
+\setlength{\marginparsep}{4.5cm}
+
+\def\@maketitle{\makechapter}
+
+\def\makechapter{
+  \newpage
+  \null
+  \vskip 2em%
+  {%
+    \parindent=0pt
+    \raggedright
+    \sffamily
+    \vskip8pt
+%    {\fontsize{36pt}{36pt}\selectfont Séance \insertshortlecture \par\vskip2pt}
+    {\fontsize{24pt}{28pt}\selectfont \color{blue!50!black} \insertlecture\par\vskip4pt}
+    {\Large\selectfont \color{blue!50!black} \insertsubtitle\par}
+    \vskip10pt
+
+    \normalsize\selectfont TD
+     \emph{\lecturename}. \@date\par\vskip1.5em
+    \hfill M. Ismail et C. Prud'homme, Université Joseph Fourier
+  }
+  \par
+  \vskip 1.5em%
+}
+
+\let\origstartsection=\@startsection
+\def\@startsection#1#2#3#4#5#6{%
+  \origstartsection{#1}{#2}{#3}{#4}{#5}{#6\normalfont\sffamily\color{blue!50!black}\selectfont}}
+
+\makeatother
+
+\mode
+<all>
+
+% Typesetting Listings
+
+\usepackage{listings}
+\alt<presentation>
+{
+\lstset{%
+  language=C++,
+  morekeywords={self},
+  basicstyle=\footnotesize\ttfamily,
+  basewidth=0.51em,
+  stringstyle=\ttfamily\color{DarkViolet},
+  keywordstyle=\color{blue}\bfseries,
+  commentstyle=\color{red}\itshape,
+  showstringspaces=false,
+  backgroundcolor=\color{Lightgray},
+  frame=shadowbox, framexleftmargin= 0mm, framexrightmargin= -5mm, 
+  rulesepcolor=\color{black},
+  morekeywords={cin,cout,exit}
+  }
+}
+
+\lstset{%
+  language=C++,
+  morekeywords={self},
+  basicstyle=\footnotesize\ttfamily,
+  basewidth=0.51em,
+  stringstyle=\ttfamily\color{DarkViolet},
+  keywordstyle=\color{blue}\bfseries,
+  commentstyle=\color{red}\itshape,
+  showstringspaces=false,
+  morekeywords={cin,cout,exit}
+}
+
+
+% Common theorem-like environments
+
+%\theoremstyle{definition}
+\newtheorem{defn}[theorem]{Définition}
+
+%\theoremstyle{break}
+%\theoremstyle{examples}
+\newtheorem{expls}[theorem]{Exemples}
+
+%%%% Traduction
+
+\newtheorem{exemple}{Exemple}
+%\renewenvironment{example}{\begin{exemple}}{\end{exemple}}
+\renewenvironment<>{example}
+{\begin{exemple}#1\begin{originalexample}}
+{\end{originalexample}\end{exemple}}
+
+
+% New useful definitions:
+
+\newbox\mytempbox
+\newdimen\mytempdimen
+
+\newcommand\includegraphicscopyright[3][]{%
+  \leavevmode\vbox{\vskip3pt\raggedright\setbox\mytempbox=\hbox{\includegraphics[#1]{#2}}%
+    \mytempdimen=\wd\mytempbox\box\mytempbox\par\vskip1pt%
+    \fontsize{3}{3.5}\selectfont{\color{black!25}{\vbox{\hsize=\mytempdimen#3}}}\vskip3pt%
+}}
+
+\newenvironment{colortabular}[1]{\medskip\rowcolors[]{1}{blue!20}{blue!10}\tabular{#1}\rowcolor{blue!40}}{\endtabular\medskip}
+
+\def\equad{\leavevmode\hbox{}\quad}
+
+\newenvironment{greencolortabular}[1]
+{\medskip\rowcolors[]{1}{green!50!black!20}{green!50!black!10}%
+  \tabular{#1}\rowcolor{green!50!black!40}}%
+{\endtabular\medskip}
+
+
+%Quelques macros
+
+\newcommand\fbt[1] {\fbox{\texttt{#1}}}
+\definecolor{Lightgray}{rgb}{0.85, 0.85, 0.85}
+\definecolor{DarkViolet}{rgb}{0.58 0 0.82}
+
+\newcommand{\trr}{{\color{red} {\ding{228}}}}
+\newcommand{\trg}{{\color{red} {\ding{228}}}}
+\newcommand{\fr}{{\color{red} {\Large\ding{224}}\;}}
+%\newcommand{\fg}{{\color{red} {\ding{224}}}}
+\newcommand{\ok}{{\color{blue} {\ding{52}}}}
+\newcommand{\db}{{\color{red} {\ding{56}}}}
+
+
+
