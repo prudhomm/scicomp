@@ -27,7 +27,7 @@
 % displaystyle so that we don't get small fractions.
 \everymath{\displaystyle}
 
-\lecture[3]{Roots and integrals}{intro}
+\lecture[2]{Galerkin method}{approx}
 \subtitle{}
 
 \begin{frame}
@@ -37,6 +37,839 @@
 \begin{frame}
   \tableofcontents
 \end{frame}
+
+\section[Weighted Residuals]{Method of Weighted Residuals (MWR)}
+\label{sec:meth-weight-resid}
+
+\subsection{Goals}
+\label{sec:goals}
+
+\begin{frame}{Goals}
+  \begin{itemize}
+  \item approximate exact solution numerically
+  \item statisfies a finite number of conditions (i.e. not everywhere in the domain region)
+  \item choices of conditions to satisfy:
+    \begin{itemize}
+    \item type of numerical method
+    \item type of projection operator
+    \end{itemize}
+  \end{itemize}
+  \begin{example}
+    In the \textbf{collocation} method, the PDE is satisfied at a few
+    distincts points rather than at every points of the domain
+    region
+  \end{example}
+\end{frame}
+
+\subsection{Formulation}
+\label{sec:formulation}
+
+\begin{frame}{Abstract formulation}
+  To begin, denote $\mathbb{L}$ a linear differential operator defined on a domain $\Omega$ and $u$ the solution of 
+  \begin{equation}
+    \label{eq:1}
+    \mathbb{L} (u) = 0
+  \end{equation}
+  including some initial conditions (IC) and boundary conditions (BC).
+
+  Assume that we have $u$ approximated accurately by $u^\delta$ such that
+  \begin{equation}
+    \label{eq:2}
+    u \stackrel{\text{accurately}}{\approx}  u^{\delta }(x, t ) = u_0(x,t) + \sum_{i=1}^{N_{\text{dof}}}\ \hat{u}_i(t) \Phi_i(x)
+  \end{equation}
+  where 
+  \begin{itemize}
+  \item $u_0(x,t)$ satisfies IC and BC
+  \item $\Phi_i(x)$ are called \emph{trial} functions or \emph{expansion} functions, they also  satisfy IC and \emph{homogeneous} BC
+  \item $\hat{u}_i(t)$ are called the \emph{degrees of freedom} (DOF)
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Equation on $u^\delta$}
+  We now plug \eqref{eq:2} into \eqref{eq:1}, we get
+  \begin{equation}
+    \label{eq:3}
+    \mathbb{L}(u^{\delta}) = R( u^{\delta} )
+  \end{equation}
+  where $R$ is a non-zero \emph{residual}.
+  
+  We still have no unique way of determining the $(\hat{u}_i(t))$. We
+  shall then further restrict $R$ which will allow
+  \begin{itemize}
+  \item to reduce \eqref{eq:3} to a system of ordinary differential equations in $\hat{u}_i(t)$
+  \item if \eqref{eq:1} is independant of time, to determine $\hat{u}_i$ directly from a system of algebraic equations
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Restrictions on $R$}
+  First introduce the Lebesgue inner product $(f,g)$ defined as
+  \begin{equation}
+    \label{eq:4}
+    (\ f,\ g\ )\ =\ \int_\Omega \ f(\mathbf{x})\ g(\mathbf{x})\ d\mathbf{x}
+  \end{equation}
+  To further restrict $R$, we ask $R$ to be ``orthogonal'' to a set of
+  \emph{test}(\emph{weight}) functions $v_j$ for
+  $j=1...N_{\text{dof}}$ with respect to $(\cdot, \cdot)$:
+  \begin{equation}
+    \label{eq:5}
+    \int_\Omega\ v_j(\mathbf{x})\ R  = 0 \quad j = 1 ... N_{\text{dof}}
+  \end{equation}
+  The weighted residual is then said to be zero. Hence the name of the method.
+
+  If \eqref{eq:5} is satisfied then we have from \eqref{eq:3} that
+  \begin{equation}
+    \label{eq:58}
+    (v_j, \mathbb{L}(u^\delta) ) = 0, \quad j=1...N_{\text{dof}}
+  \end{equation}
+\end{frame}
+
+\subsection{Type of methods}
+\label{sec:type-methods}
+
+\begin{frame}{Type of method}
+  As $N_{\text{dof}} \rightarrow 0$, $R \rightarrow 0$ and
+  $u^{\delta}(x,t) \rightarrow u(x,t)$.
+
+  The nature of the scheme is determined by 
+  \begin{itemize}
+  \item the choice of the expansion functions $\Phi_i(\mathbf{x})$
+  \item the choice of the weights functions $v_j(\mathbf{x})$
+  \end{itemize}
+  
+  \begin{table}[H]
+    \centering
+    
+    \begin{tabular}[c]{ll}
+    \rowcolor[gray]{1}
+    Test/Weights & Type of method\\
+
+    \rowcolor[gray]{.7}
+    $v_j(\mathbf{x}) = \delta(\mathbf{x} - \mathbf{x_j})$ 	& Collocation \\
+    
+    
+    \rowcolor[gray]{1}
+    $v_j(\mathbf{x})= 
+      \begin{cases}
+        1 & \text{inside} \ \Omega_j\\
+        0 & \text{outside} \ \Omega_j
+      \end{cases}$ & Finite volume(subdomain)\\
+    
+    \rowcolor[gray]{.7}
+    $v_j(\mathbf{x}) = \frac{\partial R}{\partial \hat{u}_j}$ & Least square\\
+    
+    \rowcolor[gray]{1}
+    $v_j(\mathbf{x}) = \Phi_j(\mathbf{x})$ & Galerkin\\
+
+    \rowcolor[gray]{.7}
+    $v_j(\mathbf{x}) = \Psi_j(\mathbf{x}) (\neq \Phi_j(\mathbf{x}))$ & Petrov-Galerkin\\
+    \end{tabular}
+    \caption{Table of the type of methods}
+    \label{tab:1}
+  \end{table}
+  
+\end{frame}
+
+\begin{frame}{Collocation}
+  The test function $v_j$ is the Dirac delta function computed at a point $\mathbf{x}_j$.
+  At a collocation point $\mathbf{x}_j$, we have
+  \begin{equation}
+    \label{eq:6}
+    ( v_j(\mathbf{x}), R ) = ( \delta(\mathbf{x} - \mathbf{x}_j), R ) =  R(\mathbf{x}_j) = 0
+  \end{equation}
+  Thus \eqref{eq:1} is satisfied by $u^{\delta}$ at $\mathbf{x}_j$
+\end{frame}
+
+\begin{frame}{Finite volume/subdomain}
+  \begin{itemize}
+  \item split the domain $\Omega$ into $N_{\text{dof}}$ subdomains
+    $\Omega_j$ and defined $v_j$ as in table~\ref{tab:1}.
+    
+    \begin{equation}
+      \label{eq:7}
+      v_j(\mathbf{x})= 
+      \begin{cases}
+        1 & \text{inside} \ \Omega_j\\
+        0 & \text{outside} \ \Omega_j
+      \end{cases}
+    \end{equation}
+  \item very popular method in aerodynamics
+  \item can be seen as a technique to recover a conservation statement from a partial differential equation (PDE).
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Least-Square}
+  \begin{itemize}
+  \item originate from least-square estimation by Gauss
+  \item the choice of $v_j$ allows to determine $\hat{u}_i$ which minimse $(R,R)$
+  \item this formulation has increased popularity lately when used in the context of spectral hp element methods
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Galerkin}
+  \begin{itemize}
+  \item also known as Bubnov/Galerkin
+  \item the test functions are the same as the trial functions, i.e. $v_j = \Phi_j$
+  \item an extension is the Petrov-Galerkin method (aka generalized Galerkin method)
+    where the test functions are usually a perturbation of the trial
+    functions to improve numerical stability (e.g. SUPG)
+  \end{itemize}
+  
+\end{frame}
+
+\begin{frame}{Our focus}
+  We shall focus on \textbf{Galerkin} methods \emph{continuous} and \emph{discontinuous}
+
+  \begin{block}{Remark on MWR}
+    MWR illustrates \emph{how} to construct different types of
+    numerical techniques and the projection operator to use.
+
+    It does not define the \emph{type of expansion} or \emph{approximation spaces}
+  \end{block}
+  
+  \begin{itemize}
+  \item spectral: global expansion functions
+  \item finite : local expansion functions in small/finite regions
+  \end{itemize}
+\end{frame}
+
+\section{Galerkin Methods}
+\label{sec:galerkin-methods}
+
+\subsection{Formulation}
+\label{sec:formulation-1}
+
+\begin{frame}{A Generic example and applications}
+  Consider that 
+  \begin{equation}
+    \label{eq:8}
+    \mathbb{L}(u) \equiv \nabla^2 u + f = 0
+  \end{equation}
+
+  
+  The applications of this mathematical model are quite broad
+  \begin{itemize}
+  \item irrotational fluid
+  \item steady state heat equation
+  \item electrical potential
+  \item gravitational potential
+  \end{itemize}
+  
+In 1D we get
+\begin{equation}
+  \label{eq:9}
+  \mathbb{L}(u) \equiv \frac{\partial^2 u}{\partial x^2} + f = 0
+\end{equation}
+\end{frame}
+
+\begin{frame}{Boundary conditions}
+  \begin{itemize}
+  \item \emph{Dirichlet} or \emph{essential} boundary conditions
+    \begin{equation}
+      \label{eq:10}
+      u(0) = g_{\mathcal{D}}
+    \end{equation}
+    usually enforced \emph{explicitely} (i.e. strongly)
+  \item \emph{Neumann} or \emph{natural} boundary conditions
+    \begin{equation}
+      \label{eq:11}
+      \frac{\partial u}{\partial x}(1) = g_{\mathcal{N}}
+    \end{equation}
+    usually enforced \emph{implicitely} (e.g. weakly). In 2/3 D that
+    would be $\nabla u \cdot \mathbf{N} = g_{\mathcal{N}}$ where $\mathbf{N}$ is the outward normal  on $\partial \Omega$.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Weak form}
+  We multiply~\eqref{eq:8} by  a test function $v$ and integrate to get
+  \begin{equation}
+    \label{eq:12}
+    (v, \mathbb{L}(u))\ =\ \int_0^1 v\ \Big( \frac{\partial^2 u}{\partial x^2} + f \Big)\ =\ 0
+  \end{equation}
+  Applying, integration by parts (or Gauss theorem), we then get
+  \begin{equation}
+    \label{eq:13}
+    \int_0^1 \frac{\partial u}{\partial x}\frac{\partial v}{\partial x}\ dx\ =\  \int_0^1\ v\ f dx + \Big[ v\ \frac{\partial u}{\partial x} \Big]_0^1
+  \end{equation}
+  Recalling that, for example, $v(0) = 0$ and $\frac{\partial u(1)}{\partial x} = g_{\mathcal{N}}$ we have
+  \begin{equation}
+    \label{eq:14}
+    \int_0^1 \frac{\partial u}{\partial x}\frac{\partial v}{\partial x}\ dx\ =\  \int_0^1\ v\ f dx + v(1)\ g_{\mathcal{N}}
+  \end{equation}
+\end{frame}
+\begin{frame}{Discretisation}
+  We now replace $v$ usually by a finite expansion $v^{\delta}$ and likewise for $u$ to get
+  \begin{equation}
+    \label{eq:16}
+    \int_0^1 \frac{\partial u^{\delta}}{\partial x}\frac{\partial v^{\delta}}{\partial x}\ dx\ =\  \int_0^1\ v^{\delta}\ f dx + v^{\delta}(1)\ g_{\mathcal{N}}
+  \end{equation}
+\end{frame}
+
+\begin{frame}{Mixed or Robin boundary conditions}
+  We can also have mixed Dirichlet and Neumann boundary conditions known as Robin boundary conditions:
+  \begin{equation}
+    \label{eq:17}
+    \alpha\ \nabla u \cdot \mathbf{N }\ +\ \beta\ u\ =\ g_{\mathcal{R}}
+  \end{equation}
+  where $\alpha \neq 0$ and $\alpha, \beta, g_{\mathcal{R}}$ known.
+  To impose this condition, we express for example in 1D
+  \begin{equation}
+    \label{eq:18}
+    \frac{\partial u}{\partial x}(1) = \frac{1}{\alpha}( g_{\mathcal{R}} - \beta u(1) )
+  \end{equation}
+  to get 
+  \begin{equation}
+    \label{eq:19}
+    \int_0^1 \frac{\partial u^{\delta}}{\partial x}\frac{\partial v^{\delta}}{\partial x}\ dx\ +\ \frac{\beta}{\alpha} v^{\delta}(1)\ u^{\delta}\ =\  \int_0^1\ v^{\delta}\ f dx + \frac{v^{\delta}(1)\ g_{\mathcal{R}}}{\alpha}
+  \end{equation}
+
+  \begin{block}{Remark}
+    This boundary condition has application for example to treat
+    convective heat transfer.
+  \end{block}
+\end{frame}
+
+\subsection{Mathematical Formulation}
+\label{sec:math-form}
+
+\begin{frame}{Helmholtz equation}
+  Consider now
+  \begin{equation}
+    \label{eq:15}
+    \mathbb{L}(u) \equiv \frac{\partial^2 u}{\partial x^2} - \lambda u + f = 0,\ u(0) = g_{\mathcal{D}},\ \frac{\partial u}{\partial x}(1) = g_{\mathcal{N}}
+  \end{equation}
+  with $\lambda > 0$, and $0 < x < l$.
+  
+  If $u(x)$ and $v(x)$ are sufficiently smooth and we do integration by parts (Gauss theorem) and get
+  \begin{equation}
+    \label{eq:20}
+    \int_0^l\ \frac{\partial u}{\partial x}\ \frac{\partial v}{\partial x} + \int_0^l\ \lambda\ v\ u - \int_0^l v f dx - \Big[ v\frac{\partial u}{\partial x}\Big]_0^l = 0
+  \end{equation}
+  Denote then
+  \begin{equation}
+    \label{eq:21}
+    \begin{array}[c]{rl}
+      a(v, u) &= \int_0^1 \frac{\partial u}{\partial x}\ \frac{\partial v}{\partial x} + \lambda\ v\ u\\
+      f(v) &= \int_0^l vf + \Big[ v\frac{\partial u}{\partial x}\Big]_0^l 
+    \end{array}
+  \end{equation}
+  We solve for
+  \begin{equation}
+    \label{eq:22}
+    a(v,u) = f(v)
+  \end{equation}
+\end{frame}
+
+\begin{frame}{Energy space and norm}
+  In structural mechanics $a(v,u)$ is called the \emph{strain energy} and the space of all functions with \emph{finite} strain on $\Omega$ is the energy space:
+  \begin{equation}
+    \label{eq:23}
+    E(\Omega) = \{u | a(u,u) < \infty \}
+  \end{equation}
+  Usually we note $||u||_E = \sqrt{a(u,u)}$. The functions in $E$ are
+  said to be $H^1$ functions ie $\int u^2 < \infty$ and $\int \nabla^2 u <
+  \infty$.
+\end{frame}
+
+\begin{frame}{Test and trial spaces}
+  The trial space  is denoted $\mathcal{X}$
+  \begin{equation}
+    \label{eq:24}
+    \mathcal{X} = \{ u | u \in H^1,\ u(0) = g_{\mathcal{D}}\}
+  \end{equation}
+
+  The test space  is denoted $\mathcal{V}$
+  \begin{equation}
+    \label{eq:25}
+    \mathcal{V} = \{ u | u \in H^1,\ u(0) = 0 \}
+  \end{equation}
+  
+  $\mathcal{V}$ is also said to be $H^1_0$ (``0'' refers to the fact we have an homogeneous space )
+\end{frame}
+
+\begin{frame}{Formulation}
+  Find $u \in \mathcal{X}$ such that 
+  \begin{equation}
+    \label{eq:26}
+    a(v, u) = f(v)\ \forall v \in \mathcal{V}
+  \end{equation}
+  which is infinite dimensional. We  discretize it and denote
+  $\mathcal{X}^{\delta} \subset \mathcal{X}$ and $\mathcal{V}^{\delta}
+  \subset \mathcal{V}$.
+
+  \begin{block}{Remark}
+    $\mathcal{X}^\delta$ and $\mathcal{V}^\delta$ are said to be conforming.
+  \end{block}
+
+  \begin{block}{Remark}
+  In spectral/hp element methods we have two type of methods: \emph{h
+    type} (element size) and \emph{p type} (polynomial
+  order). $\delta$ refers to both and is a function of $h$ or/and $p$.
+  \end{block}
+
+  Find $u^\delta \in \mathcal{X}^\delta$ such that
+  \begin{equation}
+    \label{eq:27}
+    a(v^\delta, u^\delta) = f(v^\delta)\ \forall\ v^\delta \in \mathcal{V}^\delta
+  \end{equation}
+\end{frame}
+
+\begin{frame}{Dirichlet BC}
+  To impose Dirichlet BC, we \emph{lift} the solution by decomposing $u^\delta \in \mathcal{X}^\delta$  into
+  \begin{equation}
+    \label{eq:28}
+    u^\delta = \underbrace{u^{\mathcal{H}}}_{\text{homogeneous} \in {\mathcal{V}^\delta}} + \underbrace{u^{\mathcal{D}}}_{\text{Dirichlet} \in {\mathcal{X}^\delta}}, u^{\mathcal{H}} = 0, u^{\mathcal{D}} = g_{\mathcal{D}}
+  \end{equation}
+  We solve then for:
+
+  Find $u^\delta = u^{\mathcal{H}} + u^{\mathcal{D}}$ where $u^{\mathcal{H}} \in \mathcal{V}^\delta$ and $u^{\mathcal{D}} \in \mathcal{X}^\delta$ such that
+  \begin{equation}
+    \label{eq:29}
+    a( v^\delta, u^{\mathcal{H}}) = f^*(v^\delta), \ \forall v^\delta \in \mathcal{V}^\delta
+  \end{equation}
+  with
+  \begin{equation}
+    \label{eq:30}
+    f^*(v^\delta) = f(v^\delta) - a(v^\delta, u^{\mathcal{D}})
+  \end{equation}
+\end{frame}
+
+\begin{frame}{Some math properties}
+
+  \begin{itemize}
+  \item $a$ is a symmetric bilinear form. 
+  \item $a$ is continuous (bounded)
+    \begin{equation}
+      \label{eq:31}
+      \exists\ C_1 > 0\ \text{ such that } |a(v,u)| \leq C_1 ||u||_1\ ||v||_1,\quad C_1 < \infty,\ \forall u, v
+    \end{equation}
+  \item $a$ is elliptic(coercive)
+    \begin{equation}
+      \label{eq:32}
+      \exists\ C_2 > 0 \text{ such that } a(u,u)| \geq  C_2 ||u||^2_1,\quad C_2 < \infty,\ \forall u
+    \end{equation}
+\end{itemize}
+
+\begin{block}{Lax Milgram}
+  With the above properties and thanks to Lax-Milgram, \eqref{eq:29} has a \emph{unique} solution.
+\end{block}
+\end{frame}
+
+\begin{frame}{Other properties}
+  \begin{itemize}
+  \item the error $\epsilon = u-u^\delta$ is \emph{orthogonal} to all function in $\mathcal{V}^\delta$
+    \begin{equation}
+      \label{eq:33}
+      a(v^\delta, \epsilon) = 0\ \forall\ v^\delta\ \in\ \mathcal{V}^\delta
+    \end{equation}
+    This is called the \textbf{Galerkin orthogonality}.
+  \item Minimal property of the error in the enery norm
+    \begin{equation}
+      \label{eq:34}
+      ||u-u^\delta||_E = \mathrm{min}_{w^{\delta} \in \mathcal{V}^\delta}\ ||u-w^\delta||_E
+    \end{equation}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Equivalence of polynomial expansion}
+  A trivial observation of Galerkin approximation.
+  
+  Consider two linearly independent expansions which span
+  $\mathcal{X}^\delta$ and $u_1$, $u_2$  solutions of \eqref{eq:29} in these
+  expansions
+  \begin{equation}
+    \label{eq:36}
+    u_1^\delta(x) = \sum_{i=1}^P \alpha_i \Phi_i(x), \quad u_2^\delta(x) = \sum_{i=1}^P \beta_i \Psi_i(x)
+  \end{equation}
+  
+  where $P$ is the same polynomial degree ( $\Phi_i$ and $\Psi_i$ are in $\mathbb{P}^P$).
+
+  Uniqueness implies that
+  \begin{equation}
+    \label{eq:37}
+    u_1^\delta(x) = u_2^\delta(x) \Rightarrow \sum_{i=1}^P \alpha_i \Phi_i(x) = \sum_{i=1}^P \beta_i \Psi_i(x)
+  \end{equation}
+  meaning that any \textbf{error estimates} are independent of the type of expansion and depend only on $P$ (degree).
+  
+  \begin{alertblock}{Remark}
+    There are nonetheless differences for example in the numerical
+    conditioning of the algebraic system. The choice of the expansion
+    is in fact very important.
+  \end{alertblock}
+\end{frame}
+
+\section{1D expansion basis}
+\label{sec:1d-expansion-basis}
+
+\begin{frame}{Local/Global Strategy}
+  We have ``defined'' the FE framework in terms of Galerkin formulation.
+  
+  We can now consider different types of expansions bases. Here is the scheme
+  \begin{itemize}
+  \item standard elemental regions $\rightarrow$ defines standard expansion bases
+  \item assembly global expansion from local ones
+  \end{itemize}
+  
+  This is an efficient scheme for spectral/hp element methods. Once we
+  know how to numerically integrate/differentiate numerical
+  functions.
+
+  \begin{alertblock}{}
+    This is also valid un multi-dimensional expansion
+  \end{alertblock}
+\end{frame}
+
+\begin{frame}{Polynomial expansions}
+  We are interested here in polynomial expansions (we could also
+  consider Fourier/Wavelets).  This comes historically from the Taylor
+  expansion that allows to write a function $f$ locally in terms of
+  polynomials.
+  
+  \begin{block}{Advantage}
+    This allows for discrete integration rules (and also
+    differentiation) which enables easy computer implementation
+  \end{block}
+\end{frame}
+
+\begin{frame}{$h$ type expansion}
+  We set a fixed polynomial order order. Convergence is achieved by
+  reducing the element size ($h$ is typically the characteristic size
+  of the element).
+
+  \begin{block}{Advantages}
+    Geometric flexibility especially in high dimensions
+  \end{block}
+\end{frame}
+
+\begin{frame}{$p$ type expansion}
+  We set a fixed mesh size. Convergence is achieved by
+  increasing the polynomial order in each element.
+
+  \begin{block}{Advantages}
+    rapid convergence for \textbf{smooth} problems.
+  \end{block}
+  When we have only one domain the $p$ type method is called a \textbf{spectral method}.
+\end{frame}
+
+\begin{frame}{$hp$ type}
+  Combines both the $h$ and $p$ type method and their advantages. Of
+  course this is much more complicated to handle.
+\end{frame}
+
+
+\subsection{Elemental decomposition}
+
+\begin{frame}{Domain splitting}
+  We decompose the domain $\Omega$ into a set of non-overlapping domains $\Omega^e$, ie
+  \begin{equation}
+    \label{eq:38}
+    \Omega = \cup_{e=1}^{N_{\text{el}}}\ \Omega^e, \quad \cap_{e=1}^{N_\text{el}}\ \Omega^e = \varnothing
+  \end{equation}
+  So if we have
+  \begin{equation}
+    \label{eq:39}
+    \Omega = \{\ x\ | \ 0 < x < \ell \}
+  \end{equation}
+  Introducing $0 < x_1 < ...< x_{N_\text{el}-1}  < x_{N_\text{el}} = \ell$, we have
+  \begin{equation}
+    \label{eq:40}
+    \Omega^e = \{ x\ |\ x_{e-1} < x < x_e \}
+  \end{equation}
+  \begin{alertblock}{Complexity}
+    If we have $N_{\text{el}}$ elements and $N_{\text{dof}}$ degrees
+    of freedom as $N_{\text{el}}$ increases, the number of expansion
+    functions increases. This is not economical if we are to store the $\Phi_i$.
+  \end{alertblock}
+  We shall introduce a standard element domain where most operations will be done.
+  \begin{equation}
+    \label{eq:41}
+    \Omega^{\text{st}} = \{ \xi\ | \ -1 \leq \xi \leq 1 \}
+  \end{equation}
+\end{frame}
+\begin{frame}{Local/global mapping}
+  Consider $\phi_0$ and $\Phi_1$ two expansion functions defined in $\Omega^{\text{st}}$ such that
+  \begin{equation}
+    \label{eq:42}
+    \phi_0(\xi) =
+    \begin{cases}
+      \frac{1-\xi}{2}, \ & \xi \in \Omega^{\text{st}}\\
+      0, & \xi \notin \Omega^{\text{st}}\\
+    \end{cases},
+    \quad
+    \phi_1(\xi) =
+    \begin{cases}
+      \frac{1+\xi}{2}, \ & \xi \in \Omega^{\text{st}}\\
+      0, & \xi \notin \Omega^{\text{st}}\\
+    \end{cases}.
+  \end{equation}
+  we then map $\Omega^{\text{st}}$ onto $\Omega^e$ via $\chi^e(\xi)$ defined by 
+  \begin{equation}
+    \label{eq:43}
+    x = \chi^e(\xi) = \frac{1-\xi}{2} x_{e-1} + \frac{1+\xi}{2} x_e, \quad \xi \in \Omega^{\text{st}}
+  \end{equation}
+  The inverse of the mapping is then
+  \begin{equation}
+    \label{eq:44}
+    \xi = \Big[\chi^e\Big]^{-1}(x) = 2 \frac{x - x_{e-1}}{x_e-x_{e-1}} -1 , \quad x \in \Omega^{e}
+  \end{equation}
+\end{frame}
+\begin{frame}{Local/Global expansions}
+  We then have $\Phi_i(x)$ represented by the mapping of $\phi_p$ onto $\Omega^{\text{st}}$. For example we can write $\Phi_0$ and $\Phi_1$
+  
+  \begin{equation}
+    \label{eq:57}
+    \begin{array}[c]{l}
+      \Phi_0(x) =
+    \begin{cases}
+      \frac{x-x_1}{x_0-x_1}, & x \in \Omega^1\\
+      0 & x \notin \Omega^1
+    \end{cases}
+    =
+    \begin{cases}
+      \phi_0(\xi) = \phi_0(\Big[ \chi^1\Big]^{-1} (x)), & x \in \Omega^1\\
+      0 & x \notin \Omega^1
+    \end{cases}\\
+    \Phi_1(x) =
+    \begin{cases}
+      \frac{x-x_1}{x_1-x_0}, & x \in \Omega^1\\
+      \frac{x-x_2}{x_1-x_2}, & x \in \Omega^2\\
+      0 & \text{otherwise}
+    \end{cases}
+    =
+    \begin{cases}
+      \phi_1(\xi) = \phi_1(\Big[ \chi^1\Big]^{-1} (x)), & x \in \Omega^1\\
+      \phi_0(\xi) = \phi_0(\Big[ \chi^1\Big]^{-2} (x)), & x \in \Omega^2\\
+      0 & \text{otherwise}
+    \end{cases}\\
+    \end{array}
+  \end{equation}
+
+  \begin{block}{Remark}
+    The inverse mapping might not be analytic (explicit). It would
+    depend on the parametric mapping used. This is particularly true
+    in multiple dimension when using curved domains.
+  \end{block}
+
+
+\end{frame}
+
+
+\begin{frame}{Parametric mapping}
+  The transformation $\chi^e(\xi)$ maps the local coordinates
+  $\xi$($\xi \in \Omega^{\text{st}}$) to the global coordinates $x$,
+  $x \in \Omega^e$.
+  
+  \begin{block}{Interpretation}
+    It can be interpreted as expanding the global coordinate $x$ using a linear (finite) expansion as follows
+    \begin{equation}
+      \label{eq:35}
+      x = \chi^e(\xi) = \phi_0(\xi) x_{e-1} + \phi_1(\xi) x_e, \quad \xi \in \Omega^{\text{st}}
+    \end{equation}
+  \end{block}
+  
+  This technique is called \emph{parameteric mapping}, it is
+  \begin{itemize}
+  \item \emph{iso-parametric} if $\chi^e(\xi)$ is of the same degree as the local expansions
+  \item \emph{sub/super-parametric} if $\chi^e(\xi)$ is of lower resp. greater polynomial degree than the local expansion
+  \end{itemize}
+  \begin{block}{Remark}
+    This is particularly useful for \emph{curved} domains
+  \end{block}
+\end{frame}
+\begin{frame}{Remark}
+  The transformation in \eqref{eq:35} is linear as well as its inverse. 
+  
+  Hence $\phi_p(\Big[\chi^e\Big]^{-1} (x))$ is a polynomial in $x$ as
+  well as in $\xi$. Hence the global expansions of $u^{\delta}$ are
+  polynomial in $x$.
+
+  \begin{alertblock}{High order polynomials and curved geometry}
+    In the context of high order polynomials and curved geometries,
+    this may not remain true. In particular, the global expansion may
+    not be polynomial in $x$. However the local expansion remains
+    polynomial in $\xi$.
+  \end{alertblock}
+\end{frame}
+
+
+\subsection{Global assembly}
+\label{sec:glonbal-assembly}
+
+\begin{frame}{Global assembly}
+  The local to global expansion suggests/implies the concept of \textbf{global
+    assembly} (or direct stiffness summation): we shall compute
+  certain local expansion and assemble them to obtain the global expansion
+
+  In 1D (we will follow the same construction in multi-D), we start with expanding $u^\delta(x)$  
+  \begin{equation}
+    \label{eq:46}
+    u^\delta(x) = \sum_{i=0}^{N_\text{dof}}\ \hat{u}_i \Phi_i(x)
+  \end{equation}
+  \eqref{eq:46} then writes using the parametric mappings $\chi^e, e=1...N_{\text{el}}$ 
+  \begin{equation}
+    \label{eq:45}
+    u^\delta(x) = \sum_{i=0}^{N_\text{dof}}\ \hat{u}_i \Phi_i(x) = \sum_{e=0}^{N_\text{el}}\ \sum_{p=0}^{P}\ \hat{u}^e_p \phi_p(\xi)
+  \end{equation}
+  where $P$ is the polynomial order and $\phi_p(\xi) = \phi_p( \Big[ \chi^e\Big]^{-1} (x) )$.
+
+  \begin{block}{Remark}
+    There are more $u^e_p$ than $\hat{u}_i$. We require further conditions
+  \end{block}
+\end{frame}
+
+\begin{frame}{Extra condition}
+  we shall require that the expansion is $C^0$. If $P=1$, $N_{\text{el}} = 3$ and $N_{\text{dof}} = 4$, this leads to 
+  \begin{equation}
+    \label{eq:47}
+    \begin{array}[c]{rcl}
+      \hat{u}^1_1 &=& \hat{u}^2_0 \\
+      \hat{u}^2_1 &=& \hat{u}^3_0 
+    \end{array}
+  \end{equation}
+  We have  then the local global correspondance
+  \begin{equation}
+    \label{eq:48}
+    \begin{array}[c]{rcl}
+      \hat{u}^1_0 &=& \hat{u}_0 \\
+      \hat{u}^1_1 &=& \hat{u}^2_0 = \hat{u}_1\\
+      \hat{u}^2_1 &=& \hat{u}^3_0  = \hat{u}_2\\
+      \hat{u}^3_1 &=& \hat{u}_3 \\
+    \end{array}
+  \end{equation}
+\end{frame}
+
+
+\begin{frame}{Global/local mapping}
+  Now denote $\hat{u}_g$ the vector of global coefficients in the global expansion
+  \begin{equation}
+    \label{eq:49}
+    \hat{u}_g^T = \big[ \hat{u}_0, ..., \hat{u}_{N_{\text{dof}}-1} \big]^T
+  \end{equation}
+  
+  Denote $\hat{u}^e$ the vector of local coefficients in the element $e$,
+  \begin{equation}
+    \label{eq:50}
+    \hat{u}^e = \big[ \hat{u}^e_0, \hat{u}^e_1 \big]^T 
+  \end{equation}
+  and finally $\hat{u}^\ell$ the vector of all local coefficients, we have
+  \begin{equation}
+    \label{eq:51}
+    \hat{u}^\ell = \left[
+      \begin{array}[c]{c}
+        \hat{u}^1\\
+        \hat{u}^2\\
+        \vdots\\
+        \hat{u}^{N_\text{el}}
+      \end{array} \right] 
+    = \mathcal{A}\ \hat{u}_g
+  \end{equation}
+  where $\mathcal{A}$ is a very \emph{sparse} matrix containing $1$ (and also $-1$ in multi-dimension)
+\end{frame}
+
+\begin{frame}{Assembly matrix}
+  \begin{equation}
+    \label{eq:52}
+    \hat{u}^\ell = \left[
+      \begin{array}[c]{c}
+        \hat{u}^1_0\\
+        \hat{u}^1_1\\
+        \hat{u}^2_0\\
+        \hat{u}^2_1\\
+        \hat{u}^3_0\\
+        \hat{u}^3_1\\
+      \end{array} \right]
+    = 
+    \begin{pmatrix}
+      1 & & &\\
+      & 1 & &\\
+      & 1 & &\\
+      &  & 1 &\\
+      &  & 1 &\\
+      &  &  & 1 \\
+    \end{pmatrix}
+    \ 
+    \left[\begin{array}[c]{c}
+        \hat{u}_0\\
+        \hat{u}_1\\
+        \hat{u}_2\\
+        \hat{u}_3\\
+      \end{array} \right]
+  \end{equation}
+  The matrix $\mathcal{A}$ \emph{scatters} $\hat{u}_g$ in the local
+  degrees of freedom. The reverse operation is advantageous since it
+  will allow us to perform local operations and assemble them in the
+  global degrees of freedom. It is given by $\mathcal{A}^T$.
+\end{frame}
+
+\begin{frame}{Integral computation}
+  Consider now that you have to compute 
+  \begin{equation}
+    \label{eq:53}
+    \int_\Omega \Phi_1(x) u^\delta = \int_{-1}^1 \phi^1_1(\xi) u^\delta(\chi^1) \Big|\frac{d \chi^1}{d \chi}\Big| d\xi + \int_{-1}^1 \phi^2_0(\xi) u^\delta(\chi^2) \Big|\frac{d \chi^2}{d \chi}\Big| d\xi
+  \end{equation}
+  From this we see that we can compute integrals locally on the
+  standard element $\Omega^{\text{st}}$ using say a numerical
+  quadrature. $\mathcal{A}^T$ will allow us to assemble the global
+  expansion from the local expansion. This process is called
+  \textbf{global assembly}.
+\end{frame}
+
+\begin{frame}{Integral computation}
+  Denote now the vector $I_g$ of global integral contributions with $i$-th component
+  \begin{equation}
+    \label{eq:54}
+    I_g[i] = \int_\Omega \Phi_i(x)\ u^\delta(x) dx
+  \end{equation}
+  and $I_\ell$ of local contributions
+  \begin{equation}
+    \label{eq:55}
+    I_\ell = \left[
+      \begin{array}[c]{c}
+        I^1\\
+        I^2\\
+        \vdots\\
+        I^{N_\text{el}}
+      \end{array}\right]
+    \text{ where }
+    I^e =  \left[
+      \begin{array}[c]{c}
+        \int_{-1}^1\ \phi_0(\xi) u^\delta(\chi^e) \frac{d \chi^e}{d \xi} d\xi\\
+        \vdots\\
+        \int_{-1}^1\ \phi_{P-1}(\xi) u^\delta(\chi^e) \frac{d \chi^e}{d \xi} d\xi
+      \end{array}\right]
+  \end{equation}
+  $I_g$ can then be related to the lovcal elemental vector $I_\ell$ using $\mathcal{A}^T$
+  \begin{equation}
+    \label{eq:56}
+    I_g = \mathcal{A}^T I_\ell
+  \end{equation}
+  This operation performs the \textbf{summation} of the local contribution into the global expansion
+\end{frame}
+
+\begin{frame}[containsverbatim]{DOF table}
+  In practice $\mathcal{A}$ is \alert{never assembled} as it is very
+  sparse. We use a mapping array also known as Degrees of freedom
+  table (DOF table) which maps for each element $e$ its local degrees
+  of freedom $i$ to a global degree of freedom $j$
+  \begin{lstlisting}
+    map[e][i] = j
+  \end{lstlisting}
+
+  Hence the assembly process reads
+  \begin{lstlisting}[mathescape,texcl]
+    for( int e = 0; e < N_el; ++e )
+      for( int i = 0; i < P; ++p )
+       $\hat{u}_g$[map[e][i]] = $\hat{u}_g$[map[e][i]] + $\hat{u}^e[i]$
+  \end{lstlisting}
+  or to compute $I_g$
+    \begin{lstlisting}[mathescape,texcl]
+    for( int e = 0; e < N_el; ++e )
+      for( int i = 0; i < P; ++p )
+       $I_g$[map[e][i]] = $I_g$[map[e][i]] + $I^e[i]$
+  \end{lstlisting}
+\end{frame}
+
+
+\end{document}
 
 \section[Moment]{Moment basis}
 \label{sec:moment-basis}
