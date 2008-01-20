@@ -1,0 +1,98 @@
+%!PS
+%%BoundingBox: 85 508 369 765 
+%%Creator: MetaPost
+%%CreationDate: 2003.06.13:0827
+%%Pages: 1
+%*Font: cmmi12 24.78706 11.95517 6b:8006
+%*Font: cmr17 24.78712 17.21544 28:c0000000000002
+%*Font: cmr17 17.21544 17.21544 31:e
+%%EndProlog
+%%Page: 1 1
+ 0 0.94 dtransform truncate idtransform setlinewidth pop [] 0 setdash
+ 0 setlinejoin 10 setmiterlimit
+newpath 127.56 706.96 moveto
+297.64 706.96 lineto
+297.64 650.27 lineto
+127.56 650.27 lineto
+127.56 706.96 lineto
+ closepath stroke
+newpath 127.56 650.27 moveto
+297.64 650.27 lineto
+297.64 593.57 lineto
+127.56 593.57 lineto
+127.56 650.27 lineto
+ closepath stroke
+newpath 127.56 593.57 moveto
+297.64 593.57 lineto
+297.64 536.88 lineto
+127.56 536.88 lineto
+127.56 593.57 lineto
+ closepath stroke
+ 0 setlinecap
+newpath 297.64 536.88 moveto
+368.5 536.88 lineto stroke
+ 1 setgray
+newpath 361.16574 535.04642 moveto
+368.5 536.88 lineto
+361.16574 538.7136 lineto
+ closepath fill
+ 0 setgray
+newpath 361.16574 535.04642 moveto
+368.5 536.88 lineto
+361.16574 538.7136 lineto
+ closepath stroke
+ 0.94 0 dtransform exch truncate exch idtransform pop setlinewidth
+newpath 127.56 706.96 moveto
+127.56 763.65 lineto stroke
+ 1 setgray
+newpath 129.39366 756.31546 moveto
+127.56 763.65 lineto
+125.72633 756.31546 lineto
+ closepath fill
+ 0 setgray 0 0.94 dtransform truncate idtransform setlinewidth pop
+newpath 129.39366 756.31546 moveto
+127.56 763.65 lineto
+125.72633 756.31546 lineto
+ closepath stroke
+354.33 508.54 moveto
+(x) cmmi12 24.78706 fshow
+185.2936 557.6026 moveto
+(^) cmr17 24.78712 fshow
+184.25 551.06 moveto
+(k) cmmi12 24.78706 fshow
+196.8729 547.342 moveto
+(3) cmr17 17.21544 fshow
+205.2663 551.06 moveto
+(\() cmr17 24.78712 fshow
+214.0442 551.06 moveto
+(y) cmmi12 24.78706 fshow
+226.7675 551.06 moveto
+(\)) cmr17 24.78712 fshow
+185.2936 614.2926 moveto
+(^) cmr17 24.78712 fshow
+184.25 607.75 moveto
+(k) cmmi12 24.78706 fshow
+196.8729 604.032 moveto
+(2) cmr17 17.21544 fshow
+205.2663 607.75 moveto
+(\() cmr17 24.78712 fshow
+214.0442 607.75 moveto
+(y) cmmi12 24.78706 fshow
+226.7675 607.75 moveto
+(\)) cmr17 24.78712 fshow
+185.2936 685.1526 moveto
+(^) cmr17 24.78712 fshow
+184.25 678.61 moveto
+(k) cmmi12 24.78706 fshow
+196.8729 674.892 moveto
+(1) cmr17 17.21544 fshow
+205.2663 678.61 moveto
+(\() cmr17 24.78712 fshow
+214.0442 678.61 moveto
+(y) cmmi12 24.78706 fshow
+226.7675 678.61 moveto
+(\)) cmr17 24.78712 fshow
+85.04 749.48 moveto
+(y) cmmi12 24.78706 fshow
+showpage
+%%EOF
