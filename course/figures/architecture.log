@@ -1,0 +1,21 @@
+This is e-TeX, Version 3.14159-2.1 (Web2C 7.4.5) (format=latex 2005.7.30)  7 SEP 2005 12:24
+entering extended mode
+**architecture.tex
+(./architecture.tex
+LaTeX2e <2001/06/01>
+Babel <v3.7h> and hyphenation patterns for american, french, ngerman, nohyphena
+tion, loaded.
+! Undefined control sequence.
+l.4 \psset
+          {xunit=.5pt,yunit=.5pt,runit=.5pt}
+? x
+ 
+Here is how much of TeX's memory you used:
+ 4 strings out of 95739
+ 62 string characters out of 1194635
+ 44491 words of memory out of 1000001
+ 3096 multiletter control sequences out of 10000+50000
+ 3640 words of font info for 14 fonts, out of 500000 for 1000
+ 14 hyphenation exceptions out of 1000
+ 5i,0n,1p,71b,8s stack positions out of 1500i,500n,5000p,200000b,5000s
+No pages of output.

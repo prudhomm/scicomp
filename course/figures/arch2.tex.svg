@@ -1,0 +1,390 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://web.resource.org/cc/"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://inkscape.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="29.699999cm"
+   height="21cm"
+   id="svg2"
+   sodipodi:version="0.32"
+   inkscape:version="0.43"
+   sodipodi:docbase="/home/prudhomm/Documents/MyDocuments/figures"
+   sodipodi:docname="arch2.tex.svg"
+   version="1.0">
+  <defs
+     id="defs4" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="0.98994949"
+     inkscape:cx="478.57303"
+     inkscape:cy="339.63299"
+     inkscape:document-units="cm"
+     inkscape:current-layer="layer1"
+     inkscape:window-width="1400"
+     inkscape:window-height="977"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     showgrid="true"
+     inkscape:grid-bbox="true"
+     inkscape:grid-points="true"
+     showguides="true"
+     inkscape:guide-bbox="true"
+     inkscape:guide-points="true" />
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title>Architecture</dc:title>
+        <dc:creator>
+          <cc:Agent>
+            <dc:title>Christophe Prud'homme</dc:title>
+          </cc:Agent>
+        </dc:creator>
+        <cc:license
+           rdf:resource="http://creativecommons.org/licenses/GPL/2.0/" />
+      </cc:Work>
+      <cc:License
+         rdf:about="http://creativecommons.org/licenses/GPL/2.0/">
+        <cc:permits
+           rdf:resource="http://web.resource.org/cc/Reproduction" />
+        <cc:permits
+           rdf:resource="http://web.resource.org/cc/Distribution" />
+        <cc:requires
+           rdf:resource="http://web.resource.org/cc/Notice" />
+        <cc:permits
+           rdf:resource="http://web.resource.org/cc/DerivativeWorks" />
+        <cc:requires
+           rdf:resource="http://web.resource.org/cc/ShareAlike" />
+        <cc:requires
+           rdf:resource="http://web.resource.org/cc/SourceCode" />
+      </cc:License>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:groupmode="layer"
+     id="layer3"
+     inkscape:label="Bottom">
+    <rect
+       style="opacity:1;fill:#e7e7e7;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:2.56595182;stroke-miterlimit:4;stroke-dasharray:0.05131903, 0.05131903;stroke-dashoffset:12.82975834;stroke-opacity:1"
+       id="rect6017"
+       width="1030.7368"
+       height="625.39185"
+       x="9.7356262"
+       y="8.9519587" />
+  </g>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <rect
+       style="opacity:0;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:3.50999999;stroke-miterlimit:4;stroke-dasharray:3.51, 7.02;stroke-dashoffset:7.02;stroke-opacity:1"
+       id="rect2388"
+       width="708.57141"
+       height="475.71429"
+       x="23.571426"
+       y="116.6479" />
+    <rect
+       style="opacity:1;fill:#a3a0a0;fill-opacity:1;stroke:#000000;stroke-width:2.8038404;stroke-miterlimit:4;stroke-dasharray:0.05607681, 0.05607681;stroke-dashoffset:14.01920189;stroke-opacity:1"
+       id="rect5035"
+       width="988.61981"
+       height="90"
+       x="29.969028"
+       y="523.07648" />
+    <rect
+       style="opacity:1;fill:#c5c2c2;fill-opacity:1;stroke:#000000;stroke-width:2.01695299;stroke-miterlimit:4;stroke-dasharray:0.04033906, 0.04033906;stroke-dashoffset:10.08476591;stroke-opacity:1"
+       id="rect5915"
+       width="511.58096"
+       height="90"
+       x="31.419041"
+       y="420.93362" />
+    <rect
+       style="opacity:1;fill:#c5c2c2;fill-opacity:1;stroke:#000000;stroke-width:1.89826095;stroke-miterlimit:4;stroke-dasharray:0.03796522, 0.03796522;stroke-dashoffset:9.49130476;stroke-opacity:1"
+       id="rect5917"
+       width="453.14224"
+       height="90"
+       x="564"
+       y="420.04361" />
+    <rect
+       style="opacity:1;fill:#ff0000;fill-opacity:1;stroke:#000000;stroke-width:2.79869461;stroke-miterlimit:4;stroke-dasharray:0.0559739, 0.0559739;stroke-dashoffset:13.99347276;stroke-opacity:1"
+       id="rect5919"
+       width="984.99432"
+       height="90"
+       x="32.005692"
+       y="320.93362" />
+    <rect
+       style="opacity:1;fill:#ff0000;fill-opacity:1;stroke:#000000;stroke-width:1.25162244;stroke-miterlimit:4;stroke-dasharray:0.02503245, 0.02503245;stroke-dashoffset:6.25811279;stroke-opacity:1"
+       id="rect5921"
+       width="197.00148"
+       height="90"
+       x="30.784975"
+       y="217.36218" />
+    <rect
+       style="opacity:1;fill:#ff0000;fill-opacity:1;stroke:#000000;stroke-width:1.01468885;stroke-miterlimit:4;stroke-dasharray:0.02029378, 0.02029378;stroke-dashoffset:5.07344459;stroke-opacity:1"
+       id="rect5923"
+       width="129.47578"
+       height="90"
+       x="325.26218"
+       y="217.48065" />
+    <rect
+       style="opacity:1;fill:#ff0000;fill-opacity:1;stroke:#000000;stroke-width:1.01468885;stroke-miterlimit:4;stroke-dasharray:0.02029378, 0.02029378;stroke-dashoffset:5.07344459;stroke-opacity:1"
+       id="rect5925"
+       width="129.47578"
+       height="90"
+       x="585.55157"
+       y="217.48065" />
+    <rect
+       style="opacity:1;fill:#ff0000;fill-opacity:1;stroke:#000000;stroke-width:1.25162244;stroke-miterlimit:4;stroke-dasharray:0.02503245, 0.02503245;stroke-dashoffset:6.25811279;stroke-opacity:1"
+       id="rect5927"
+       width="197.00148"
+       height="90"
+       x="30.784975"
+       y="118.07647" />
+    <rect
+       style="opacity:1;fill:#ff0000;fill-opacity:1;stroke:#000000;stroke-width:1.25162244;stroke-miterlimit:4;stroke-dasharray:0.02503245, 0.02503245;stroke-dashoffset:6.25811279;stroke-opacity:1"
+       id="rect5929"
+       width="197.00148"
+       height="90"
+       x="271.4993"
+       y="118.07647" />
+    <rect
+       style="opacity:1;fill:#ff0000;fill-opacity:1;stroke:#000000;stroke-width:1.25162244;stroke-miterlimit:4;stroke-dasharray:0.02503245, 0.02503245;stroke-dashoffset:6.25811279;stroke-opacity:1"
+       id="rect5931"
+       width="197.00148"
+       height="90"
+       x="517.90747"
+       y="118.07647" />
+    <flowRoot
+       xml:space="preserve"
+       id="flowRoot6007"
+       style="font-size:20px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:125%;writing-mode:lr-tb;text-anchor:middle;font-family:Bitstream Vera Sans"
+       transform="matrix(0.755825,0,0,1.069244,49.52022,-460.216)"><flowRegion
+         id="flowRegion6009"><rect
+           id="rect6011"
+           width="357.14285"
+           height="28.571428"
+           x="220"
+           y="470.93362"
+           style="font-size:20px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:125%;writing-mode:lr-tb;text-anchor:middle;font-family:Bitstream Vera Sans" /></flowRegion><flowPara
+         id="flowPara6013">Language embedded in C++ for variationba</flowPara></flowRoot>    <rect
+       style="opacity:1;fill:#ff0000;fill-opacity:1;stroke:#000000;stroke-width:2.80153656;stroke-miterlimit:4;stroke-dasharray:0.05603073, 0.05603073;stroke-dashoffset:14.00768259;stroke-opacity:1"
+       id="rect5933"
+       width="986.99573"
+       height="90"
+       x="31"
+       y="17.362183" />
+    <flowRoot
+       xml:space="preserve"
+       id="flowRoot5935"
+       style="font-size:20px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:125%;writing-mode:lr-tb;text-anchor:middle;fill:#000000;fill-opacity:1;font-family:Bitstream Vera Sans"
+       transform="matrix(1,0,0,1.110711,-112.35,-73.15541)"><flowRegion
+         id="flowRegion5937"><rect
+           id="rect5939"
+           width="357.14285"
+           height="28.571428"
+           x="220"
+           y="470.93362"
+           style="font-size:20px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:125%;writing-mode:lr-tb;text-anchor:middle;fill:#000000;fill-opacity:1;font-family:Bitstream Vera Sans" /></flowRegion><flowPara
+         id="flowPara5941">Linear Algebra </flowPara><flowPara
+         id="flowPara6896">petsc</flowPara><flowPara
+         id="flowPara6894">petsc  </flowPara></flowRoot>    <flowRoot
+       xml:space="preserve"
+       id="flowRoot5959"
+       style="font-size:20px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:125%;writing-mode:lr-tb;text-anchor:middle;font-family:Bitstream Vera Sans"
+       transform="translate(-286.5036,-222.2784)"><flowRegion
+         id="flowRegion5961"><rect
+           id="rect5963"
+           width="357.14285"
+           height="28.571428"
+           x="220"
+           y="470.93362"
+           style="font-size:20px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:125%;writing-mode:lr-tb;text-anchor:middle;font-family:Bitstream Vera Sans" /></flowRegion><flowPara
+         id="flowPara5965">Linear Algebra</flowPara></flowRoot>    <flowRoot
+       xml:space="preserve"
+       id="flowRoot5967"
+       style="font-size:20px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:125%;writing-mode:lr-tb;text-anchor:middle;font-family:Bitstream Vera Sans"
+       transform="translate(-15.78934,-222.9927)"><flowRegion
+         id="flowRegion5969"><rect
+           id="rect5971"
+           width="357.14285"
+           height="28.571428"
+           x="220"
+           y="470.93362"
+           style="font-size:20px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:125%;writing-mode:lr-tb;text-anchor:middle;font-family:Bitstream Vera Sans" /></flowRegion><flowPara
+         id="flowPara5973">Linear Algebra</flowPara></flowRoot>    <flowRoot
+       xml:space="preserve"
+       id="flowRoot5975"
+       style="font-size:20px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:125%;writing-mode:lr-tb;text-anchor:middle;font-family:Bitstream Vera Sans"
+       transform="translate(259.9249,-234.4213)"><flowRegion
+         id="flowRegion5977"><rect
+           id="rect5979"
+           width="357.14285"
+           height="28.571428"
+           x="220"
+           y="470.93362"
+           style="font-size:20px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:125%;writing-mode:lr-tb;text-anchor:middle;font-family:Bitstream Vera Sans" /></flowRegion><flowPara
+         id="flowPara5981">Linear Algebra</flowPara></flowRoot>    <flowRoot
+       xml:space="preserve"
+       id="flowRoot5983"
+       style="font-size:20px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:125%;writing-mode:lr-tb;text-anchor:middle;font-family:Bitstream Vera Sans"
+       transform="translate(187.0678,-322.9927)"><flowRegion
+         id="flowRegion5985"><rect
+           id="rect5987"
+           width="357.14285"
+           height="28.571428"
+           x="220"
+           y="470.93362"
+           style="font-size:20px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:125%;writing-mode:lr-tb;text-anchor:middle;font-family:Bitstream Vera Sans" /></flowRegion><flowPara
+         id="flowPara5989">Linear Algebra</flowPara></flowRoot>    <flowRoot
+       xml:space="preserve"
+       id="flowRoot5991"
+       style="font-size:20px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:125%;writing-mode:lr-tb;text-anchor:middle;font-family:Bitstream Vera Sans"
+       transform="translate(-18.64648,-315.8499)"><flowRegion
+         id="flowRegion5993"><rect
+           id="rect5995"
+           width="357.14285"
+           height="28.571428"
+           x="220"
+           y="470.93362"
+           style="font-size:20px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:125%;writing-mode:lr-tb;text-anchor:middle;font-family:Bitstream Vera Sans" /></flowRegion><flowPara
+         id="flowPara5997">Linear Algebra</flowPara></flowRoot>    <flowRoot
+       xml:space="preserve"
+       id="flowRoot5999"
+       style="font-size:20px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:125%;writing-mode:lr-tb;text-anchor:middle;font-family:Bitstream Vera Sans"
+       transform="translate(-259.3608,-323.707)"><flowRegion
+         id="flowRegion6001"><rect
+           id="rect6003"
+           width="357.14285"
+           height="28.571428"
+           x="220"
+           y="470.93362"
+           style="font-size:20px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:125%;writing-mode:lr-tb;text-anchor:middle;font-family:Bitstream Vera Sans" /></flowRegion><flowPara
+         id="flowPara6005">Linear Algebra</flowPara></flowRoot>    <text
+       xml:space="preserve"
+       style="font-size:12px;font-style:normal;font-weight:normal;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1pt;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans"
+       x="452.67773"
+       y="433.09448"
+       id="text6898"><tspan
+         sodipodi:role="line"
+         id="tspan6900"
+         x="452.67773"
+         y="433.09448">petsc</tspan><tspan
+         sodipodi:role="line"
+         x="452.67773"
+         y="448.09448"
+         id="tspan6762">gmm</tspan><tspan
+         sodipodi:role="line"
+         x="452.67773"
+         y="463.09448"
+         id="tspan6764">ublas</tspan><tspan
+         sodipodi:role="line"
+         x="452.67773"
+         y="478.09448"
+         id="tspan6766">trilinos </tspan><tspan
+         sodipodi:role="line"
+         x="452.67773"
+         y="493.09448"
+         id="tspan6768">umfpack</tspan><tspan
+         sodipodi:role="line"
+         x="452.67773"
+         y="508.09448"
+         id="tspan6770">arpack++</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:12px;font-style:normal;font-weight:normal;line-height:125%;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1pt;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans"
+       x="790.30743"
+       y="470.38541"
+       id="text6746"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan6748"
+         x="790.30743"
+         y="470.38541"
+         style="font-size:20px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:125%;writing-mode:lr-tb;text-anchor:middle;font-family:Bitstream Vera Sans">Geometry</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:12px;font-style:normal;font-weight:normal;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1pt;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans"
+       x="882.87329"
+       y="453.35416"
+       id="text6750"><tspan
+         sodipodi:role="line"
+         x="882.87329"
+         y="453.35416"
+         id="tspan6756">d-simplices</tspan><tspan
+         sodipodi:role="line"
+         x="882.87329"
+         y="468.35416"
+         id="tspan6760">simplex products</tspan><tspan
+         sodipodi:role="line"
+         x="882.87329"
+         y="483.35416"
+         id="tspan6754">Basic geometry ops</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:20px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:125%;writing-mode:lr-tb;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1pt;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans"
+       x="524.01459"
+       y="371.4512"
+       id="text6781"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan6783"
+         x="524.01459"
+         y="371.4512">Polynomials, polynomial sets</tspan></text>
+  </g>
+  <g
+     inkscape:groupmode="layer"
+     id="layer2"
+     inkscape:label="Text">
+    <flowRoot
+       xml:space="preserve"
+       id="flowRoot2398"
+       style="font-size:20px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:125%;writing-mode:lr-tb;text-anchor:middle;font-family:Bitstream Vera Sans"
+       transform="translate(125.7887,84.48427)"><flowRegion
+         id="flowRegion2400"><rect
+           id="rect2402"
+           width="357.14285"
+           height="28.571428"
+           x="220"
+           y="470.93362"
+           style="font-size:20px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:125%;writing-mode:lr-tb;text-anchor:middle;font-family:Bitstream Vera Sans" /></flowRegion><flowPara
+         id="flowPara2404">CORE</flowPara></flowRoot>    <text
+       xml:space="preserve"
+       style="font-size:12px;font-style:normal;font-weight:normal;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1pt;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans"
+       x="761.10742"
+       y="541.09448"
+       id="text1478"><tspan
+         sodipodi:role="line"
+         id="tspan1480"
+         x="761.10742"
+         y="541.09448">Programming environments</tspan><tspan
+         sodipodi:role="line"
+         x="761.10742"
+         y="556.09448"
+         id="tspan1488">Runtime environments</tspan><tspan
+         sodipodi:role="line"
+         x="761.10742"
+         y="571.09448"
+         id="tspan1482">MPI</tspan><tspan
+         sodipodi:role="line"
+         x="761.10742"
+         y="586.09448"
+         id="tspan1484">PETSC</tspan><tspan
+         sodipodi:role="line"
+         x="761.10742"
+         y="601.09448"
+         id="tspan1486">TRILINOS</tspan></text>
+  </g>
+</svg>
