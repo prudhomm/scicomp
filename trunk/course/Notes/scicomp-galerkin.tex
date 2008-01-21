@@ -397,7 +397,10 @@ In 1D we get
   \subset \mathcal{V}$.
 
   \begin{block}{Remark}
-    $\mathcal{X}^\delta$ and $\mathcal{V}^\delta$ are said to be conforming.
+    When $\mathcal{X}^{\delta} \subset \mathcal{X}$ and
+    $\mathcal{V}^{\delta} \subset \mathcal{V}$, $\mathcal{X}^\delta$
+    and $\mathcal{V}^\delta$ are said to be conforming. Note that
+    non-conforming approximations appear also in many numerical methods.
   \end{block}
 
   \begin{block}{Remark}
@@ -465,7 +468,7 @@ In 1D we get
   \item Minimal property of the error in the enery norm
     \begin{equation}
       \label{eq:34}
-      ||u-u^\delta||_E = \mathrm{min}_{w^{\delta} \in \mathcal{V}^\delta}\ ||u-w^\delta||_E
+      ||u-u^\delta||_E = \mathrm{min}_{w^{\delta} \in \mathcal{X}^\delta}\ ||u-w^\delta||_E
     \end{equation}
   \end{itemize}
 \end{frame}
@@ -531,7 +534,7 @@ In 1D we get
 \end{frame}
 
 \begin{frame}{$h$ type expansion}
-  We set a fixed polynomial order order. Convergence is achieved by
+  We set a fixed polynomial order. Convergence is achieved by
   reducing the element size ($h$ is typically the characteristic size
   of the element).
 
@@ -637,7 +640,7 @@ In 1D we get
     =
     \begin{cases}
       \phi_1(\xi) = \phi_1(\Big[ \chi^1\Big]^{-1} (x)), & x \in \Omega^1\\
-      \phi_0(\xi) = \phi_0(\Big[ \chi^1\Big]^{-2} (x)), & x \in \Omega^2\\
+      \phi_0(\xi) = \phi_0(\Big[ \chi^2\Big]^{-1} (x)), & x \in \Omega^2\\
       0 & \text{otherwise}
     \end{cases}\\
     \end{array}
@@ -646,7 +649,7 @@ In 1D we get
   \begin{block}{Remark}
     The inverse mapping might not be analytic (explicit). It would
     depend on the parametric mapping used. This is particularly true
-    in multiple dimension when using curved domains.
+    in multiple dimensions when using curved domains.
   \end{block}
 
 
@@ -803,10 +806,11 @@ In 1D we get
 \begin{frame}{Integral computation}
   Consider now that you have to compute the algebraic $l(\Phi_i) =
   \int_\Omega  \Phi_i(x) f(x)$, and taking $i=1$ in the 1D previous example:
-  \begin{equation}
+  \begin{multline}
     \label{eq:53}
-    \int_\Omega \Phi_1(x)\ f(x)\ dx  = \int_{-1}^1\ \phi^1_1(\xi) f(\delta(\chi^1)) \Big|\frac{d \chi^1}{d \xi}\Big| d\xi + \int_{-1}^1 \phi^2_0(\xi) f(\chi^2) \Big|\frac{d \chi^2}{d \xi}\Big| d\xi
-  \end{equation}
+    \int_\Omega \Phi_1(x)\ f(x)\ dx  = \int_{-1}^1\ \phi^1_1(\xi) f(\chi^1(\xi)) \Big|\frac{d \chi^1}{d \xi}\Big| d\xi + \\
+    \int_{-1}^1 \phi^2_0(\xi) f(\chi^2(\xi)) \Big|\frac{d \chi^2}{d \xi}\Big| d\xi
+  \end{multline}
   From this we see that we can compute integrals locally on the
   standard element $\Omega^{\text{st}}$ using say a numerical
   quadrature. $\mathcal{A}^T$ will allow us to assemble the global
@@ -833,9 +837,9 @@ In 1D we get
     \text{ where }
     I^e =  \left[
       \begin{array}[c]{c}
-        \int_{-1}^1\ \phi_0(\xi) f(\chi^e) \frac{d \chi^e}{d \xi} d\xi\\
+        \int_{-1}^1\ \phi_0(\xi) f(\chi^e(\xi)) \frac{d \chi^e}{d \xi} d\xi\\
         \vdots\\
-        \int_{-1}^1\ \phi_{P-1}(\xi) f(\chi^e) \frac{d \chi^e}{d \xi} d\xi
+        \int_{-1}^1\ \phi_{P-1}(\xi) f(\chi^e(\xi)) \frac{d \chi^e}{d \xi} d\xi
       \end{array}\right]
   \end{equation}
   $I_g$ can then be related to the local elemental vector $I_\ell$ using $\mathcal{A}^T$
@@ -912,23 +916,23 @@ In 1D we get
 
 \begin{frame}[containsverbatim]{Code to assemble}
   \begin{lstlisting}[mathescape,texcl]
-    for( int e = 1; e < $\nel$; ++e )
-    {
-      // local assembly
-      for( int $\iloc$ = 0; $\iloc$ < $\nldof$; ++$\iloc$ )
-        for( int $\jloc$ = 0; $\jloc$ < $\nldof$; ++$\jloc$ )
-         // compute $\aloc{e}( \iloc, \jloc ) = \int_{\Omega^{\text{st}}} \ \phi_\iloc(\xi)\   \phi_\jloc^e(\xi)  J^e(\xi)$
-         // $\aloc{e}$ is a dense matrix holding the 
-         // _all_ contributions from element $e$
-
-      // global assembly      
-      for( int $\iloc$ = 0; $\iloc$ < $\nldof$; ++$\iloc$ )
-        for( int $\jloc$ = 0; $\jloc$ < $\nldof$; ++$\jloc$ )
-         // $i = \mathrm{map}[e][\iloc]$
-         // $j = \mathrm{map}[e][\iloc]$
-         // add contribution from element $e$ to $A$, 
-         // i.e. $A(i,j) += \aloc{e}( \iloc, \jloc )$
-    } // e
+for( int e = 1; e < $\nel$; ++e )
+{
+  // local assembly
+  for( int $\iloc$ = 0; $\iloc$ < $\nldof$; ++$\iloc$ )
+    for( int $\jloc$ = 0; $\jloc$ < $\nldof$; ++$\jloc$ )
+      // compute $\aloc{e}( \iloc, \jloc ) = \int_{\Omega^{\text{st}}} \ \phi_\iloc(\xi)\   \phi_\jloc^e(\xi)  J^e(\xi)$
+      // $\aloc{e}$ is a dense matrix holding the 
+      // \_all\_ contributions from element $e$
+  
+  // global assembly      
+  for( int $\iloc$ = 0; $\iloc$ < $\nldof$; ++$\iloc$ )
+    for( int $\jloc$ = 0; $\jloc$ < $\nldof$; ++$\jloc$ )
+      // $i = \mathrm{map}[e][\iloc]$
+      // $j = \mathrm{map}[e][\iloc]$
+      // add contribution from element $e$ to $A$, 
+      // i.e. $A(i,j) += \aloc{e}( \iloc, \jloc )$
+} // e
   \end{lstlisting}
 \end{frame}
 
@@ -956,11 +960,12 @@ In 1D we get
   (e.g. \lstinline{std::map}\footnote{\url{http://www.cplusplus.com/reference/stl/map/}})
   
   \begin{lstlisting}[mathescape]
-    #include <boost/multi_array.hpp>
-    boost::multi_array<int,2> dof( boost::extents[$\nel$][$\nldof$] );
+#include <boost/multi_array.hpp>
+boost::multi_array<int,2> dof( 
+      boost::extents[$\nel$][$\nldof$] );
 
-    #include <map>
-    std::map<std::pair<int,int>, int> dof;
+#include <map>
+std::map<std::pair<int,int>, int> dof;
   \end{lstlisting}
   The former is much more efficient, but will fail in a true hp setting. 
 \end{frame}
@@ -995,17 +1000,21 @@ In 1D we get
 \begin{frame}{Change of variables in integrals}
     \begin{equation}
       \label{eq:71}
-      \int_{\Om{e}} \ f\ dx\ =\ \int_{\Omst} f( (\chi^e)^{-1}(\xi) ) J^e( \xi )\ d \xi
+      \int_{\Om{e}} \ f\ dx\ =\ \int_{\Omst} f( \chi^e(\xi) ) J^e( \xi )\ d \xi
   \end{equation}
   \begin{equation}
     \label{eq:70}
-    \int_{\Om{e}}\ \nabla f\ dx\ =\ \int_{\Omst} \Big(\nabla^{\text{st}} f( (\chi^e)^{-1}(\xi) ) B^e(\xi)\Big) J^e( \xi )\ d \xi
+    \int_{\Om{e}}\ \nabla f\ dx\ =\ \int_{\Omst} \Big(\nabla^{\text{st}} f( \chi^e(\xi) ) B^e(\xi)\Big) J^e( \xi )\ d \xi
   \end{equation}
   \begin{equation}
     \label{eq:65}
-    \int_{\partial \Om{e}}\ f( x )\ \mathbf{n}(x)\ dx = \int_{\partial \Omst} f( (\chi^e)^{-1}(\xi) )\  \| B^e(\xi) \ \mathbf{n^{\text{st}}}(\xi) \|\ J^e( \xi )\ d \xi
+    \int_{\partial \Om{e}}\ f( x )\ dx = \int_{\partial \Omst} f( \chi^e(\xi) )\  \| B^e(\xi) \ \mathbf{n^{\text{st}}}(\xi) \|\ J^e( \xi )\ d \xi
   \end{equation}
-  where $\mathbf{n}(x)$ is the outward normal to $\partial \Om{e}$
+    \begin{equation}
+      \label{eq:63}
+      \int_{\partial \Om{e}}\ \mathbf{F}( x )\ \cdot\ \mathbf{n}(x) dx = \int_{\partial \Omst} \mathbf{F}( \chi^e(\xi) )\  \cdot \Big(B^e(\xi) \ \mathbf{n^{\text{st}}}(\xi) \Big) \ J^e( \xi )\ d \xi
+  \end{equation}
+  where $\mathbf{n}(x)$ is the \alert{unit outward normal} to $\partial \Om{e}$
   evaluated in $x \in \partial \Om{e}$, and $\mathbf{n}^{\text{st}}(\xi)$
   the outward normal to $\Omst$ evaluated in $\xi \in \partial \Omst$.
 \end{frame}
