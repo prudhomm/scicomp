@@ -60,8 +60,8 @@
       \begin{figure}[H]
         \centering
         %% \movie[externalviewer=kaffeine,label=diphase]{\pgfuseimage{tetra-2}}{}
-        \includegraphics[width=\figwidth\textwidth]{../../../../../../figures/triangle.pdf}\\
-        \includegraphics[width=\figwidth\textwidth]{../../../../../../figures/tetra.pdf}
+        \includegraphics[width=\figwidth\textwidth]{../figures/triangle.pdf}\\
+        \includegraphics[width=\figwidth\textwidth]{../figures/tetra.pdf}
         %% \hyperlinkmovie[externalviewer=kaffeine]{diphase}{\beamergotobutton{Film}}
         \caption{Simplexe de Référence en 2D/3D}
       \end{figure}
@@ -81,7 +81,7 @@
         faces, edges, points) and in an ordered manner
       \end{alertblock}
 
-      
+
 % \begin{lstlisting}[]
 % template<uint16_type Dim,
 %          uint16_type Order = 1,
@@ -99,17 +99,17 @@
     \end{column}
   \end{columns}
 \end{frame}
-
+\subsection{Interval}
 \begin{frame}[containsverbatim]{The interval $[-1;1]$}
-  An interval is composed of 
+  An interval is composed of
   \begin{itemize}
-  \item two vertices 
+  \item two vertices
   \item an edge connecting the two vertices
   \end{itemize}
-  \begin{figure}[htbp]
+  \begin{figure}[H]
     \centering
     \begin{tikzpicture}[scale=2]
-      \tikz { 
+      \tikz {
         \fill (0,0) circle (2pt) node[above=2pt] {0};
         \draw (0,0)  to[line to] (3,0);
         \draw[->] (0.5,0.3)  to[line to] node[above] {0} (2.5,0.3) ;
@@ -121,11 +121,12 @@
   Denote \lstinline!entity[0]! and \lstinline!entity[1]! the
   subentities sets for the vertices and edges respectively, we have
   \begin{itemize}
-  \item \lstinline!entity[0] = {0,1}! 
+  \item \lstinline!entity[0] = {0,1}!
   \item \lstinline!entity[1] = {0}!
   \end{itemize}
 \end{frame}
 
+\subsection{Quadrilateral}
 \begin{frame}[containsverbatim]{Quadrilateral}
   \begin{figure}[H]
     \centering
@@ -136,8 +137,8 @@
         \draw[->] (0.3,2.5)  to[line to]  (0.3,0.5) ;
 
 
-        \draw 
-        (0,0)  to[line to] node[below] {0} (3,0)        
+        \draw
+        (0,0)  to[line to] node[below] {0} (3,0)
         (3,0)  to[line to] node[right] {1} (3,3)
         (3,3)  to[line to] node[above] {2} (0,3)
         (0,3)  to[line to] node[left]  {3} (0,0)
@@ -147,7 +148,7 @@
         \fill (3,3) circle (2pt) node[right=2pt] {2};
         \fill (0,3) circle (2pt) node[left=2pt] {3};
     \end{tikzpicture}
- 
+
     \caption{Local numbering and orientation  for vertices and edges of the quadrilateral}
     \label{fig:2}
   \end{figure}
@@ -158,13 +159,13 @@
   \end{equation}
   We have for the quadrangle
   \begin{itemize}
-  \item \lstinline!entity[0] = {0,1,2,3}! 
+  \item \lstinline!entity[0] = {0,1,2,3}!
   \item \lstinline!entity[1] = {0,1,2,3}!
   \item \lstinline!entity[2] = {0}!
   \end{itemize}
 \end{frame}
 
-
+\subsection{Triangle}
 \begin{frame}[containsverbatim]{Triangles}
   \begin{figure}[H]
     \centering
@@ -172,10 +173,10 @@
       \draw[->] (0.5,0.3)  to[line to]  (2.3,0.3) ;
       \draw[->] (2.5,0.3)  to[line to]  (0.3,2.5) ;
       \draw[->] (0.3,2.4)  to[line to]  (0.3,0.6) ;
-      
-      
-      \draw 
-      (0,0)  to[line to] node[below] {0} (3,0)        
+
+
+      \draw
+      (0,0)  to[line to] node[below] {0} (3,0)
       (3,0)  to[line to] node[above] {2} (0,3)
       (0,3)  to[line to] node[left]  {3} (0,0)
       ;
@@ -183,7 +184,7 @@
       \fill (3,0) circle (2pt) node[right=2pt] {1};
       \fill (0,3) circle (2pt) node[right=2pt] {2};
     \end{tikzpicture}
-    
+
     \caption{Local numbering and orientation  for vertices and edges of the triangles}
     \label{fig:2}
   \end{figure}
@@ -194,22 +195,23 @@
   \end{equation}
   We have for the triangle
   \begin{itemize}
-  \item \lstinline!entity[0] = {0,1,2}! 
+  \item \lstinline!entity[0] = {0,1,2}!
   \item \lstinline!entity[1] = {0,1,2}!
   \item \lstinline!entity[2] = {0}!
   \end{itemize}
 \end{frame}
 
+\subsection[Tet. and Hex.]{Tetrahedron and hexahedron}
 \begin{frame}{Tetrahedron and hexahedron}
   We do a similar construction for the tetrahedron and hexahedron, i.e
   decompsoing it into vertices, edges, faces and volumes
 
-  We shall denote 
+  We shall denote
   \begin{equation}
     \label{eq:3}
     \mathcal{T}^3 = \{ (x_1, x_2, x_3) \in \setR{3} | -1 < x_1, x_2, x_3 < 1, x_1 + x_2 + x_3 < 0 \}
   \end{equation}
-  and 
+  and
   \begin{equation}
     \label{eq:4}
     \mathcal{Q}^3 = \{ (x_1, x_2, x_3) \in \setR{4} | -1 < x_1, x_2, x_3 < 1 \}
@@ -217,11 +219,11 @@
 \end{frame}
 
 \begin{frame}[containsverbatim]{C++}
-\begin{lstlisting}[]
+\begin{lstlisting}
  template<uint16_type Dim,
           uint16_type RealDim = Dim>
  class Simplex {
-  // static Informations 
+  // static Informations
   // orientation
   // normales/tangentes
   // decomposition in subentities
@@ -233,21 +235,21 @@
 \section{Polynomials Bases}
 \label{sec:polynomials-bases}
 
-\subsection{Spaces}
+\subsection[Space]{Polynomial Spaces}
 \begin{frame}{Polynomial Spaces}
   Denote
   \begin{equation}
     \label{eq:5}
     \PS{N}(\GT{d}) = \{ p | \text{degree} \leq N \}
   \end{equation}
-  and 
+  and
   \begin{equation}
     \label{eq:6}
     \QS{N}(\GQ{d}) = \{ p | \text{degree} \leq N \text{ in each variable} \}
   \end{equation}
 \end{frame}
 
-\subsection{Jacobi Polynomials}
+\subsection[Jacobi]{Jacobi Polynomials}
 \begin{frame}{Jacobi Polynomials}
 
   The Jacobi polynomials $P_k^{(\alpha,\beta)}$ of indices
@@ -264,43 +266,88 @@
     We are going to use the Jacobi polynomials using specific values
     of $\alpha$ and $\beta$. Note also that the \alert{roots} of these
     polynomials are crucial in the construction of quadrature formulas
-    (we come back later to them
+    (we come back later to them)
   \end{block}
 \end{frame}
+
+\begin{frame}{Recurrence relations for evaluation}
+  \begin{equation*}
+    \label{eq:15}
+  \begin{aligned}
+    P_0^{\alpha,\beta}( x ) &= 1,\\
+    P_1^{\alpha,\beta}( x ) &= \frac{1}{2}\Big[ \alpha -\beta +(\alpha+\beta+2)x \Big],\\
+    a^1_n P_{n+1}^{\alpha,\beta}( x ) &= (a^2_n +a^3_n x) P_{n}^{\alpha,\beta}( x ) - a^4_n P_{n-1}^{\alpha,\beta}( x )\\
+    a^1_n & = 2(n+1)(n+\alpha+\beta+1)(2n+\alpha + \beta)\\
+    a^2_n & = (2n+\alpha+\beta+1)(\alpha^2 - \beta^2)\\
+    a^3_n & = (2n+\alpha+\beta)(2n+\alpha + \beta+1)(2n+\alpha + \beta+2)\\
+    a^4_n & = 2(n+\alpha)(n+\beta)(2n+\alpha + \beta+2)
+  \end{aligned}
+
+  \end{equation*}
+
+  Some special values
+
+  \begin{equation*}
+    \begin{aligned}
+      P_{n}^{\alpha,\beta}( 1 ) & =
+      \begin{pmatrix}
+        n+\alpha\\
+        n
+      \end{pmatrix} =
+      \frac{(n+\alpha)!}{\alpha!n!}\\
+      P_{n}^{\alpha,\beta}( -x ) & = (-1)^n P_{n}^{\alpha,\beta}( x )
+    \end{aligned}
+
+  \end{equation*}
+\end{frame}
+\begin{frame}{Recurrence relations for diffentiation}
+  \begin{equation*}
+    \label{eq:15}
+  \begin{aligned}
+    b^1_n \frac{d}{dx} P_n^{\alpha,\beta}( x ) &= b^2_n P_{n}^{\alpha,\beta}( x ) + b^3_n P_{n-1}^{\alpha,\beta}( x )\\
+    b^1_n & = (2n+\alpha + \beta)(1-x^2)\\
+    b^2_n & = n\Big[ \alpha -\beta -(\alpha+\beta+2n)x \Big]\\
+    b^3_n & = 2(n+\alpha)(n+\beta)
+  \end{aligned}
+  \end{equation*}
+
+\end{frame}
+
+
 
 \subsection[Moment]{Moment basis}
 \label{sec:moment-basis}
 
 \begin{frame}{Moment basis}
-  The moment basis is the canonical basis for the spaces $\PS{N}(\GT{d})$ or $\QS{N}(\GQ{d})$ 
+  The moment basis is the canonical basis for the spaces $\PS{N}(\GT{d})$ or $\QS{N}(\GQ{d})$
   \begin{equation}
     \label{eq:8}
-    \PS{N}(\GT{d}) = 
+    \PS{N}(\GT{d}) =
     \begin{cases}
       x^i, & i \leq N,\\
       x^i y^j & i+j \leq N, \\
-      x^i y^j  z^k & i+j+k \leq N, 
+      x^i y^j  z^k & i+j+k \leq N,
     \end{cases}
   \end{equation}
-  and 
+  and
   \begin{equation}
     \label{eq:9}
-    \QS{N}(\GQ{d}) = 
+    \QS{N}(\GQ{d}) =
     \begin{cases}
       x^i, & i \leq N,\\
       x^i y^j & i,j \leq N, \\
-      x^i y^j z^k & i,j,k \leq N, 
+      x^i y^j z^k & i,j,k \leq N,
       \end{cases}
   \end{equation}
 
   \begin{block}{Remarks}
-    \begin{itemize}
+    \begin{description}
     \item[GOOD] Easy to construct and compute
-    \item[GOOD] Easy Integration, differentiation 
+    \item[GOOD] Easy Integration, differentiation
     \item[GOOD] Hierarchical basis
     \item[BAD] Very bad Vandermonde matrix conditioning as polynomial degree increases
     \item[BAD] Very bad mass matrix conditioning as polynomial degree increases
-    \end{itemize}
+    \end{description}
   \end{block}
 \end{frame}
 
@@ -309,10 +356,10 @@
   Take $\alpha = \beta = 0$ in the Jacobi polynomials definition. we
   denote $L_k$ the $k$-th Legendre polynomial. $(L_k)_{k=1,...,N^d}$
   form a basis of $\QS{N}(\GQ{d})$.
-  
+
   \begin{figure}[H]
     \centering
-    \subfigure[Legendre]{\includegraphics[width=\figwidth\textwidth]{../../../../../../figures/Jacobi_2D}}
+    \subfigure[Legendre]{\includegraphics[width=\figwidth\textwidth]{../figures/Jacobi_2D}}
     \caption{Legendre polynomials in 2D and basis of $\QS{4}(\GQ{2})$. }
     \label{fig:3}
   \end{figure}
@@ -320,8 +367,8 @@
 
 \begin{frame}{Construction}
   \begin{itemize}
-  \item The extension of 1D basis to quadrilaterals or hexahedra is done by \alert{tensorisation}. 
-  \item Consider $d$ 1D basis $\{ \\varphi^{(l)}_{k_l}\}_{l=1}^d$ defined in $\GQ{1}$, the family $\{\phi_{\mathbf{k}}(\mathbf{x})\}_k$  given by
+  \item The extension of 1D basis to quadrilaterals or hexahedra is done by \alert{tensorisation}.
+  \item Consider $d$ 1D basis $\{ \varphi^{(l)}_{k_l}\}_{l=1}^d$ defined in $\GQ{1}$, the family $\{\phi_{\mathbf{k}}(\mathbf{x})\}_k$  given by
     \begin{equation}
       \label{eq:10}
       \phi_{\mathbf{k}}(\mathbf{x}) = \Pi_{l=1}^d\ \varphi^{(l)}_{k_l}( x_l ),\quad \mathbf{k} = (k_1,...,k_d), \mathbf{x}=(x_1,...,x_d)
@@ -329,19 +376,19 @@
     is a basis of $\QS{N}(\GQ{d})$
   \end{itemize}
   \begin{block}{Remark}
-    \begin{itemize}
+    \begin{description}
     \item[MODERATE BAD] moderate construction complexity
     \item[GOOD] $L_2$ orthogonal (normal) basis
     \item[GOOD] Hierarchical basis
-    \item[GOOD] good (constsant) mass matrix conditioning as polynomial degree increases
-    \end{itemize}
+    \item[GOOD] good (constant) mass matrix conditioning as polynomial degree increases
+    \end{description}
   \end{block}
 \end{frame}
 
 
 \subsection{Dubiner}
 \begin{frame}{Dubiner Basis}
-  
+
   The Dubiner basis is an orthogonal modal basis on the simplices
   $\GT{d}$. Their construction derives from Legendre by collapsing
   vertices (i.e. introducing a collaped coordinate system)
@@ -352,7 +399,7 @@
     m^{-1}: \GQ{2} \mapsto \GT{2},& (\xi_1,\xi_2) \rightarrow (x_1, x_2) &= \Big( \frac{1}{2}(1+\xi_1)(1-\xi_2)-1,\xi_2\Big)
   \end{eqnarray}
 
-  We define now
+  We define now on the interval the following \alert{principal} functions
   \begin{equation}
     \label{eq:12}
     \left.
@@ -363,27 +410,34 @@
       \end{array}
     \right.
   \end{equation}
-Take $\alpha = \beta = 0$ in the Jacobi polynomials
-  definition. we denote $L_k$ the $k$-th Legendre
-  polynomial. $(L_k)_{k=1,...,N^d}$ form a basis of $\QS{N}(\GQ{d})$.
-  
+  The Dubiner basis reads in 2D and 3D as follows:
+  \begin{equation}
+    \label{eq:14}
+    \begin{array}[c]{rl}
+    \phi_{k_1,k_2}(x_1,x_2) &= \psi_{k_1}(\xi_1)	\psi_{k_1,k_2}(\xi_2)\\
+    \phi_{k_1,k_2,k_3}(x_1,x_2,x_3) &= \psi_{k_1}(\xi_1)	\psi_{k_1,k_2}(\xi_2) \psi_{k_1,k_2,k_3}(\xi_3)
+  \end{array}
+  \end{equation}
+  The cardinality is $(N+1)(N+2)/2$ in 2D and $(N+1)(N+2)(N+3)/6$.
+\end{frame}
+\begin{frame}{Dubiner basis in 2D}
   \begin{figure}[H]
     \centering
-    \subfigure[Legendre]{\includegraphics[width=\figwidth\textwidth]{../../../../../../figures/Dubiner_5}}
+    \includegraphics[width=\figwidth\textwidth]{../figures/Dubiner_5}
     \caption{Dubiner polynomials in 2D and basis of $\PS{5}(\GQ{2})$. }
     \label{fig:3}
   \end{figure}
 \end{frame}
 
-\section{Finite element method}
+\section[FEM]{Finite element method}
 \label{sec:finite-elem-meth}
 
 
 \begin{frame}{Objective}
-  
+
   \begin{block}{Finite/Spectral-hp element in 1/2/3D}
-    \centerline{Construct $\LARGE (\ {K},\ {\mathbb{P}},\ {\Sigma}\ )$}
-    
+    \centerline{Construct {\LARGE$ (\ {K},\ {\mathbb{P}},\ {\Sigma}\ )$}}
+
     \begin{itemize}
     \item ${K}$ Reference convex
     \item ${\mathbb{P}}$ polynomial space
@@ -392,7 +446,7 @@ Take $\alpha = \beta = 0$ in the Jacobi polynomials
     \hfill (Ciarlet, Ern \& Guermond, R.C. Kirby(Fenics/FIAT),
     Sherwin/Karniadakis, Quarteroni et al.)
   \end{block}
-  
+
   % \begin{alertblock}{Standards}
   %   \begin{itemize}
   %   \item Le formalisme mathématique ci-dessus est rarement
@@ -405,7 +459,7 @@ Take $\alpha = \beta = 0$ in the Jacobi polynomials
   %     \end{itemize}
   %   \end{itemize}
   % \end{alertblock}
-  
+
   \note{\begin{itemize}
     \item Géométrie élémentaire sur des convexes $\subset \mathbb{R}^d$
       (simplexes et produits de simplexes)
@@ -418,16 +472,16 @@ Take $\alpha = \beta = 0$ in the Jacobi polynomials
     \end{itemize}}
 \end{frame}
 
-\subsection{Polynomial set}
+\subsection{Point sets}
 
 \begin{frame}{Points Sets in a Convex}
 
 \begin{columns}
   \begin{column}[c]{.4\textwidth}
-    \begin{figure}
+    \begin{figure}[H]
       \centering
-      \includegraphics[width=0.7\textwidth]{../../../../../../figures/triangle-equirepartis}\\
-      \includegraphics[width=0.7\textwidth]{../../../../../../figures/tetra-equirepartis}
+      \includegraphics[width=0.7\textwidth]{../figures/triangle-equirepartis}\\
+      \includegraphics[width=0.7\textwidth]{../figures/tetra-equirepartis}
       \caption{\scriptsize Equi-distributed points in 2D/3D}
     \end{figure}
   \end{column}
@@ -464,31 +518,32 @@ Take $\alpha = \beta = 0$ in the Jacobi polynomials
   \item first the points associated with vertices (wrt vertex ordering)
   \item then the points associated with the edges (wrt to edge ordering)
   \item  then the points associated with the faces (wrt to face ordering)
-  \item  then the points associated with the volume 
+  \item  then the points associated with the volume
   \end{itemize}
 \end{frame}
 \begin{frame}[containsverbatim]{C++}
   \begin{lstlisting}
-    template<class Convex,typename T>
-    class PointSet 
-    {
-      public:
-      Convex convex() const { return M_convex; }
-      uint16_type nPoints();
-      // matrix column oriented
-      // rows (coord.)
-      // cols (points)
-      points_type points() { return M_pts; }
+#include <boost/numeric/ublas/matrix.hpp>
+template<class Convex,typename T>
+class PointSet
+{
+  public:
+  Convex convex() const { return M_convex; }
+  uint16_type nPoints();
+  // matrix column oriented
+  // rows (coord.)
+  // cols (points)
+  points_type points() { return M_pts; }
 
-      protected:
-      ublas::matrix<double,row_major> M_pts;
-    };
-    template<class Convex,typename T>
-    class PointSetEquidistributed:
-    public PointSet
-    {
-      // construction of the point set
-    };
+  protected:
+  ublas::matrix<T,row_major> M_pts;
+};
+template<class Convex,typename T>
+class PointSetEquidistributed:
+public PointSet
+{
+  // construction of the point set
+};
   \end{lstlisting}
 \end{frame}
 
@@ -499,7 +554,7 @@ Take $\alpha = \beta = 0$ in the Jacobi polynomials
     Express the polynomials of $\Pk$ in the Dubiner basis $\{\phi_i\}_{i=1,\mathrm{dim} \Pk}$
     $$p=\sum_i (p, \phi_i)_K \phi_i,\quad p \in \Pk$$
     \begin{itemize}
-    \item \alert{$L_2$ orthonormality}: 
+    \item \alert{$L_2$ orthonormality}:
       \begin{itemize}
       \item exact integration,...
       \item Introduce $\mathcal{I} : \Pk \rightarrow \mathbb{R}^{\mathrm{dim} \Pk}$ such that
@@ -513,40 +568,43 @@ Take $\alpha = \beta = 0$ in the Jacobi polynomials
       \item Trivial to extract a basis of $\mathbb{P}_l(K) \subset \Pk, l \leq k$
       \end{itemize}
     \end{itemize}
-    \hfill\hyperlink{psetlisting<1>}{\beamergotobutton{\cpp}}
   \end{block}
-  %% \hfill\hyperlink{psetlisting<1>}{\beamergotobutton{\cpp$\triangleright$}}
   \note{Les propriétés mathématiques sont ici \alert{essentielles}}
 \end{frame}
 
 \begin{frame}[label=psetops]{Polynomiales Operations}
   \begin{block}{Modal/Nodal Mapping }
     \begin{itemize}
-    \item Given $\{x_j\}_{j=1,...,\mathrm{dim} \Pk}$ a point set in $K$
-    \item Given $V = (\phi_i(x_j))$  Vandermonde matrix (modal/nodal coefficient mapping)
-    \item Given $\Hat{p} \in \mathbb{R}^{\mathrm{dim} \Pk}$, such that $\Hat{p} = \mathcal{I}(p)\, V$
+    \item Given $X=\{x_j\}_{j=1,...,\mathrm{dim} \Pk}$ a point set in $K$
+    \item Given $V(\phi,X) = (\phi_i(x_j))$  Vandermonde matrix (modal/nodal coefficient mapping)
+    \item Given $\Hat{p} \in \mathbb{R}^{\mathrm{dim} \Pk}$, such that $\Hat{p} = \mathcal{I}(p)\, V(\phi,X)$
     \end{itemize}
-    \centerline{\alert{We look for $p$ (that is determine its  coefficients $\mathcal{I}(p)$)}}
+
   \end{block}
-  \begin{example}{}
-    Given $D_l$ such that  $(D_l)_{i,j}= (\frac{\partial \phi_i}{\partial x_l})(x_j)$
-    \begin{itemize}
-    \item $\partial_l\ \Hat{p} = \mathcal{I}( \partial_l\ p )\ D_l$, where $\partial_l\ \Hat{p}$ derivative of $p$ in $\{x_j\}$
-    \item $\mathcal{I}(\partial_l\ p) = \partial_l\ \Hat{p}\ D_l^{-1}$
-    \end{itemize}
-  \end{example}
-  \begin{alertblock}{Features        \hfill\hyperlink{psetopslisting<1>}{\beamergotobutton{\cpp}}
-    }
-    Any order differentiation, Gradient, Divergence, Curl, $L_2$ projection
+  \begin{alertblock}{}
+    We look for $p$ that is to say we determine its  coefficients $\mathcal{I}(p)$ in the basis $(\phi_i)$
   \end{alertblock}
 \end{frame}
 
-%%\frame[containsverbatim,label=psetlisting]{
-%\frame[containsverbatim]{
-\begin{frame}[containsverbatim,label=psetlisting]{Polynomial and Polynomialset}
-\begin{lstlisting}[mathescape,basicstyle=\tiny\ttfamily]
+\begin{frame}{Differentatiation matrix}
+  \begin{example}{}
+    Given $D_l$ such that  $(D_l)_{i,j}= V(\frac{\partial \phi}{\partial x_l},Y)\ V^{-1}(\phi,Y)$, we have
+    \begin{equation}
+      \label{eq:13}
+      \mathcal{I}(\partial_l\ p) = \mathcal{I}( p )\ D_l
+    \end{equation}
+    The choice of $Y$ is crucial for good numerical stability.
+  \end{example}
+  \begin{alertblock}{Features}
+    Any order differentiation ($D_l^n$), Gradient, Divergence, Curl, $L_2$ projection
+  \end{alertblock}
+\end{frame}
+
+\begin{frame}[containsverbatim]{C++ Polynomial and Polynomialset}
+%\begin{lstlisting}[mathescape,basicstyle=\tiny\ttfamily]
+\begin{lstlisting}[mathescape]
 // Polynomial
-template<typename Poly,
+template<typename Basis,
          typename PolyValueType >
 class Polynomial {
  // basis from Poly (dimension N)
@@ -554,48 +612,52 @@ class Polynomial {
 };
 
 // PolynomialSet
-template<typename Poly,
+template<typename Basis,
          typename PolyValueType >
 class PolynomialSet {...};
 
 // OrthonormalPolynomialSet
 template<uint16_type $d$,
-  uint16_type $k$,
   typename PolyValueType,
   typename T = double,
   template<uint16_type,uint16_type,
            uint16_type> class Convex>
 class OrthonormalPolynomialSet {...};
 \end{lstlisting}
-
-  \begin{block}{}
-    \begin{lstlisting}[mathescape,basicstyle=\tiny\ttfamily]
-      // Scalar polynomial set
-      OrthonormalPolynomialSet<2,3,Scalar> ScalarDubiner;
-      // Vectorial polynomial set
-      OrthonormalPolynomialSet<2,3,Vectorial> VectorialDubiner;
-    \end{lstlisting}
-  \end{block}
 \end{frame}
 
-\begin{frame}[containsverbatim,label=psetopslisting]{Polynomials Operations}
-  
+\begin{frame}[containsverbatim]{C++ Polynomial and Polynomialset}
+\begin{lstlisting}[mathescape,basicstyle=\tiny\ttfamily]
+// Scalar polynomial set
+OrthonormalPolynomialSet<2,Scalar,Simplex> ScalarDubiner;
+// Vectorial polynomial set
+OrthonormalPolynomialSet<2,Vectorial,Simplex> VectorialDubiner;
+
+// Scalar polynomial set
+OrthonormalPolynomialSet<2,Scalar,SimplexProduct> ScalarLegendre;
+// Vectorial polynomial set
+OrthonormalPolynomialSet<2,Vectorial,SimplexProduct> VectorialLegendre;
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[containsverbatim]{Polynomials Operations}
+
 \begin{lstlisting}[mathescape,basicstyle=\tiny\ttfamily]
 // Divergence $\nabla \cdot$
-template<typename Poly>
-PolynomialSet<Poly, Scalar>
-div( PolynomialSet<Poly, Vectorial> const& p )
+template<typename Basis>
+PolynomialSet<Basis, Scalar>
+div( PolynomialSet<Basis, Vectorial> const& p )
 {
   const int nComponents =
-   PolynomialSet<Poly, Vectorial>::nComponents;
-  typedef typename Poly::value_type value_type;
+   PolynomialSet<Basis, Vectorial>::nComponents;
+  typedef typename Basis::value_type value_type;
   matrix<value_type> __div;
   for ( int i = 0; i <nComponents; ++i )  {
     __div += prod( p[i].coeff(),
-                   trans( p.basis().d(i) ) );
+                   p.basis().d(i) );
   }
-   return PolynomialSet<Poly, Scalar>( Poly(), __div );
-}
+   return PolynomialSet<Basis, Scalar>( Basis(), __div );
+} // div
 // $L_2$ Projection sur $\mathbb{P}$ = Pset
 template<typename Pset, typename PExpr, typename IM>
 Polynomial<Pset, Scalar>
@@ -606,8 +668,9 @@ project( Pset const& pset, PExpr const& expr, IM const& im )
   vector<value_type> exprq( expr( im.points() ) );
   // evaluate pset at quad nodes
   matrix<value_type> psetq( pset.evaluate( im.points() ) );
-  return Polynomial<Pset, Scalar>(pset, prod( psetq, element_prod( exprq, im.weights() ) );  );
-}
+  return Polynomial<Pset, Scalar>(pset, prod( psetq, element_prod( exprq,
+                                                                   im.weights() ) ) );
+} // project
 \end{lstlisting}
 \end{frame}
 
@@ -616,11 +679,11 @@ project( Pset const& pset, PExpr const& expr, IM const& im )
      \begin{column}{.5\textwidth}
   \begin{lstlisting}[mathescape,basicstyle=\tiny\ttfamily]
   template<typename P, typename PS,
-   template<class, class> class Poly1,
-   template<class, class> class Poly2 >
+   template<class, class> class Basis1,
+   template<class, class> class Basis2 >
   PolynomialSet<P, PS>
-  unite( Poly1<P, PS> const& pset1,
-         Poly2<P, PS> const& pset2 )
+  unite( Basis1<P, PS> const& pset1,
+         Basis2<P, PS> const& pset2 )
   {
    // merge the two polynomial sets
    matrix<> M( pset1.coeff().size1()+
@@ -629,13 +692,13 @@ project( Pset const& pset, PExpr const& expr, IM const& im )
    project( M,
      range( 0, pset1.coeff().size1() ),
      range( 0,pset1.coeff().size2() ) ) =
-                                 pset1.coeff();
+                              pset1.coeff();
    project( M,
      range( pset1.coeff().size1(),
             pset1.coeff().size1()+
             pset2.coeff().size1() ),
      range( 0,pset1.coeff().size2() ) ) =
-                                 pset2.coeff();
+                              pset2.coeff();
    // SVD
    SVD<matrix<> > svd( M );
    // extract the submatrix of V
@@ -648,8 +711,8 @@ project( Pset const& pset, PExpr const& expr, IM const& im )
      \begin{column}{.5\textwidth}
        \begin{block}{Base orthonormale de $\Hat{P} \subset P$}
          \begin{enumerate}
-         \item Construire la famille de polynômes $\mathbb{P}$ résultant
-           de l'union de $\mathbb{P}^a$ et $\mathbb{P}^b$
+         \item Construire la base orthonormal de polynômes $\mathbb{P}$ résultant
+           de l'union de $\mathbb{P}^a$ et $\mathbb{P}^b$ (i.e. $\mathbb{P}^a \oplus \mathbb{P}^b$)
          \item Faire une décomposition en valeur singulière $M = U S V^T$
          \item Extraire les lignes de $V$ associées aux valeurs singulières
            non-nulles
@@ -672,11 +735,10 @@ project( Pset const& pset, PExpr const& expr, IM const& im )
       $$\sigma(p) = \sum_{i=1}^{\mathrm{dim}(\Pk)} p_i \sigma(\phi_i)$$
     \item $\sigma \in \mathcal{L}(\Pk;\mathbb{R})$ is then
       represented by $(\sigma(\phi_i)) \in \mathbb{R}^{\mathrm{dim}(\Pk)}$
-    \item Similarly, a functional set 
+    \item Similarly, a functional set
       $\Sigma=\{\sigma_i\}_{i=1...N}$ is represented by
       $(\sigma_i(\phi_j))_{i,j} \in \mathbb{R}^{N\times\mathrm{dim}(\Pk)}$
     \end{itemize}
-    \hfill\hyperlink{fsetlisting<1>}{\beamergotobutton{\cpp}}
   \end{block}
 \end{frame}
 
@@ -695,13 +757,12 @@ project( Pset const& pset, PExpr const& expr, IM const& im )
       \alert{$\sigma_{\mathrm{div},\, q}: p \in [\mathbb{P}(K)]^d \longrightarrow \int_K\ \mathrm{div}( p )\ q$}
     \item ...
     \end{itemize}
-    \hfill\hyperlink{fsetopslisting<1>}{\beamergotobutton{\cpp}}
   \end{block}
 \end{frame}
 
 %% fset
-\begin{frame}[fragile=singleslide,label=fsetlisting]{Functionals and Functional Sets}
-\begin{lstlisting}[mathescape,basicstyle=\tiny\ttfamily]
+\begin{frame}[containsverbatim]{Functionals and Functional Sets}
+\begin{lstlisting}[mathescape]
 // $\sigma$
 template<typename Space>
 class Functional
@@ -733,11 +794,10 @@ class FunctionalSet
  }
 }
 \end{lstlisting}
-    \hfill\hyperlink{fset<1>}{\beamerreturnbutton{$\triangleleft$}}
 \end{frame}
 
 %% fsetops
-\begin{frame}[fragile=singleslide,label=fsetopslisting]{Some Functionnals}
+\begin{frame}[containsverbatim,label=fsetopslisting]{Some Functionnals}
 \begin{lstlisting}[mathescape,basicstyle=\tiny\ttfamily]
 // Functional $\sigma_{x_i}$
 template<typename Space>
@@ -758,24 +818,23 @@ class PointDerivative
   : super( b, b.basis().derivate(j).evaluate( pt ))
     {} };
 // Functional $\sigma_{q}$
-template<typename Space, typename Poly = Space>
+template<typename Space, typename Basis>
 class IntegralMoment
  : public Functional<Space>
 {
- IntegralMoment( Space const& p, Poly const& q )
+ IntegralMoment( Space const& p, Basis const& q )
  : super( p )
  {
    this->setCoefficient(
      prod( q.coeff(), trans( p.basis().coeff() ) ) );
  } };
 \end{lstlisting}
-  \hfill\hyperlink{fsetops<1>}{\beamerreturnbutton{$\triangleleft$}}
 \end{frame}
 
 \subsection{Applications}
 \label{sec:applications}
 
-\begin{frame}[label=apps,containsverbatim]{FE construction}
+\begin{frame}[label=apps]{FE construction}
   \begin{block}{}
     \begin{itemize}
     \item Dubiner, Legendre, and associated boundary adapted versions(cG)
@@ -801,7 +860,7 @@ class IntegralMoment
     \begin{enumerate}
     \item Define $[\Pk]^d$ and $\mathbb{P}_{k-1}(K)$
     \item Define $\Sigma=\{\sigma_{\mathrm{div},\, q} : [\Pk]^d \rightarrow \mathbb{R},\ q \in \mathbb{P}_{k-1}\}$
-    \item Given $M$ the matrix associated with $\Sigma$, do a 
+    \item Given $M$ the matrix associated with $\Sigma$, do a
       singular value decomposition $M = U S V^T$
     \item Extract the lines of $V$ associated with the singular value
       $0$
@@ -840,14 +899,13 @@ public ConstrainedPolynomialSet<OrthonormalPolynomialSet<$d$, $k$, Vectorial, T,
 \end{frame}
 
 \begin{frame}{$D=\{ p \in [\Pk]^d,\ \mathrm{div}(p) = 0\}$}
-  \begin{figure}
+  \begin{figure}[H]
     \centering
-    \includegraphics[width=.5\textwidth]{../../../../../../figures/divfree-2-1-3}
-    \includegraphics[width=.5\textwidth]{../../../../../../figures/divfree-2-1-4}
+    \includegraphics[width=.5\textwidth]{../figures/divfree-2-1-3}
+    \includegraphics[width=.5\textwidth]{../figures/divfree-2-1-4}
     \caption{2 divergence free polynomials}
     \label{fig:1}
   \end{figure}
-  \hfill\hyperlink{apps<1>}{\beamerreturnbutton{$\triangleleft$}}
 \end{frame}
 
 \begin{frame}[label=lag]{$(K,\ \mathbb{P}_k,\ \{\sigma_{x_i}\})$, $(K,\ [\mathbb{P}_k]^d,\ \{\sigma_{x_i}\})$}
@@ -861,7 +919,6 @@ public ConstrainedPolynomialSet<OrthonormalPolynomialSet<$d$, $k$, Vectorial, T,
             Lagrange polynomials in the basis of $\Pk$
           \end{enumerate}
       \end{block}
-  \hfill\hyperlink{apps<1>}{\beamerreturnbutton{$\triangleleft$}}
 \end{frame}
 
 \begin{frame}[fragile=singleslide]{$(K,\ \mathbb{P}_k,\ \{\sigma_{x_i}\})$, $(K,\ [\mathbb{P}_k]^d,\ \{\sigma_{x_i}\})$}
@@ -896,22 +953,19 @@ class Lagrange
      Pts >
 { Lagrange() : FiniteElement<>( dual(primal) ){} };
 \end{lstlisting}
-  \hfill\hyperlink{apps<1>}{\beamerreturnbutton{$\triangleleft$}}
 \end{frame}
 
 \begin{frame}{$(K,\ \mathbb{P}_k,\ \{\sigma_{x_i}\})$, $(K,\ [\mathbb{P}_k]^d,\ \{\sigma_{x_i}\})$}
-  \begin{figure}
+  \begin{figure}[H]
     \centering
-    \includegraphics[width=.3\textwidth]{../../../../../../figures/lag_2_1_p_0.pdf}
-    \includegraphics[width=.3\textwidth]{../../../../../../figures/lag_2_1_p_1.pdf}
-    \includegraphics[width=.3\textwidth]{../../../../../../figures/lag_2_1_p_2.pdf}\\
-    \includegraphics[width=.3\textwidth]{../../../../../../figures/lag_2_3_p_5.pdf}
-    \includegraphics[width=.3\textwidth]{../../../../../../figures/lag_2_3_p_6.pdf}
-    \includegraphics[width=.3\textwidth]{../../../../../../figures/lag_2_3_p_9.pdf}
-    \caption{Scalar Lagrange element of order 1 (top) \\
-      Some Lagrange polynomials of degree 3 (bottom) \hfill\hyperlink{apps<2>}{\beamerreturnbutton{$\triangleleft$}}}
+    \subfigure{\includegraphics[width=.3\textwidth]{../figures/lag_2_1_p_0.pdf}}
+    \subfigure{\includegraphics[width=.3\textwidth]{../figures/lag_2_1_p_1.pdf}}
+    \subfigure{\includegraphics[width=.3\textwidth]{../figures/lag_2_1_p_2.pdf}}\\
+    \subfigure{\includegraphics[width=.3\textwidth]{../figures/lag_2_3_p_5.pdf}}
+    \subfigure{\includegraphics[width=.3\textwidth]{../figures/lag_2_3_p_6.pdf}}
+    \subfigure{\includegraphics[width=.3\textwidth]{../figures/lag_2_3_p_9.pdf}}
+    \caption{Scalar Lagrange element of order 1 (top). Some Lagrange polynomials of degree 3 (bottom)}
   \end{figure}
-  \hfill\hyperlink{apps<1>}{\beamerreturnbutton{$\triangleleft$}}
 \end{frame}
 
 
@@ -921,7 +975,7 @@ class Lagrange
     \item Define $$\mathbb{R}\mathbb{T}_k(K) = [\Pk]^d + x \Pk$$
     \item Define the dual space $\Sigma$
     \item Define the set of equidistributed point on the faces $\{x_i, x_i \in \partial K \}$
-    \item Define the functional set composed of 
+    \item Define the functional set composed of
       \begin{itemize}
       \item normal component in  $k + 1$ points of each face
       \item moments against a basis of $[\Pkmun]^d$
@@ -929,11 +983,10 @@ class Lagrange
     \item Apply the functionals of $\Sigma$ to the basis of
       $\mathbb{R}\mathbb{T}_k$, get the matrix $M$
     \item Solve $M V = I$
-    \item $V^T$ contains the coefficients of finite element in the 
+    \item $V^T$ contains the coefficients of finite element in the
       basis of $\mathbb{R}\mathbb{T}_k$
     \end{enumerate}
   \end{block}
-  \hfill\hyperlink{apps<1>}{\beamerreturnbutton{$\triangleleft$}}
 \end{frame}
 
 \begin{frame}[fragile=singleslide]{$(K,\ \mathbb{R}\mathbb{T}_k,\ \{\sigma\})$}
@@ -966,7 +1019,6 @@ class RaviartThomasPolynomialSet
     // $[\mathbb{P}_k]^d + x \mathbb{P}_k\backslash\mathbb{P}_{k-1}$
     setCoefficient( unite( Pk_v, xPk ).coeff() );  } }
 \end{lstlisting}
-  \hfill\hyperlink{apps<1>}{\beamerreturnbutton{$\triangleleft$}}
 \end{frame}
 
 \begin{frame}[fragile=singleslide]{$(K,\ \mathbb{R}\mathbb{T}_k,\ \{\sigma\})$}
@@ -1003,13 +1055,12 @@ class RaviartThomasDual
 \end{frame}
 
 \begin{frame}{$(K,\ \mathbb{R}\mathbb{T}_k,\ \{\sigma\})$}
-  \begin{figure}
+  \begin{figure}[H]
     \centering
-    \includegraphics[width=.5\textwidth]{../../../../../../figures/fert-2-1-1.pdf}
-    \includegraphics[width=.5\textwidth]{../../../../../../figures/fert-3-0-1.pdf}
+    \includegraphics[width=.5\textwidth]{../figures/fert-2-1-1.pdf}
+    \includegraphics[width=.5\textwidth]{../figures/fert-3-0-1.pdf}
     \caption{2  Raviart-Thomas polynomials in 2D and 3D}
   \end{figure}
-  \hfill\hyperlink{apps<1>}{\beamerreturnbutton{$\triangleleft$}}
 \end{frame}
 
 
@@ -1017,15 +1068,14 @@ class RaviartThomasDual
 
 
  \begin{frame}{Problème 2D sur simplex}
-   \only<1>{
-     \begin{columns}
+   \begin{columns}
        \begin{column}[c]{.4\textwidth}
  	{\scriptsize
-         \begin{figure}
+         \begin{figure}[H]
           \centering
- 	\includegraphics[width=25mm]{../../../../../../figures/triangle.png}
- %	 \movie[externalviewer=kaffeine]{\includegraphics[width=\textwidth]{../../../../../../figures/Dubiner_3.jpg}}{../../../../../../figures/Dubiner_5.jpg}
- %          \caption{\scriptsize Base de Dubiner}
+ %	\includegraphics[width=25mm]{../figures/triangle.png}
+ 	 \movie[externalviewer=kaffeine]{\includegraphics[width=\textwidth]{../figures/Dubiner_3.jpg}}{../figures/Dubiner_5.jpg}
+           \caption{\scriptsize Base de Dubiner}
          \end{figure}
  	\begin{itemize}
  	\item Forme forte :
@@ -1055,24 +1105,24 @@ class RaviartThomasDual
  	g_2 &=& \pi \sin \pi x \sin \pi y.
  	\end{eqnarray*}
  	\item Solution exacte $\sin \pi x \cos \pi y$ :
- 	\begin{figure}
-          \centering
- 	 \movie[externalviewer=kaffeine]{\includegraphics[width=50mm]{../../../../../../figures/Sol_2D.png}}{../../../../../../figures/Sol_2D.png}
-         \end{figure}
+  	\begin{figure}[H]
+           \centering
+           \movie[externalviewer=kaffeine]{\includegraphics[width=50mm]{../figures/Sol_2D.png}}{../figures/Sol_2D.png}
+          \end{figure}
  	\end{itemize}
  	}
        \end{column}
      \end{columns}
-   }
-   \only<2>{
+\end{frame}
+\begin{frame}{Convergence}
      \begin{columns}
       \begin{column}[c]{.5\textwidth}
  	{\scriptsize
  	\begin{itemize}
  	\item Convergence :
-         \begin{figure}
- %         \centering
- 	\movie[externalviewer=kaffeine]{\hspace{-13mm}\includegraphics[width=7cm]{../../../../../../figures/Error_2D.png}}{../../../../../../figures/Error_2D.png}
+         \begin{figure}[H]
+          \centering
+          \movie[externalviewer=kaffeine]{\hspace{-13mm}\includegraphics[width=7cm]{../figures/Error_2D.png}}{../figures/Error_2D.png}
          \end{figure}
  	$$
  	\|u - u_N \|_{L^2} \sim  e^{1.077 - 0.22 * N^{1.56235}}
@@ -1085,9 +1135,9 @@ class RaviartThomasDual
  	\vspace{-1mm}
  	\begin{itemize}
  	\item Conditionnement :
- 	\begin{figure}
- %         \centering
- 	\movie[externalviewer=kaffeine]{\hspace{-10mm}\includegraphics[width=7cm]{../../../../../../figures/Cond_2D.png}}{../../../../../../figures/Cond_2D.png}
+ 	\begin{figure}[H]
+          \centering
+          \movie[externalviewer=kaffeine]{\hspace{-10mm}\includegraphics[width=7cm]{../figures/Cond_2D.png}}{../figures/Cond_2D.png}
  	\end{figure}
  	$$
  	\kappa \sim 8.38 + 0.32*N^{2.54702}
@@ -1096,19 +1146,17 @@ class RaviartThomasDual
  	}
        \end{column}
      \end{columns}
-   }
  \end{frame}
 
  \begin{frame}{Problème 3D sur simplex}
-   \only<1>{
      \begin{columns}
        \begin{column}[c]{.4\textwidth}
  	{\scriptsize
          \begin{figure}
           \centering
- 	\includegraphics[width=25mm]{../../../../../../figures/tetra.png}
- %	 \movie[externalviewer=kaffeine]{\includegraphics[width=\textwidth]{../../../../../../figures/Dubiner_3.jpg}}{../../../../../../figures/Dubiner_5.jpg}
- %          \caption{\scriptsize Base de Dubiner}
+          %%\includegraphics[width=25mm]{../figures/tetra.png}
+          \movie[externalviewer=kaffeine]{\includegraphics[width=\textwidth]{../figures/Dubiner_3.jpg}}{../figures/Dubiner_5.jpg}
+          \caption{\scriptsize Base de Dubiner}
          \end{figure}
  	\begin{itemize}
  	\item Forme forte :
@@ -1140,23 +1188,24 @@ class RaviartThomasDual
  	g_3 &=& \pi \sin \pi x \cos \pi y \sin\pi z.
  	\end{eqnarray*}
  	\item Solution exacte $\sin \pi x \cos \pi y \cos \pi z$.
- 	\begin{figure}
-          \centering
- %	 \movie[externalviewer=kaffeine]{\includegraphics[width=50mm]{../../../../../../figures/Sol_3D.png}}{../../../../../../figures/Sol_3D.png}
-         \end{figure}
+%  	\begin{figure}[H]
+%           \centering
+%           \movie[externalviewer=kaffeine]{\includegraphics[width=50mm]{../figures/Sol_3D.png}}{../figures/Sol_3D.png}
+%          \end{figure}
  	\end{itemize}
  	}
        \end{column}
      \end{columns}
-   }
-   \only<2>{
+\end{frame}
+\begin{frame}{Convergence}
      \begin{columns}
       \begin{column}[c]{.5\textwidth}
  	{\scriptsize
  	\begin{itemize}
  	\item Convergence :
-         \begin{figure}
- 	\movie[externalviewer=kaffeine]{\hspace{-13mm}\includegraphics[width=7cm]{../../../../../../figures/Error_3D.png}}{../../../../../../figures/Error_3D.png}
+          \begin{figure}[H]
+            \centering
+           \movie[externalviewer=kaffeine]{\hspace{-13mm}\includegraphics[width=7cm]{../figures/Error_3D.png}}{../figures/Error_3D.png}
          \end{figure}
  	$$
  	\|u - u_N \|_{L^2} \sim  e^{1.30168 - 0.37023 * N^{1.38707}}
@@ -1169,9 +1218,9 @@ class RaviartThomasDual
  	\vspace{-1mm}
  	\begin{itemize}
  	\item Conditionnement :
- 	\begin{figure}
- %         \centering
- 	\movie[externalviewer=kaffeine]{\hspace{-10mm}\includegraphics[width=7cm]{../../../../../../figures/Cond_3D.png}}{../../../../../../figures/Cond_3D.png}
+ 	\begin{figure}[H]
+          \centering
+ 	\movie[externalviewer=kaffeine]{\hspace{-10mm}\includegraphics[width=7cm]{../figures/Cond_3D.png}}{../figures/Cond_3D.png}
  	\end{figure}
  	$$
  	\kappa \sim 4.30 + 0.24*N^{3.2812}
@@ -1180,7 +1229,6 @@ class RaviartThomasDual
  	}
        \end{column}
      \end{columns}
-   }
  \end{frame}
 
 
