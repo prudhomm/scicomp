@@ -1,0 +1,175 @@
+%
+% SUMMARY:
+% USAGE:
+%
+% AUTHOR:       Christophe Prud'homme
+% ORG:          Christophe Prud'homme
+% E-MAIL:       prudhomm@zion
+%
+% ORIG-DATE:  7-Apr-04 at 16:48:32
+% LAST-MOD:  7-Apr-04 at 23:07:19 by Christophe Prud'homme
+%
+% DESCRIPTION:
+% DESCRIP-END.
+
+%\documentclass[slidestop,compress,mathserif]{beamer}
+\documentclass{article}
+\usepackage[colorlinks=true]{hyperref}
+\pdfinfo {
+  /Title    (Presentation)
+  /Author   (Christophe Prud'homme <christophe.prudhomme@imag.fr>)
+  /Keywords   (Numerical Methods, Scientific Computing)
+ }
+
+\usepackage{multimedia,xmpmulti}
+\usepackage[latin1]{inputenc}
+\usepackage{graphicx}
+\usepackage{amsmath,amssymb}
+\usepackage{exercise}
+\usepackage{xcolor}
+\definecolor{lbcolor}{rgb}{0.95,0.95,0.95}
+\definecolor{cblue}{rgb}{0.,0.0,0.6}
+\usepackage{filecontents,listings}
+
+
+\lstset{language=c++,showspaces=false,showstringspaces=false,captionpos=t,literate={>>}{\ensuremath{>>}}1}
+%\lstset{float}
+\lstset{basicstyle=\small\ttfamily}
+\lstset{lineskip=-2pt}
+\lstset{keywordstyle=\color{red}\bfseries}
+%\lstset{keywordstyle=\mdseries\color{red}}
+\lstset{emph={inline},emphstyle=\color{red}\bfseries}
+%\lstset{stringstyle=\ttfamily}
+\lstset{commentstyle=\ttfamily\color{cblue}}
+\lstset{backgroundcolor=\color{lbcolor},rulecolor=}
+%\lstset{numbers=left}
+%\lstset{numbers={none}}
+%\lstset{numberstyle=\tiny}
+%\lstset{numbersep=1pt}
+\lstset{frame=single,framerule=0.5pt}
+\lstset{belowskip=\smallskipamount}
+\lstset{aboveskip=\smallskipamount}
+
+
+\title{Calcul Scientifique en C++ et MPI}
+
+\author{Christophe Prud'homme} 
+\date{UJF, 2008} 
+
+\begin{document}
+\maketitle
+
+
+\begin{Exercise}[title={p type Galerkin method in 1D}]
+  \ExePart{Polynomials construction}
+  
+  \Question Plot the Legendre polynomials $(L_k)_{k=1...N}$ on
+  $[-1;1]$ using for example octave up to order $10$. Save The values
+  of the polynomials in a data file (e.g. \verb+'legendre.dat'+)
+\begin{verbatim}
+col1     col2  ...     col(11)
+x_1  L_1(x_1)  ... L_{10}(x_1)
+x_2  L_1(x_2)  ... L_{11}(x_2)
+.           .                .
+.           .                .
+.           .                .
+x_N  L_1(x_N)  ... L_{11}(x_N)
+\end{verbatim}
+
+  \Question Plot the Gauss points $(\xi_q)_{q=0...10}$ and weigths
+  $(w_q)_{q=1...N}$. Verify numerically that they are indeed the roots
+  of the Legendre polynomials (i.e. $L_k(\xi_k) = 0$)
+  
+  \Question Now that we have constructed the Gauss points, they define
+  a quadrature rule such that $(\xi_q,w_q)_{q=1...N}$ integrates
+  exactly polynimials up to degree $2N$. That is to say, if $p \in \mathbb{P}_N(-1,1)$
+  \begin{equation}
+    \label{eq:1}
+    \int_{-1}^1\ p(x)\ dx\ =\ \sum_{q=0}^N\ w_q\ p( \xi_q )
+  \end{equation}
+  \subQuestion Verify that the Legendre polynomials are $L_2$ orthogonal. 
+  \begin{equation}
+    \label{eq:3}
+    \int_{-1}^1 L_i L_j = C_{ij} \delta_{ij}\ i,j=1...N
+  \end{equation}
+  \subQuestion Normalize them (e.g. $\|L_k\| = 1$ where $\|\|$ is the
+  $L_2$ norm) and verify numerically that you have
+  
+  \begin{equation}
+    \label{eq:2}
+    \int_{-1}^1 L_i L_j =  \delta_{ij}\ i,j=1...N
+  \end{equation}
+  
+  \ExePart 
+   Consider now a function $f$ (e.g. $f(x)=\exp{-x}$). We
+  would like to construct its $L_2$ projection on
+  $\mathbb{P}_N(-1,1)$, that is to say that we look for $p \in
+  \mathbb{P}_N(-1,1)$ taking $(L_k)_{k=1...N}$ is used the basis spanning
+  $\mathbb{P}_N(-1,1)$ such that
+  \begin{equation}
+    \label{eq:4}
+    (p, L_k) = (f, L_k), \quad k=1...N
+  \end{equation}
+  Recall that 
+  \begin{equation}
+    \label{eq:5}
+    p=\sum_{i=0}^N\ p_i L_i.
+  \end{equation}
+  We have by pluging (\ref{eq:5}) into the system of relations~(\ref{eq:4})
+  \begin{equation}
+    \label{eq:6}
+    \sum_{i=0}^N\ p_i (L_i,L_k) = (f, L_k)\quad k=1...N
+  \end{equation}
+  Since the $L_k$ are $L_2$ orthonormal(in other words the mass matrix
+  $\int_{-1}^1 L_i L_k$ is the identity matrix), (\ref{eq:6}) becomes
+  \begin{equation}
+    \label{eq:7}
+    p_k = (f, L_k)\ =\ \int_{-1}^1\ \exp(-x)\ L_k(x)\ dx, \quad k=1...N
+  \end{equation}
+
+  $(f,L_k), k=1...N$ is computed by using an appropriate quadrature
+  rule (e.g Gauss)
+  \begin{equation}
+    \label{eq:8}
+    \int_{-1}^1\ \exp(-x)\ L_k(x)\ dx \approx \sum_{q=0}^Q w_q\ \exp(-\xi_q)\ L_k(\xi_q)
+  \end{equation}
+  
+  \Question Compute the components $(p_k)_{k=0}^N$ of $p$ in the basis
+  $L_k$.  
+  \Question Compute $\|f-p\|=\sqrt{\int_{-1}^1 (f(x)-p(x))^2 dx}$ with $p$ its $L_2$ projection on
+  $\mathbb{P}_N(-1,1)$ for $N=1,...,10$. Verify that
+  \begin{equation}
+    \label{eq:9}
+    \|f-p\| \leq C 2^{-N}
+  \end{equation}
+  \Question Plot $f=\exp(-x)$
+  on $[-1;1]$ and $p$ its $L_2$ projection on $\mathbb{P}_N(-1,1)$ for
+  $N=1,...,10$
+  
+  \ExePart We now turn to the construction of other polynomials that
+  we will express in the Legendre Basis. We consider only the Lagrange
+  polynomials associated with the equisdistributed point set and the
+  Gauss Lobatto point set.
+
+  \Question fonctionals...
+  \Question Plot the Lagrange polynomials $(h^g_k)_{k=0...N}$ and $(h^{gl}_{k=0...N})$ up to $N=10$# 
+
+  \ExePart solve problem
+\end{Exercise}
+
+\begin{Answer}
+  
+\end{Answer}
+
+\end{document}
+
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-PDF-mode: t
+%%% TeX-parse-self: t
+%%% x-symbol-8bits: nil
+%%% TeX-auto-regexp-list: TeX-auto-full-regexp-list
+%%% TeX-master: t
+%%% ispell-local-dictionary: "french"
+%%% End:
