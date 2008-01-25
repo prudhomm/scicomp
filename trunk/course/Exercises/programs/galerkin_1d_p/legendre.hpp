@@ -31,79 +31,47 @@
 #define __Legendre_H 1
 
 #include <boost/numeric/ublas/matrix.hpp>
+#include <jacobi.hpp>
 
 
 namespace Life
 {
-/**
- * \class Legendre
- * \brief Legendre polynomial orthonormal basis
- *
- * This class represents the Legendre polynomials up to degree \c
- * Degree on a simplex in dimension \c Dim.
- *
- *
- * The legendre polynomials in 1D, the segment \f$[-1;1]\f$ are defined
- * using Jacobi polynomials as follows:
- * \f$ \phi_i(x) = P_i^{0,0}(x) \f$
- *where \f$P_i^{0,0}(x)\f$ is the i-th Jacobi polynomial evaluated at
- * \f$x \in [-1;1]\f$ with weights \f$(0,0)\f$.
- *
- * \ingroup Polynomial
- * @author Christophe Prud'homme
- *
- * @see G.E. Karniadakis and S.J. Sherwin, ''Spectral/hp Element
- * Methods for CFD,'' Oxford University Press, March 1999.
- *
- */
-template<uint16_type Dim,
-         uint16_type Degree,
-         typename NormalizationPolicy = Normalized<true>,
-         typename T = double,
-         template<class> class StoragePolicy = StorageUBlas>
-class Legendre : public Basis<LegendreTag<Dim, Degree>, T>
-{
-    typedef Basis<LegendreTag<Dim, Degree>, T> super;
-public:
+  /**
+   * \class Legendre
+   * \brief Legendre polynomial orthonormal basis
+   *
+   * This class represents the Legendre polynomials up to degree \c
+   * Degree on a simplex in dimension \c Dim.
+   *
+   *
+   * The legendre polynomials in 1D, the segment \f$[-1;1]\f$ are defined
+   * using Jacobi polynomials as follows:
+   * \f$ \phi_i(x) = P_i^{0,0}(x) \f$
+   *where \f$P_i^{0,0}(x)\f$ is the i-th Jacobi polynomial evaluated at
+   * \f$x \in [-1;1]\f$ with weights \f$(0,0)\f$.
+   *
+   * \ingroup Polynomial
+   * @author Christophe Prud'homme
+   *
+   * @see G.E. Karniadakis and S.J. Sherwin, ''Spectral/hp Element
+   * Methods for CFD,'' Oxford University Press, March 1999.
+   *
+   */
+  template<uint16_type Dim,
+	   typename T = double>
+  class Legendre
+    :
+    public Jacobi<T>
+  {
+  public:
 
-    typedef LegendreTraits<Dim, Degree, NormalizationPolicy, T, StoragePolicy> traits_type;
     static const uint16_type nDim = Dim;
-    static const uint16_type nOrder = Degree;
-    static const uint16_type nConvexOrder = nOrder+2;
-    static const bool is_normalized = NormalizationPolicy::is_normalized;
-
 
     /** @name Typedefs
      */
     //@{
 
-    typedef Legendre<Dim, Degree, NormalizationPolicy, T, StoragePolicy> self_type;
-
-    /*
-     * for now can be used only as a basis but we might be interested
-     * to have then expressed in other basis like in the moment basis
-     */
-    typedef self_type basis_type;
-
-    typedef typename traits_type::value_type value_type;
-
-    /*
-     * Geometry where the polynomials are defined and constructed
-     */
-    typedef typename traits_type::convex_type convex_type;
-    typedef typename traits_type::reference_convex_type reference_convex_type;
-
-    typedef typename traits_type::diff_pointset_type diff_pointset_type;
-
-    /*
-     * storage policy
-     */
-    typedef typename traits_type::storage_policy storage_policy;
-    typedef typename traits_type::matrix_type matrix_type;
-    typedef typename traits_type::vector_matrix_type vector_matrix_type;
-    typedef typename traits_type::matrix_node_type matrix_node_type;
-    typedef typename traits_type::points_type points_type;
-    typedef typename traits_type::node_type node_type;
+    typedef Legendre<Dim, T> self_type;
 
 
     //@}
@@ -112,18 +80,14 @@ public:
      */
     //@{
 
-    Legendre()
-        :
-        super( *this ),
-        _M_refconvex(),
-        _M_pts( _M_refconvex.makePoints( nDim, 0 ) )
+    Legendre( bool normalize = true )
+      :
+      M_is_normalized( normalize )
     {
     }
     Legendre( Legendre const & d )
-        :
-        super( *this ),
-        _M_refconvex(),
-        _M_pts( d._M_pts )
+      :
+      M_is_normalized( normalize )
     {
     }
 
@@ -138,24 +102,23 @@ public:
 
     self_type const& operator=( self_type const& d )
     {
-        if ( this != &d )
-            {
-                _M_pts = d._M_pts;
-            }
-        return *this;
+      if ( this != &d )
+	{
+	  M_is_normalized = d.M_is_normalized;
+	}
+      return *this;
     }
 
-    //ublas::matrix_column<matrix_type const> operator()( node_type const& pt ) const
     matrix_type operator()( node_type const& pt ) const
     {
-        points_type pts( pt.size(), 1 );
-        ublas::column( pts, 0 ) = pt;
-        return evaluate( pts );
+      points_type pts( pt.size(), 1 );
+      ublas::column( pts, 0 ) = pt;
+      return evaluate( pts );
     }
 
     matrix_type operator()( points_type const& pts ) const
     {
-        return evaluate( pts );
+      return evaluate( pts );
     }
 
     //@}
@@ -215,7 +178,7 @@ public:
      */
     matrix_type coeff() const
     {
-        return ublas::identity_matrix<value_type>( reference_convex_type::polyDims( nOrder ), _M_pts.size2() );
+      return ublas::identity_matrix<value_type>( reference_convex_type::polyDims( nOrder ), _M_pts.size2() );
     }
 
 
@@ -226,20 +189,20 @@ public:
      */
     static matrix_type evaluate( points_type const& __pts )
     {
-        return evaluate( __pts, mpl::int_<nDim>() );
+      return evaluate( __pts, mpl::int_<nDim>() );
     }
 
     template<typename AE>
     static vector_matrix_type derivate( ublas::matrix_expression<AE>  const& __pts )
     {
-        return derivate( __pts, mpl::int_<nDim>() );
+      return derivate( __pts, mpl::int_<nDim>() );
     }
 
 
     //@}
 
-private:
-private:
+  private:
+  private:
 
     static value_type normalization( int i )
     {
@@ -253,13 +216,13 @@ private:
     static matrix_type
     evaluate( points_type const& __pts, mpl::int_<1> )
     {
-        matrix_type m ( JacobiBatchEvaluation<nOrder,value_type>( 0.0, 0.0, ublas::row(__pts, 0) ) );
-        if ( is_normalized )
-            {
-                for ( uint16_type i = 0;i < m.size1(); ++i )
-                    ublas::row( m, i ) *= normalization( i );
-            }
-        return m;
+      matrix_type m ( JacobiBatchEvaluation<nOrder,value_type>( 0.0, 0.0, ublas::row(__pts, 0) ) );
+      if ( is_normalized )
+	{
+	  for ( uint16_type i = 0;i < m.size1(); ++i )
+	    ublas::row( m, i ) *= normalization( i );
+	}
+      return m;
     }
 
     /**
@@ -270,15 +233,18 @@ private:
     static vector_matrix_type
     derivate( ublas::matrix_expression<AE> const& __pts, mpl::int_<1> )
     {
-        vector_matrix_type D( 1 );
-        D[0].resize( nOrder+1, __pts().size2() );
-        D[0] = JacobiBatchDerivation<nOrder,value_type>( 0.0, 0.0, ublas::row(__pts(),0) );
-        if ( is_normalized )
-            for ( uint16_type i = 0; i < nOrder+1; ++i )
-                ublas::row( D[0], i ) *= normalization( i );
-        return D;
+      vector_matrix_type D( 1 );
+      D[0].resize( nOrder+1, __pts().size2() );
+      D[0] = JacobiBatchDerivation<nOrder,value_type>( 0.0, 0.0, ublas::row(__pts(),0) );
+      if ( is_normalized )
+	for ( uint16_type i = 0; i < nOrder+1; ++i )
+	  ublas::row( D[0], i ) *= normalization( i );
+      return D;
     }
-};
+
+  private:
+    bool M_is_normalized;
+  };
 
 
 }
