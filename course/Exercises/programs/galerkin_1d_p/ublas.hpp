@@ -38,6 +38,8 @@
 namespace ublas = boost::numeric::ublas;
 
 typedef ublas::vector<double> node_type;
+typedef ublas::vector<double> point_type;
+typedef ublas::matrix<double,ublas::row_major> points_type;
 typedef ublas::matrix<double,ublas::row_major> matrix_type;
 typedef ublas::vector<ublas::matrix<double,ublas::row_major> > vector_matrix_type;
 
