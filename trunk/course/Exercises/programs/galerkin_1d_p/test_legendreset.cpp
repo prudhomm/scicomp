@@ -23,7 +23,7 @@ int main(int argc, char** argv)
   double res = Life::integrate<double>( degree, f );
   //assert( std::abs( res - 2./5.) < 1e-16 );
   std::cout.precision(16);
-  std::cout << "int_{-1,1} x*x = "  << res  << "\n";
+  std::cout << "int_{-1,1} f = "  << res  << "\n";
   std::cout << "exact result is  " << 2./5.  << "\n";
 
   Life::LegendreSet<> l( degree );
