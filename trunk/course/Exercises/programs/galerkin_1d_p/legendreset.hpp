@@ -27,20 +27,20 @@
    \author Christophe Prud'homme <christophe.prudhomme@ujf-grenoble.fr>
    \date 2008-01-24
  */
-#ifndef __Legendre_H
-#define __Legendre_H 1
+#ifndef __LegendreSet_H
+#define __LegendreSet_H 1
 
-#include <boost/numeric/ublas/matrix.hpp>
+#include <ublas.hpp>
 #include <jacobi.hpp>
 
 
 namespace Life
 {
   /**
-   * \class Legendre
-   * \brief Legendre polynomial orthonormal basis
+   * \class LegendreSet
+   * \brief LegendreSet polynomial orthonormal basis
    *
-   * This class represents the Legendre polynomials up to degree \c
+   * This class represents the LegendreSet polynomials up to degree \c
    * Degree on a simplex in dimension \c Dim.
    *
    *
@@ -57,22 +57,17 @@ namespace Life
    * Methods for CFD,'' Oxford University Press, March 1999.
    *
    */
-  template<uint16_type Dim,
-	   typename T = double>
-  class Legendre
-    :
-    public Jacobi<T>
+  template<typename T = double>
+  class LegendreSet
   {
   public:
-
-    static const uint16_type nDim = Dim;
 
     /** @name Typedefs
      */
     //@{
 
-    typedef Legendre<Dim, T> self_type;
-
+    typedef LegendreSet<T> self_type;
+    typedef T value_type;
 
     //@}
 
@@ -80,18 +75,20 @@ namespace Life
      */
     //@{
 
-    Legendre( bool normalize = true )
+    LegendreSet( int N, bool normalize = true )
       :
+      M_order( N ),
       M_is_normalized( normalize )
     {
     }
-    Legendre( Legendre const & d )
+    LegendreSet( LegendreSet const & d )
       :
-      M_is_normalized( normalize )
+      M_order( d.M_order ),
+      M_is_normalized( d.M_is_normalized )
     {
     }
 
-    ~Legendre()
+    ~LegendreSet()
     {}
 
     //@}
@@ -104,6 +101,7 @@ namespace Life
     {
       if ( this != &d )
 	{
+	  M_order = d.M_order;
 	  M_is_normalized = d.M_is_normalized;
 	}
       return *this;
@@ -118,7 +116,7 @@ namespace Life
 
     matrix_type operator()( points_type const& pts ) const
     {
-      return evaluate( pts );
+      return this->evaluate( pts );
     }
 
     //@}
@@ -130,13 +128,13 @@ namespace Life
     /**
      * Number of polynomials in set
      */
-    size_type size() const { return convex_type::polyDims( nOrder ); }
+    int size() const { return M_order; }
 
     /**
-     * \return the maximum degree of the Legendre polynomial to be
+     * \return the maximum degree of the LegendreSet polynomial to be
      * constructed
      */
-    uint16_type degree() const { return nOrder; }
+    int degree() const { return M_order; }
 
     /**
      * \return self as a basis
@@ -144,10 +142,10 @@ namespace Life
     self_type const& basis() const { return *this; }
 
     /**
-     * \return true if the Legendre polynomials are normalized, false
+     * \return true if the LegendreSet polynomials are normalized, false
      * otherwise
      */
-    bool isNormalized() const { return is_normalized; }
+    bool isNormalized() const { return M_is_normalized; }
 
     /**
      * \return the \c familyName()
@@ -167,59 +165,19 @@ namespace Life
      */
     //@{
 
-    /**
-     * Legendre polynomials is an orthonormal basis, the coefficients
-     * of the polynomials of the basis are the canonical vectors and
-     * represented by the identity matrix (lines are polynomials and
-     * columns are the polynomial basis )
-     *
-     * This function is correct only if we use the Legendre polynomials
-     * as a basis
-     */
-    matrix_type coeff() const
-    {
-      return ublas::identity_matrix<value_type>( reference_convex_type::polyDims( nOrder ), _M_pts.size2() );
-    }
 
-
-    /**
-     * evaluate the Legendre polynomials at a set of points \p __pts
-     *
-     * \arg __x is a set of points
-     */
-    static matrix_type evaluate( points_type const& __pts )
-    {
-      return evaluate( __pts, mpl::int_<nDim>() );
-    }
-
-    template<typename AE>
-    static vector_matrix_type derivate( ublas::matrix_expression<AE>  const& __pts )
-    {
-      return derivate( __pts, mpl::int_<nDim>() );
-    }
-
-
-    //@}
-
-  private:
-  private:
-
-    static value_type normalization( int i )
-    {
-      return (is_normalized?math::sqrt( value_type( i ) + 0.5 ) : value_type(1));
-    }
 
     /**
      * Evaluation at a set of points of the expansion basis in 2D on
      * the triangle
      */
-    static matrix_type
-    evaluate( points_type const& __pts, mpl::int_<1> )
+    matrix_type
+    evaluate( points_type const& __pts ) const
     {
-      matrix_type m ( JacobiBatchEvaluation<nOrder,value_type>( 0.0, 0.0, ublas::row(__pts, 0) ) );
-      if ( is_normalized )
+      matrix_type m ( JacobiBatchEvaluation<value_type>( M_order, 0.0, 0.0, ublas::row(__pts, 0) ) );
+      if ( M_is_normalized )
 	{
-	  for ( uint16_type i = 0;i < m.size1(); ++i )
+	  for ( int i = 0;i < m.size1(); ++i )
 	    ublas::row( m, i ) *= normalization( i );
 	}
       return m;
@@ -230,23 +188,54 @@ namespace Life
      * the triangle
      */
     template<typename AE>
-    static vector_matrix_type
-    derivate( ublas::matrix_expression<AE> const& __pts, mpl::int_<1> )
+    vector_matrix_type
+    derivate( ublas::matrix_expression<AE> const& __pts ) const
     {
       vector_matrix_type D( 1 );
-      D[0].resize( nOrder+1, __pts().size2() );
-      D[0] = JacobiBatchDerivation<nOrder,value_type>( 0.0, 0.0, ublas::row(__pts(),0) );
-      if ( is_normalized )
-	for ( uint16_type i = 0; i < nOrder+1; ++i )
+      D[0].resize( M_order+1, __pts().size2() );
+      D[0] = JacobiBatchDerivation<value_type>( M_order, 0.0, 0.0, ublas::row(__pts(),0) );
+      if ( M_is_normalized )
+	for ( int i = 0; i < M_order+1; ++i )
 	  ublas::row( D[0], i ) *= normalization( i );
       return D;
     }
 
+    /**
+     * compute the zeros of the Legendre polynomial of degree \p
+     * degree
+     * \return a matrix wit hthe coordinates of the points
+     */
+    matrix_type zeros( int degree ) const
+    {
+      matrix_type z( 1, degree );
+      typedef T value_type;
+      ublas::vector<T> xr( degree );
+      ublas::vector<T> wr( degree );
+
+      // get weights and nodes for LegendreSet polynomials
+      gaussjacobi<T, ublas::vector<T> >( degree, wr, xr );
+
+      ublas::row( z, 0 ) = xr;
+      return z;
+    }
+    //@}
+
   private:
+  private:
+
+    value_type normalization( int i ) const
+    {
+      return (M_is_normalized?std::sqrt( value_type( i ) + 0.5 ) : value_type(1));
+    }
+
+
+
+  private:
+    int M_order;
     bool M_is_normalized;
   };
 
 
 }
-#endif /* __Legendre_H */
+#endif /* __LegendreSet_H */
 

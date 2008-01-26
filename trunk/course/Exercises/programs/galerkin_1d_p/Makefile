@@ -12,14 +12,18 @@ LIBS=-lm
 
 CPPFLAGS=-I.
 
-SOURCES=test_jacobi.cpp
-OBJS=$(patsubst %.cpp,%.o,$(wildcard *.cpp))
+SOURCES=test_jacobi.cpp test_legendreset.cpp
+test_jacobi_OBJS=test_jacobi.o
+test_legendreset_OBJS=test_legendreset.o
 
-all: test_jacobi
+all: test_jacobi test_legendreset
 
 
-test_jacobi: $(OBJS)
-	$(CXX) $(LDFLAGS) -o test_jacobi $(OBJS) $(LIBS)
+test_jacobi: $(test_jacobi_OBJS)
+	$(CXX) $(LDFLAGS) -o test_jacobi $(test_jacobi_OBJS) $(LIBS)
+
+test_legendreset: $(test_legendreset_OBJS)
+	$(CXX) $(LDFLAGS) -o test_legendreset $(test_legendreset_OBJS) $(LIBS)
 
 .cpp.o: $(SOURCES)
 	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -c $<
@@ -27,5 +31,6 @@ test_jacobi: $(OBJS)
 .SUFFIXES: .cpp .o
 
 test_jacobi.o: ublas.hpp jacobi.hpp
+test_legendreset.o: ublas.hpp legendreset.hpp
 
 ### Makefile ends here
