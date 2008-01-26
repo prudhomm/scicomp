@@ -31,6 +31,6 @@ test_legendreset: $(test_legendreset_OBJS)
 .SUFFIXES: .cpp .o
 
 test_jacobi.o: ublas.hpp jacobi.hpp
-test_legendreset.o: ublas.hpp legendreset.hpp
+test_legendreset.o: ublas.hpp jacobi.hpp legendreset.hpp
 
 ### Makefile ends here

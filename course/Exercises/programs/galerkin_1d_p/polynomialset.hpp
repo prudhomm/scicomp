@@ -3,10 +3,9 @@
   This file is part of the Life library
 
   Author(s): Christophe Prud'homme <christophe.prudhomme@ujf-grenoble.fr>
-             Gilles Steiner <gilles.steiner@epfl.ch>
-       Date: 2005-10-11
 
-  Copyright (C) 2005,2006 EPFL
+  Copyright (C) 2008 Christophe Prud'homme
+  Copyright (C) 2008 Université Joseph Fourier (Grenoble 1)
 
   This library is free software; you can redistribute it and/or
   modify it under the terms of the GNU Lesser General Public
@@ -25,13 +24,13 @@
 /**
    \file polynomialset.hpp
    \author Christophe Prud'homme <christophe.prudhomme@ujf-grenoble.fr>
-   \date 2005-10-11
+   \date 2008-01-25
  */
 #ifndef __PolynomialSet_H
 #define __PolynomialSet_H 1
 
 #include <vector>
-#include <life/lifepoly/legendre.hpp>
+#include <legendreset.hpp>
 
 
 namespace Life
@@ -54,7 +53,7 @@ namespace Life
    *  @author Christophe Prud'homme
    *  @see
    */
-  template<typename Poly, template<uint16_type> class PolySetType = Scalar >
+  template<typename Poly>
   class PolynomialSet
   {
   public:
@@ -63,42 +62,12 @@ namespace Life
      */
     //@{
 
-    static const uint16_type nDim = Poly::nDim;
-    static const uint16_type nOrder = Poly::nOrder;
-
     //@}
 
     /** @name Typedefs
      */
     //@{
-    typedef PolynomialSet<Poly, PolySetType> self_type;
-    typedef typename Poly::value_type value_type;
-    typedef typename Poly::basis_type basis_type;
-
-
-    typedef PolySetType<nDim> polyset_type;
-    static const bool is_tensor2 = polyset_type::is_tensor2;
-    static const bool is_vectorial = polyset_type::is_vectorial;
-    static const bool is_scalar = polyset_type::is_scalar;
-    static const uint16_type nComponents = polyset_type::nComponents;
-    static const uint16_type nComponents1 = polyset_type::nComponents1;
-    static const uint16_type nComponents2 = polyset_type::nComponents2;
-    static const uint16_type rank = polyset_type::rank;
-
-    typedef PolynomialSet<Poly, Scalar> component_type;
-    typedef Polynomial<Poly, PolySetType> polynomial_type;
-    //typedef Polynomial<Poly, PolySetType, ublas::vector_range<ublas::vector<value_type> > > polynomial_type;
-    typedef polynomial_type polynomial_view_type;
-
-    typedef typename Poly::convex_type convex_type;
-    typedef typename basis_type::matrix_type matrix_type;
-    typedef typename basis_type::points_type points_type;
-
-
-    typedef PolynomialSet<Poly, Vectorial> gradient_polynomialset_type;
-
-    BOOST_STATIC_ASSERT( ( boost::is_same<typename matrix_type::value_type, value_type>::value ) );
-    BOOST_STATIC_ASSERT( ( boost::is_same<typename matrix_type::value_type, typename points_type::value_type>::value ) );
+    typedef PolynomialSet<Poly> self_type;
 
     //@}
 
@@ -129,7 +98,7 @@ namespace Life
     {
       setCoefficient( c, __as_is );
     }
-  
+
     /**
      */
     PolynomialSet( matrix_type const& c, bool __as_is = false )
@@ -141,7 +110,7 @@ namespace Life
       setCoefficient( c, __as_is );
     }
 
-  
+
     PolynomialSet( PolynomialSet const & p )
       :
       _M_basis( p._M_basis ),
@@ -149,16 +118,16 @@ namespace Life
       _M_fname( p._M_fname )
     {
     }
-  
+
     virtual ~PolynomialSet()
     {}
-  
+
     //@}
-  
+
     /** @name Operator overloads
      */
     //@{
-  
+
     self_type& operator=( self_type const& pset )
     {
       if ( this != &pset )

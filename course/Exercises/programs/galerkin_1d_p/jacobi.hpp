@@ -417,18 +417,26 @@ namespace Life
 	wr[N-1] = wr[N-1]*(a+1.0);
       }
   }
+  /**
+   * Integrate the function \p f using the quadrature \f$(w_q,
+   * x_q)_q=0...N\f$ which integrates exactely polynomials of degree
+   * \f$N\f$
+   */
   template<typename T>
   T integrate( int N, boost::function<T( T const&)> const& f )
   {
+    int quadrature_degree = (N-1)/2+2;
+    std::cout << "integrate: quadrature degree is = " << (quadrature_degree-1) << "\n";
+    std::cout << "integrate: integrates exactely polynomials of degree " << 2*(quadrature_degree-1)+1 << "\n";
     typedef T value_type;
-    ublas::vector<T> xr( N );
-    ublas::vector<T> wr( N );
+    ublas::vector<T> xr( quadrature_degree );
+    ublas::vector<T> wr( quadrature_degree );
 
     // get weights and nodes for Legendre polynomials
-    gaussjacobi<T, ublas::vector<T> >( N, wr, xr );
+    gaussjacobi<T, ublas::vector<T> >( quadrature_degree, wr, xr );
 
     value_type res = 0.0;
-    for ( int k = 0;k < N; ++k)
+    for ( int k = 0;k < quadrature_degree; ++k)
       res += wr[k]*f( xr[k] );
     return res;
   }
