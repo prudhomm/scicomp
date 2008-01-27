@@ -34,6 +34,7 @@
 #include <boost/numeric/ublas/matrix.hpp>
 #include <boost/numeric/ublas/matrix_proxy.hpp>
 #include <boost/numeric/ublas/io.hpp>
+#include <boost/numeric/ublas/operation.hpp>
 
 namespace ublas = boost::numeric::ublas;
 
@@ -43,7 +44,29 @@ typedef ublas::matrix<double,ublas::row_major> points_type;
 typedef ublas::matrix<double,ublas::row_major> matrix_type;
 typedef ublas::vector<ublas::matrix<double,ublas::row_major> > vector_matrix_type;
 
+/**
+ * Construct a set of \p N equidistributed points over \f$[a,b\f$.
+ *
+ * \param a inf bound of the interval
+ * \param b sup bound of the interval
+ * \param interior false if include boundary points, false otherwise
+ *
+ * \return an equidistributed point set over the interval \f$[a;b]\f$
+ */
+inline
+ublas::matrix<double,ublas::row_major>
+linspace( double const& a, double const& b, int N, int interior = 0 )
+{
+    int Npts = N-2*interior;
+    ublas::matrix<double,ublas::row_major> v( 1, Npts );
+    double h = (b-a)/double(Npts-1);
+    double start = a+double(interior)*h;
+    for( int i = 0; i < Npts; ++i )
+      v(0, i )=start+double(i)*h;
+    return v;
+}
 
 
-#endif /* __ublas_H */
+
+#endif /* ublas_H */
 

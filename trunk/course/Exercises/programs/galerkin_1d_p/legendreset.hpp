@@ -68,7 +68,7 @@ namespace Life
 
     typedef LegendreSet<T> self_type;
     typedef T value_type;
-
+    typedef self_type basis_type;
     //@}
 
     /** @name Constructors, destructor
@@ -152,6 +152,7 @@ namespace Life
      */
     std::string familyName() const { return "legendre"; }
 
+    matrix_type coeff() const { return ublas::identity_matrix<double>( M_order+1, M_order+1 ); }
     //@}
 
     /** @name  Mutators
