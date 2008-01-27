@@ -33,6 +33,7 @@
 #include <boost/foreach.hpp>
 
 #include <legendreset.hpp>
+#include <polynomial.hpp>
 
 
 namespace Life
@@ -72,7 +73,7 @@ namespace Life
     typedef PolynomialSet<Poly> self_type;
     typedef typename Poly::value_type value_type;
     typedef typename Poly::basis_type basis_type;
-
+    typedef Polynomial<Poly> polynomial_type;
     //@}
 
     /** @name Constructors, destructor

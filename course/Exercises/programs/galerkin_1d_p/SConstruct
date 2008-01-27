@@ -1,5 +1,6 @@
-env = Environment(CPPPATH = ['.'])
+env = Environment(CPPPATH = ['.'], CCFLAGS = '-g3')
 
 env.Program('test_jacobi', ['test_jacobi.cpp'])
 env.Program('test_legendreset', ['test_legendreset.cpp'])
 env.Program('test_pset', ['test_pset.cpp'])
+env.Program('test_fset', ['test_fset.cpp'])
