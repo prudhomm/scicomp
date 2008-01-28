@@ -71,11 +71,11 @@
 \begin{verbatim}
 col1     col2  ...     col(11)
 x_1  L_1(x_1)  ... L_{10}(x_1)
-x_2  L_1(x_2)  ... L_{11}(x_2)
+x_2  L_1(x_2)  ... L_{10}(x_2)
 .           .                .
 .           .                .
 .           .                .
-x_N  L_1(x_N)  ... L_{11}(x_N)
+x_N  L_1(x_N)  ... L_{10}(x_N)
 \end{verbatim}
 
   \Question Plot the Gauss points $(\xi^Q_q)_{q=0...Q}$ and weigths
@@ -85,7 +85,7 @@ x_N  L_1(x_N)  ... L_{11}(x_N)
   \Question Now that we have constructed the Gauss points, they define
   a quadrature rule such that $(\xi^N_q,w^N_q)_{q=0...N}$ integrates
   exactly polynomials up to degree $2N+1$ (they are the roots of
-  $P^(0,0)_{N+1}$). That is to say, if $p \in \mathbb{P}_{2N+1}(-1,1)$
+  $P^{(0,0)}_{N+1}$). That is to say, if $p \in \mathbb{P}_{2N+1}(-1,1)$
   \begin{equation}
     \label{eq:1}
     \int_{-1}^1\ p(x)\ dx\ =\ \sum_{q=0}^{N}\ w_q\ p( \xi_q )
@@ -96,7 +96,7 @@ x_N  L_1(x_N)  ... L_{11}(x_N)
     \label{eq:3}
     \int_{-1}^1 L_i L_j = C_{ij} \delta_{ij}\ i,j=0...N
   \end{equation}
-  \subQuestion Normalize them (e.g. $\|L_k\| = 1$ where $\|\|$ is the
+  \subQuestion Normalize them (e.g. $\|L_k\| = 1$ where $\|\cdot\|$ is the
   $L_2$ norm) and verify numerically that you have
 
   \begin{equation}
@@ -222,6 +222,17 @@ x_N  L_1(x_N)  ... L_{11}(x_N)
 \end{Exercise}
 
 \begin{Answer}
+  \Question you can obtain \verb+'legendre.dat'+ thanks to
+  \verb+'test_pset.cpp'+ file by choosing \verb+degree+ = 9
+  (\verb+argv[1] = 9+ at running command).
+Plotting \verb+'legendre.dat'+ with octave gives the figure \ref{fig:1}
+\begin{figure}[h]
+  \label{fig:1}
+  \centering
+  \includegraphics[scale=0.4]{legendre.png}
+  \caption{Legendre polynomials $(L_k)_{k=0 \cdots 9}$}
+\end{figure}
+
 \end{Answer}
 
 \end{document}
