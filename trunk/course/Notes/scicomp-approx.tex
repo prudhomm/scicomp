@@ -313,7 +313,79 @@
 
 \end{frame}
 
+\begin{frame}{Gauss-Type integration}
+  Integration of $u(x)$ in the interval $[-1;1]$ with respect to the function
+  \begin{equation}
+    \label{eq:16}
+    (1-x)^\alpha (1+x)^\beta,\quad \alpha > -1,\ \beta > -1
+  \end{equation}
+  can be numerically evaluated using Gauss-Type integration in a discrete summation
+  \begin{equation}
+    \label{eq:17}
+    \int_{-1}^1 (1-x)^\alpha (1+x)^\beta u(x) dx = \sum_{q=0}^{Q-1} w_q^{\alpha,\beta} u(x^{\alpha,\beta}_q) + R(u)
+  \end{equation}
+  where $R(u) = 0$ if $u(x) \in \mathbb{P}_{2Q-k}([-1;1])$. The value
+  of $k$ is determined the type of quadrature used
+  \begin{itemize}
+  \item $k=1$ classical Gauss
+  \item $k=2$ Gauss Radau
+  \item $k=3$ Gauss Lobatto
+  \end{itemize}
+\end{frame}
 
+\begin{frame}{Gauss type quadratures}
+  \begin{itemize}
+  \item Gauss-Jacobi (or Gauss Legendre if $\alpha=\beta=0$) does not
+    restrict where the points are placed on $[-1;1]$, the
+    $x^{\alpha,\beta}_q$ are the roots of $P_Q^{\alpha,\beta}([-1;1])$
+
+  \item Gauss-Radau  places a restriction on one point
+    \begin{equation}
+      \label{eq:18}
+      x_q =
+      \begin{cases}
+        -1 & q = 0\\
+        x^{\alpha,\beta+1}_{q,Q-1} & q = 1,...,Q-1
+      \end{cases}
+
+    \end{equation}
+
+      \item Gauss-Lobatto  places a restriction on two points
+    \begin{equation}
+      \label{eq:19}
+      x_q =
+      \begin{cases}
+        -1 & q = 0\\
+        x^{\alpha+1,\beta+1}_{q,Q-2} & q = 1,...,Q-2\\
+        1 & q = Q-1\\
+
+      \end{cases}
+
+    \end{equation}
+
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[containsverbatim]{Computing the roots of $P^{\alpha,\beta}_N(x)$}
+  To compute the $N$ roots of $P^{\alpha,\beta}_N(x)$, we use a
+  Newton-Raphson algorithm with polynomial deflation and the Chebichev points ($x^{-1/2,-1/2}_{k,N}$)
+  as follows:
+
+  \begin{lstlisting}[mathescape]
+    do $k=0,...N-1$
+      $r = x^{-1/2,-1/2}_{k,N}$
+      if ( $k$ > 0 ) $r = (r +x_{k-1})/2$
+      do $j=1,...$
+      $s = \sum_{i=0}^{k-1}\ 1/({r-x_i})$
+      $\delta = - P^{\alpha,\beta}_N(r)/(\Big[ P^{\alpha,\beta}_N(r)\Big]' - P^{\alpha,\beta}_N(r)s)$
+      $r = r + \delta$
+      if ( $\delta < \epsilon$ ) exit loop
+      continue
+      $x_k = r$
+   continue
+  \end{lstlisting}
+  see \lstinline!jacobi.hpp:roots()!
+\end{frame}
 
 \subsection[Moment]{Moment basis}
 \label{sec:moment-basis}
@@ -354,7 +426,7 @@
 \subsection{Legendre}
 \begin{frame}{Tensorized Legendre Basis}
   Take $\alpha = \beta = 0$ in the Jacobi polynomials definition. we
-  denote $L_k$ the $k$-th Legendre polynomial. $(L_k)_{k=1,...,N^d}$
+  denote $L_k$ the $k$-th Legendre polynomial. $(L_k)_{k=0,...,N^d}$
   form a basis of $\QS{N}(\GQ{d})$.
 
   \begin{figure}[H]
@@ -418,9 +490,10 @@
     \phi_{k_1,k_2,k_3}(x_1,x_2,x_3) &= \psi_{k_1}(\xi_1)	\psi_{k_1,k_2}(\xi_2) \psi_{k_1,k_2,k_3}(\xi_3)
   \end{array}
   \end{equation}
-  The cardinality is $(N+1)(N+2)/2$ in 2D and $(N+1)(N+2)(N+3)/6$.
+
 \end{frame}
 \begin{frame}{Dubiner basis in 2D}
+  The cardinality is $(N+1)(N+2)/2$ in 2D and $(N+1)(N+2)(N+3)/6$ in 3D.
   \begin{figure}[H]
     \centering
     \includegraphics[width=\figwidth\textwidth]{../figures/Dubiner_5}
@@ -521,37 +594,11 @@
   \item  then the points associated with the volume
   \end{itemize}
 \end{frame}
-\begin{frame}[containsverbatim]{C++}
-  \begin{lstlisting}
-#include <boost/numeric/ublas/matrix.hpp>
-template<class Convex,typename T>
-class PointSet
-{
-  public:
-  Convex convex() const { return M_convex; }
-  uint16_type nPoints();
-  // matrix column oriented
-  // rows (coord.)
-  // cols (points)
-  points_type points() { return M_pts; }
-
-  protected:
-  ublas::matrix<T,row_major> M_pts;
-};
-template<class Convex,typename T>
-class PointSetEquidistributed:
-public PointSet
-{
-  // construction of the point set
-};
-  \end{lstlisting}
-\end{frame}
 
 \subsection{Polynomial set}
-\begin{frame}[label=pset]{Polynomials and Polynomial Sets}
+\begin{frame}[label=pset]{Polynomials}
 
-  \begin{block}{}
-    Express the polynomials of $\Pk$ in the Dubiner basis $\{\phi_i\}_{i=1,\mathrm{dim} \Pk}$
+  Express the polynomials of $\Pk$ in the Dubiner basis $\{\phi_i\}_{i=1,\mathrm{dim} \Pk}$
     $$p=\sum_i (p, \phi_i)_K \phi_i,\quad p \in \Pk$$
     \begin{itemize}
     \item \alert{$L_2$ orthonormality}:
@@ -559,46 +606,91 @@ public PointSet
       \item exact integration,...
       \item Introduce $\mathcal{I} : \Pk \rightarrow \mathbb{R}^{\mathrm{dim} \Pk}$ such that
         for $p \in \Pk, i =1,\mathrm{dim} \Pk$
-        $$(\mathcal{I}(p))_i = (p,\phi_i)_K$$
-        $p \in \Pk$ is represented by $\mathcal{I}(p) \in \mathbb{R}^{\mathrm{dim} \Pk}$
-      \item Same for polynomial sets $(p_i)$.
+        $$(\mathcal{I}(p))_i = (p,\phi_i)_K = p_i$$
+        $p \in \Pk$ is represented by $\mathcal{I}(p) = \mathbf{p} \in \mathbb{R}^{\mathrm{dim} \Pk}$ a row vector ($1 \times \mathrm{dim} \Pk$)
       \end{itemize}
-    \item \alert{Hierarchical Basis}
-      \begin{itemize}
-      \item Trivial to extract a basis of $\mathbb{P}_l(K) \subset \Pk, l \leq k$
-      \end{itemize}
+%     \item \alert{Hierarchical Basis}
+%       \begin{itemize}
+%       \item Trivial to extract a basis of $\mathbb{P}_l(K) \subset \Pk, l \leq k$
+%       \end{itemize}
     \end{itemize}
-  \end{block}
-  \note{Les propriétés mathématiques sont ici \alert{essentielles}}
+%  \note{Les propriétés mathématiques ($L_2$ orthonormal and  sont ici \alert{essentielles}}
 \end{frame}
 
-\begin{frame}[label=psetops]{Polynomiales Operations}
-  \begin{block}{Modal/Nodal Mapping }
-    \begin{itemize}
-    \item Given $X=\{x_j\}_{j=1,...,\mathrm{dim} \Pk}$ a point set in $K$
-    \item Given $V(\phi,X) = (\phi_i(x_j))$  Vandermonde matrix (modal/nodal coefficient mapping)
-    \item Given $\Hat{p} \in \mathbb{R}^{\mathrm{dim} \Pk}$, such that $\Hat{p} = \mathcal{I}(p)\, V(\phi,X)$
-    \end{itemize}
+\begin{frame}{Polynomial Set}
+  We now consider polynomial sets $P = \{p_i, i=1...N, p_i \in \Pk\}$.
 
-  \end{block}
-  \begin{alertblock}{}
-    We look for $p$ that is to say we determine its  coefficients $\mathcal{I}(p)$ in the basis $(\phi_i)$
-  \end{alertblock}
+  Again the polynomials are expressed in our $L_2$ orthonormal basis,
+  ie
+  \begin{equation}
+    \label{eq:26}
+    p_i = \sum_{k=1...\mathrm{dim}{\Pk}} p_{ik} \phi_k
+  \end{equation}
+  where $p_{ik}$ is the $k$-th component of the polynomial $p_i$.  We
+  now wish to express our polynomial set $P$ in $\phi$, we just
+  introduce the matrix $\mathbf{P}$
+
+  \begin{equation}
+    \label{eq:28}
+    \mathbf{P} =(p_{ik})_{(i,k) \in [1...N]\times[1...\mathrm{dim}(\Pk)]}\}.
+  \end{equation}
+
+  The line $i$ of $\mathbf{P}$ holds the coefficients of the $i$-th polynomial.
 \end{frame}
 
-\begin{frame}{Differentatiation matrix}
-  \begin{example}{}
-    Given $D_l$ such that  $(D_l)_{i,j}= V(\frac{\partial \phi}{\partial x_l},Y)\ V^{-1}(\phi,Y)$, we have
+\begin{frame}[label=psetops]{Some Polynomial Set Operations}
+  \begin{itemize}
+  \item Addition, $\nabla \cdot$, $\nabla \times$ $L_2$ projection...
+  \item Evaluation at a point set $X$: $V(P,X)$
     \begin{equation}
-      \label{eq:13}
-      \mathcal{I}(\partial_l\ p) = \mathcal{I}( p )\ D_l
+      \label{eq:35}
+      V(P,X) = \mathbf{P}\ V( \phi, X )
     \end{equation}
-    The choice of $Y$ is crucial for good numerical stability.
-  \end{example}
-  \begin{alertblock}{Features}
-    Any order differentiation ($D_l^n$), Gradient, Divergence, Curl, $L_2$ projection
-  \end{alertblock}
+    where $\phi$ is the basis in which $P$ is expressed.
+  \item Derivate at a point set $X$: $V(\partial P,X)$
+    \begin{equation}
+      \label{eq:35}
+      V(\partial P,X) = \mathbf{P}\ V( \partial \phi, X )
+    \end{equation}
+  \end{itemize}
 \end{frame}
+
+\begin{frame}[label=psetops]{Some Polynomial Set Operations}
+  \begin{itemize}
+  \item Integration $\int_{-1}^1 \phi_i(\xi)  d\xi$
+    \begin{equation}
+      \label{eq:34}
+      \int_{-1}^1 \phi_i(\xi) d\xi = \sum_{q=1}^Q w_q \phi_i( \xi_q )
+    \end{equation}
+  \end{itemize}
+\end{frame}
+
+%   \begin{block}{Modal/Nodal Mapping }
+%     \begin{itemize}
+%     \item Given $X=\{x_j\}_{j=1,...,\mathrm{dim} \Pk}$ a point set in $K$
+%     \item Given $V(\phi,X) = (\phi_i(x_j))$  Vandermonde matrix (modal/nodal coefficient mapping)
+%     \item Given $\mathbf{p} \in \mathbb{R}^{\mathrm{dim} \Pk}$, such that $\mathbf{p} = \mathcal{I}(p)\, V(\phi,X)$
+%     \end{itemize}
+
+%   \end{block}
+%   \begin{alertblock}{}
+%     We look for $p$ that is to say we determine its  coefficients $\mathcal{I}(p)$ in the basis $(\phi_i)$
+%   \end{alertblock}
+% \end{frame}
+
+% \begin{frame}{Differentatiation matrix}
+%   \begin{example}{}
+%     Given $D_l$ such that  $(D_l)_{i,j}= V(\frac{\partial \phi}{\partial x_l},Y)\ V^{-1}(\phi,Y)$, we have
+%     \begin{equation}
+%       \label{eq:13}
+%       \mathcal{I}(\partial_l\ p) = \mathcal{I}( p )\ D_l
+%     \end{equation}
+%     The choice of $Y$ is crucial for good numerical stability.
+%   \end{example}
+%   \begin{alertblock}{Features}
+%     Any order differentiation ($D_l^n$), Gradient, Divergence, Curl, $L_2$ projection
+%   \end{alertblock}
+% \end{frame}
 
 \begin{frame}[containsverbatim]{C++ Polynomial and Polynomialset}
 %\begin{lstlisting}[mathescape,basicstyle=\tiny\ttfamily]
@@ -725,25 +817,64 @@ project( Pset const& pset, PExpr const& expr, IM const& im )
 \end{frame}
 
 
-\subsection{Functionals and Functional Sets $\Sigma$}
+\subsection[Functionals]{Functionals and Functional Sets $\Sigma$}
 
-\begin{frame}[label=fset]{Functionals and Functional Sets}
-
-  \begin{block}{Functional $\sigma : \Pk \longrightarrow \mathbb{R}$}
-    \begin{itemize}
-    \item Given $p \in \Pk$  and $(\phi_i)$ is a basis of $\Pk$ :
-      $$\sigma(p) = \sum_{i=1}^{\mathrm{dim}(\Pk)} p_i \sigma(\phi_i)$$
-    \item $\sigma \in \mathcal{L}(\Pk;\mathbb{R})$ is then
-      represented by $(\sigma(\phi_i)) \in \mathbb{R}^{\mathrm{dim}(\Pk)}$
-    \item Similarly, a functional set
-      $\Sigma=\{\sigma_i\}_{i=1...N}$ is represented by
-      $(\sigma_i(\phi_j))_{i,j} \in \mathbb{R}^{N\times\mathrm{dim}(\Pk)}$
-    \end{itemize}
-  \end{block}
+\begin{frame}{Linear Functionals}
+  Consider now a linear functional $\sigma : \Pk \longrightarrow \mathbb{R}$
+  Given $p \in \Pk$  and $(\phi_j)$ is a basis of $\Pk$, we have
+  \begin{equation}
+    \label{eq:20}
+    \sigma(p) = \sum_{i=1}^{\mathrm{dim}(\Pk)} p_j \sigma(\phi_j)
+  \end{equation}
+  Introduce $\mathcal{J} : \mathcal{L}( \Pk, \mathbb{R}) \rightarrow \mathbb{R}^{\mathrm{dim}(\Pk)}$ and
+  \begin{equation}
+    \label{eq:21}
+    (\mathcal{J}(\sigma))_j = (\sigma(\phi_j))
+  \end{equation}
+  In algebraic form, ($\mathcal{J}(\sigma)$ is a row vector), we have
+  \begin{equation}
+    \label{eq:22}
+    \sigma( p ) = \langle \sigma, p \rangle = \underbrace{\mathcal{J}(\sigma)}_{1 \times \mathrm{dim} \Pk}\ \underbrace{\mathbf{p}^T}_{\mathrm{dim}\Pk \times 1 }\quad \text{(inner product)}
+  \end{equation}
 \end{frame}
 
+\begin{frame}{Example: Functional evaluation at a point}
+  Consider $\hat{x}_i \in \hat{K}$ and $\sigma_{\hat{x_i}}: p
+  \rightarrow p(\hat{x_i})$.  $\sigma_{\hat{x_i}}$ is represented by
+  the vector whose components are the evaluation of the basis
+  functions $\phi_j$ at the point $\hat{x}_i$
+  \begin{equation}
+    \label{eq:23}
+    (\mathcal{J}(\sigma))_j = ( \phi_j(\hat{x}_i) )
+  \end{equation}
+  if $\mathcal{J}(\sigma)$ is stored as a row vector ($1 \times \mathrm{dim}(\Pk)$), then
+  \begin{equation}
+    \label{eq:24}
+    \sigma_{\hat{x_i}}(p) = \mathcal{J}(\sigma)\  \mathbf{p}^T\ =\ p(\hat{x}_i)\ (\in \setR{})
+  \end{equation}
+
+
+\end{frame}
+\begin{frame}{Functional set}
+  Similarly, a functional set
+  $\Sigma=\{\sigma_i\}_{i=1...N}$ is represented by a matrix
+  \begin{equation}
+    \label{eq:25}
+    (\sigma_i(\phi_j))_{i,j} \in \mathbb{R}^{N\times\mathrm{dim}(\Pk)}
+  \end{equation}
+
+  If $P$ is a polynomial set and $\Sigma$ a functional set, we have the matrix-matrix product
+  \begin{equation}
+    \label{eq:27}
+    \underbrace{\Sigma}_{\text{matrix}} \underbrace{P^T}_{\text{matrix}}
+  \end{equation}
+  which is the application of the functional set onto the polynomial set.
+\end{frame}
+
+
+
 \begin{frame}[label=fsetops]{Some Functionals}
-  \begin{block}{Fonctional $\sigma : \mathbb{P}(K) \longrightarrow \mathbb{R}$}
+  \begin{block}{Functional $\sigma : \mathbb{P}(K) \longrightarrow \mathbb{R}$}
     \begin{itemize}
     \item Given $x_i \in K$, \\
       \alert{$\sigma_{x_i}: p \in \mathbb{P}(K) \longrightarrow p(x_i)$}
@@ -760,8 +891,45 @@ project( Pset const& pset, PExpr const& expr, IM const& im )
   \end{block}
 \end{frame}
 
+\begin{frame}{Example: Lagrange polynomial construction}
+  We now wish to construct the Lagrange polynomials expressed in our
+  primal bases.
+
+  \noindent
+  Consider the point set  (equiadistributed, Gauss Lobatto...)
+  \begin{equation}
+    \label{eq:29}
+    \{x_i, i =0...N\},
+  \end{equation}
+  we wish to construct the associated Lagrange polynomial set
+  \begin{equation}
+    \label{eq:30}
+    H=\{h_j, j=0...N, h_j \in \PN\}
+  \end{equation}
+  Note that the $h_i$ will verify
+  \begin{equation}
+    \label{eq:31}
+    h_j(x_i) = \delta_{ij},\quad i=0...N,\ j=0...N
+  \end{equation}
+  Introduce now
+  \begin{equation}
+    \label{eq:32}
+    \Sigma=\{\sigma_{x_i}, \sigma_{x_i}(p) = p(x_i)\ i=0...N\}
+  \end{equation}
+  The matrix $H$ of coefficients of the polynomial set $H$ expressed
+  in the basis $\phi$ verifies (see \ref{eq:31}), ie
+  \begin{equation}
+    \label{eq:33}
+    \Sigma\ H^T = I
+  \end{equation}
+  where $I$ is the identity matrix, $\Sigma$ the matrix associated to
+  the functional set. $H^T$ is the solution of a linear system.
+
+\end{frame}
+
+
 %% fset
-\begin{frame}[containsverbatim]{Functionals and Functional Sets}
+\begin{frame}[containsverbatim]{Functionals }
 \begin{lstlisting}[mathescape]
 // $\sigma$
 template<typename Space>
@@ -778,14 +946,20 @@ class Functional
    return prod( p.coeff(), trans(_M_coeff) );
  }
 }
+\end{lstlisting}
+\end{frame}
+\begin{frame}[containsverbatim]{Functional Sets}
+\begin{lstlisting}[mathescape]
 // $\Sigma$
 template<typename Space>
 class FunctionalSet
 {
  typedef Space polynomialset_type;
  typedef Space::polynomial_type polynomial_type;
- FunctionalSet( vector<Functional<Space> funcs ) {...}
- void setFunctionalSet( vector<Functional<Space> funcs )
+ FunctionalSet( vector<Functional<Space> funcs )
+  {...}
+ void setFunctionalSet(
+                vector<Functional<Space> funcs )
  {...}
  // $\Sigma( p )$
  matrix<> operator()( polynomialset_type  p )
@@ -797,8 +971,8 @@ class FunctionalSet
 \end{frame}
 
 %% fsetops
-\begin{frame}[containsverbatim,label=fsetopslisting]{Some Functionnals}
-\begin{lstlisting}[mathescape,basicstyle=\tiny\ttfamily]
+\begin{frame}[containsverbatim]{Some Functionnals}
+\begin{lstlisting}[mathescape]
 // Functional $\sigma_{x_i}$
 template<typename Space>
 class PointEvaluation
@@ -806,8 +980,12 @@ class PointEvaluation
 { ...
   PointEvaluation( Space const& b,
                    Point const& pt )
-  : super( b, trans( b.basis()( pt )))
-  {} };
+  :
+  super( b, trans( b.basis()( pt )))
+  {}
+};
+
+
 // Functional $\sigma_{x_i,\, j}$
 template<typename Space>
 class PointDerivative
@@ -815,19 +993,27 @@ class PointDerivative
 { ...
   PointDerivative( Space const& b, int j,
                    Point const& pt )
-  : super( b, b.basis().derivate(j).evaluate( pt ))
-    {} };
+  :
+  super( b, b.basis().derivate(j).evaluate( pt ))
+  {}
+};
+\end{lstlisting}
+\end{frame}
+\begin{frame}[containsverbatim]{Some Functionnals}
+\begin{lstlisting}[mathescape]
 // Functional $\sigma_{q}$
 template<typename Space, typename Basis>
 class IntegralMoment
  : public Functional<Space>
 {
  IntegralMoment( Space const& p, Basis const& q )
- : super( p )
+ :
+ super( p )
  {
    this->setCoefficient(
      prod( q.coeff(), trans( p.basis().coeff() ) ) );
- } };
+ }
+};
 \end{lstlisting}
 \end{frame}
 
@@ -855,58 +1041,6 @@ class IntegralMoment
   \end{alertblock}
 \end{frame}
 
-\begin{frame}[label=divfree]{$D=\{ p \in [\Pk]^d,\ \mathrm{div}(p) = 0\}$}
-  \begin{block}{Constrained Polynomial Sets}
-    \begin{enumerate}
-    \item Define $[\Pk]^d$ and $\mathbb{P}_{k-1}(K)$
-    \item Define $\Sigma=\{\sigma_{\mathrm{div},\, q} : [\Pk]^d \rightarrow \mathbb{R},\ q \in \mathbb{P}_{k-1}\}$
-    \item Given $M$ the matrix associated with $\Sigma$, do a
-      singular value decomposition $M = U S V^T$
-    \item Extract the lines of $V$ associated with the singular value
-      $0$
-    \end{enumerate}
-  \end{block}
-\end{frame}
-\begin{frame}[fragile=singleslide]{$D=\{ p \in [\Pk]^d,\ \mathrm{div}(p) = 0\}$}
-\begin{lstlisting}[mathescape,basicstyle=\tiny\ttfamily]
-template<uint16_type $d$, uint16_type $k$,
-      typename T = double, typename $K$>
-class DivFreePolynomialSet :
-// $[\Pk]^d$
-public ConstrainedPolynomialSet<OrthonormalPolynomialSet<$d$, $k$, Vectorial, T, $K$> >
-{
- DivFreePolynomialSet()
- {
-  // $[\Pk]^d$
-  OrthonormalPolynomialSet<$d$,$k$,Vectorial,T,$K$> Pk_v;
-
-  // $\Pk$
-  OrthonormalPolynomialSet<$d$,$k$,Scalar,T,$K$> Pk_s;
-
-  // extract the polynomials in $P_k$ of degree up to $k-1$
-  uint16_type dim_Pkm1 = $K$::polyDims( $k-1$ );
-  $\mathbb{P}_{k-1}(K)$ = Pk_s.polynomialsUpToDimension( dim_Pkm1 );
-
-  // construct the constraints
-  std::vector<constraint_type> fset;
-  for(int i = 0; i < dim_Pkm1; ++i )  {
-    fset.push_back( $\sigma_{\mathrm{div},\, q_i}$( Pk_v, Pkm1.polynomial( i ) ) );
-  }
-
-  // Constraints fset=$\Sigma$ over $[\Pk]^d$
-  this->setConstraints( Pk_v, fset ); }; };
-\end{lstlisting}
-\end{frame}
-
-\begin{frame}{$D=\{ p \in [\Pk]^d,\ \mathrm{div}(p) = 0\}$}
-  \begin{figure}[H]
-    \centering
-    \includegraphics[width=.5\textwidth]{../figures/divfree-2-1-3}
-    \includegraphics[width=.5\textwidth]{../figures/divfree-2-1-4}
-    \caption{2 divergence free polynomials}
-    \label{fig:1}
-  \end{figure}
-\end{frame}
 
 \begin{frame}[label=lag]{$(K,\ \mathbb{P}_k,\ \{\sigma_{x_i}\})$, $(K,\ [\mathbb{P}_k]^d,\ \{\sigma_{x_i}\})$}
   \begin{block}{Lagrange Finite Element}
@@ -969,272 +1103,205 @@ class Lagrange
 \end{frame}
 
 
-\begin{frame}[label=rt]{$(K,\ \mathbb{R}\mathbb{T}_k,\ \{\sigma\})$}
-  \begin{block}{Raviart Thomas finite element}
-    \begin{enumerate}
-    \item Define $$\mathbb{R}\mathbb{T}_k(K) = [\Pk]^d + x \Pk$$
-    \item Define the dual space $\Sigma$
-    \item Define the set of equidistributed point on the faces $\{x_i, x_i \in \partial K \}$
-    \item Define the functional set composed of
-      \begin{itemize}
-      \item normal component in  $k + 1$ points of each face
-      \item moments against a basis of $[\Pkmun]^d$
-      \end{itemize}
-    \item Apply the functionals of $\Sigma$ to the basis of
-      $\mathbb{R}\mathbb{T}_k$, get the matrix $M$
-    \item Solve $M V = I$
-    \item $V^T$ contains the coefficients of finite element in the
-      basis of $\mathbb{R}\mathbb{T}_k$
-    \end{enumerate}
-  \end{block}
+\subsection{Multidomain extension}
+\begin{frame}{what do we know?}
+  \begin{itemize}
+  \item We know how to write a variational formulation
+  \item We know how to rewrite the integrals on each element region, as integrals on a reference element
+  \item We know how to construct polynomial sets and do some
+    operations (evaluation, integration,...) over the reference
+    element
+  \end{itemize}
 \end{frame}
 
-\begin{frame}[fragile=singleslide]{$(K,\ \mathbb{R}\mathbb{T}_k,\ \{\sigma\})$}
-\begin{lstlisting}[mathescape,basicstyle=\tiny\ttfamily]
-template<uint16_type $d$,
-         uint16_type $k$,
-         typename T = double,
-         class Convex = $K$>
-class RaviartThomasPolynomialSet
- :
-  public OrthonormalPolynomialSet<$k$, $k+1$,
-                         Vectorial, T, Convex>
-{ RaviartThomasPolynomialSet()
-  { // $[\mathbb{P}_{k+1}]^d$
-    Pkp1_v_type Pkp1_v;
-    v_polynomialset_type Pk_v( Pkp1_v.polynomialsUpToDimension( dim_Pk ) );
-    // $\mathbb{P}_k$
-    Pkp1_s_type Pkp1;
-    scalar_polynomialset_type Pk ( Pkp1.polynomialsUpToDimension( dim_Pk ) );
-    // $x \mathbb{P}_k\backslash\mathbb{P}_{k-1}$
-    IM_PK<convex_type::nDim, 2*nOrder,value_type> im;
-    matrix<value_type> xPkc( nComponents*(dim_Pk-dim_Pkm1), Pk.coeff().size2() );
-    for( int j = dim_Pkm1, l = 0; j < dim_Pk; ++j, ++l )
-    { for( int i = 0; i < convex_type::nDim; ++i )
-      {
-        times_x<scalar_polynomial_type> xp( Pk.polynomial( j ), i );
-        row(xPkc,l*nComponents+i) = row( project( Pkp1,xp, im ).coeff(), 0);
-    } }
-    v_polynomialset_type xPk( typename super::basis_type(), xPkc );
-    // $[\mathbb{P}_k]^d + x \mathbb{P}_k\backslash\mathbb{P}_{k-1}$
-    setCoefficient( unite( Pk_v, xPk ).coeff() );  } }
-\end{lstlisting}
+\begin{frame}{Problem: Laplacian equation}
+  Consider now
+  \begin{equation}
+    \label{eq:36}
+    \mathbb{L}(u) \equiv \frac{\partial^2 u}{\partial x^2} + f = 0, \quad f=-e^{-x},\ 0 \leq x \leq l
+  \end{equation}
+  and
+  \begin{equation}
+    \label{eq:39}
+    \frac{\partial u}{\partial n}(0) = 1, \quad \frac{\partial u}{\partial n}(l) + u(l) = 0
+  \end{equation}
+  The exact solution is $g=e^{-x}$.
+
+
+  If $u(x)$ and $v(x)$ are sufficiently smooth and we do integration by parts (Gauss theorem) and get
+  \begin{equation}
+\label{eq:37}
+\int_0^l\ \frac{\partial u}{\partial x}\ \frac{\partial v}{\partial x}+  \int_0^l v f dx - \Big[ v\frac{\partial u}{\partial x}\Big]_0^l  = 0
+  \end{equation}
+  Denote then
+  \begin{equation}
+    \label{eq:38}
+    \begin{array}[c]{rl}
+      a(v, u) &= \int_0^1 \frac{\partial u}{\partial x}\ \frac{\partial v}{\partial x} + v(l)u(l)\\
+      b(v) &= \int_0^l vf + v(0)
+    \end{array}
+  \end{equation}
+  We look for $u \in \mathcal{X} \equiv \mathcal{V}$ such that
+  \begin{equation}
+    \label{eq:22}
+    a(v,u) = b(v), \quad \forall v \in \mathcal{V}
+  \end{equation}
+\end{frame}
+\begin{frame}{Discretisation}
+  Consider a 1D mesh where the domain $\Om{}=[0,l]$ consists of
+  $\nel$ elements and each element is of equal length
+  $l/\nel$, ie $\Om{} = \cup_{e=1}^\nel\ \Om{e}$.
+
+  Denote $\mathcal{V}^\delta = \{ p \in C^0(\Om{}), p_{|\Om{e}} \in \PN, e=1,..., \nel \}$.
+
+  The problem now reads: find $u^\delta \in \mathcal{V}^\delta$ such that
+  \begin{equation}
+    \label{eq:27}
+    a(v^\delta, u^\delta) = f(v^\delta)\ \forall\ v^\delta \in \mathcal{V}^\delta
+  \end{equation}
+
+
 \end{frame}
 
-\begin{frame}[fragile=singleslide]{$(K,\ \mathbb{R}\mathbb{T}_k,\ \{\sigma\})$}
-\begin{lstlisting}[mathescape,basicstyle=\tiny\ttfamily]
-template<typename Basis,
-    typename ContinuityType,
-    template<class, class> class PointSetType>
-class RaviartThomasDual
- : public DualBasis<Basis>
+\begin{frame}{Algebraic form}
+  We write now (\ref{eq:27}) taking $v^\delta = \Phi_i,
+  i=1...\mathrm{dim}{\mathcal{V}^\delta}$ and express $u^\delta$ in
+  the $\Phi$ basis, ie $u^\delta = \sum_{i=1}^\ndof u_i \Phi_i$ ($\ndof = \mathrm{dim} \mathcal{V}^\delta$)
+  We thus get to solve the system
+  \begin{equation}
+    \label{eq:40}
+    A u = b
+  \end{equation}
+  where
+  \begin{itemize}
+  \item $A_{ij} = \int_{0}^l \frac{\partial \Phi_j}{\partial x}\ \frac{\partial \Phi_i}{\partial x} dx + \Phi_i(l)\Phi_j(l), \quad i,j=1...\mathrm{dim} \mathcal{V}^\delta$
+    \item $u = (u_j)_{j=1...\mathrm{dim} \mathcal{V}^\delta}$
+    \item $b_i = \int_0^l \Phi_i fdx + \Phi_i(0)$
+  \end{itemize}
+\end{frame}
+\begin{frame}{Geometric transformation}
+  We introduce the geometric transformation  $\chi^e: \Omst \mapsto
+  \Om{e}, \xi \rightarrow \chi^e(\xi )=x^e \in \Om{e}$ . We consider a linear
+  transformation (ie $\chi^e(\xi) = a \xi + b$):
+  \begin{equation}
+    \label{eq:41}
+    x^e = \chi^e(\xi) = \frac{1-\xi}{2} x^e_{e-1} + \frac{1+\xi}{2} x^e_e, \quad \xi \in \Omega^{\text{st}}, e = 1,...,\nel
+  \end{equation}
+
+  And since the elements are all the same size we have
+  \begin{itemize}
+  \item $K^e = \frac{h}{2}$ where $h=x^e_e - x^e_{e-1}$
+  \item $J^e = \frac{h}{2}$
+  \item $B^e = (K^e)^{-T} = \frac{2}{h}$
+  \end{itemize}
+\end{frame}
+\begin{frame}{reformulation in reference element}
+  Using the  formulas (end of first lecture)
+  \begin{itemize}
+  \item $A_{ij} = \sum_{e, (i,j) \in \Om{e}}
+ \int_{-1}^1 \frac{2}{h}\frac{\partial \phi_\jloc}{\partial \xi}\ \frac{2}{h}\frac{\partial \phi_\iloc}{\partial \xi} \frac{h}{2}d\xi+ \phi_\iloc(1)\phi_\jloc(1)_{|e=\nel}, \quad i=\text{map}[e][\iloc], j=\text{map}[e][\jloc]$
+    \item $u = (u_j)_{j=1...\mathrm{dim} \mathcal{V}^\delta}$
+    \item $b_i = \sum_{e, (i) \in \Om{e}} \int_{-1}^1 \phi_\iloc(\xi) f(\chi^e(\xi)) \frac{h}{2}d\xi + \phi_\iloc(-1)_{|e=0}, \quad i=\text{map}[e][\iloc]$
+  \end{itemize}
+
+\end{frame}
+
+\begin{frame}[containsverbatim]{element loop}
+\begin{lstlisting}[mathescape]
+for( int e = 0; e < nel; ++e )
 {
- // define points on face
- for_each point p in face of convex {
-  pts_per_face[p]=convex.makePoints( $d-1$, p ) );
- }
- // compute $ \sigma_f( U ) = (U * n[f]) (p_f)$
- std::vector<functional_type> fset;
- for_each point p in face of convex {
-  dcpe_type dcpe( primal, convex.normal(f),
-                  pts_per_face[p] );
-  std::copy( dcpe.begin(), dcpe.end(),
-             std::back_inserter( fset ) ); }
- if ( $k$ > 0 )
- {  Pkp1_v_type Pkp1;
-  v_polynomialset_type Pkm1 (
-         Pkp1.polynomialsUpToDimension( dim_Pm1 ) );
-  for( int i = 0; i < Pkm1.polynomialDimension();
-       ++i )
-  {
-    typedef IntegralMoment<> fim_type;
-   fset.push_back( fim_type( primal, Pkm1.polynomial( i ) ) );  }
- }
- setFunctionalSet( fset );}
+  // compute $J^e$, $K^e$ and $B^e$
+
+  // local assembly: compute integrals on $\Omst$
+
+  // global assembly: assemble local matrix/vector into the global matrix
+}
 \end{lstlisting}
 \end{frame}
-
-\begin{frame}{$(K,\ \mathbb{R}\mathbb{T}_k,\ \{\sigma\})$}
-  \begin{figure}[H]
-    \centering
-    \includegraphics[width=.5\textwidth]{../figures/fert-2-1-1.pdf}
-    \includegraphics[width=.5\textwidth]{../figures/fert-3-0-1.pdf}
-    \caption{2  Raviart-Thomas polynomials in 2D and 3D}
-  \end{figure}
+\begin{frame}[containsverbatim]{Elementary matrix, vector}
+  Denote $M^e$ the elementary matrix, it is constructed as follows
+  \begin{lstlisting}[mathescape]
+    for( int iloc = 0;iloc < $\nldof$; ++iloc )
+     for( int jloc = 0;jloc < $\nldof$; ++jloc )
+     {
+      $M^e(\iloc,\jloc) = \int_{-1}^1 \frac{2}{h}\frac{\partial \phi_\jloc(\xi)}{\partial \xi}\ \frac{2}{h}\frac{\partial \phi_\iloc(\xi)}{\partial \xi} \frac{h}{2}d\xi $
+      $M^e(\iloc,\jloc) = \sum_{q=1}^Q \frac{2}{h} w_q \frac{\partial \phi_\jloc(\xi_q)}{\partial \xi}\ \frac{2}{h}\frac{\partial \phi_\iloc(\xi_q)}{\partial \xi} \frac{h}{2}$;
+      if ( e == $\nel-1$)
+        $M^e(\iloc,\jloc) += \phi_\iloc(1)\phi_\jloc(1)$
+     }
+  \end{lstlisting}
+  Likewise for $b^e$ the elementary vector
+  \begin{lstlisting}[mathescape]
+    for( int iloc = 0;iloc < $\nldof$; ++iloc )
+     {
+      $b^e(\iloc) = \int_{-1}^1 f(\chi^e(\xi)) \ \phi_\iloc(\xi) \frac{h}{2}d\xi = \sum_{q=1}^Q\ w_q f(x^e_q) \phi_\iloc(\xi_q) \frac{h}{2}$;
+      if ( e == $0$ )
+        $b^e(\iloc) += \phi_\iloc(-1)$
+     }
+  \end{lstlisting}
 \end{frame}
 
-
- \subsection{Spectral}
-
-
- \begin{frame}{Problème 2D sur simplex}
-   \begin{columns}
-       \begin{column}[c]{.4\textwidth}
- 	{\scriptsize
-         \begin{figure}[H]
-          \centering
- %	\includegraphics[width=25mm]{../figures/triangle.png}
- 	 \movie[externalviewer=kaffeine]{\includegraphics[width=\textwidth]{../figures/Dubiner_3.jpg}}{../figures/Dubiner_5.jpg}
-           \caption{\scriptsize Base de Dubiner}
-         \end{figure}
- 	\begin{itemize}
- 	\item Forme forte :
- 	$$
- 	\left\{
- 	\begin{array}{ll}
- 	- \Delta u + u = f, & \mbox{ dans } \Omega, \\
- 	\frac{\partial u}{\partial \mathbf n_i} = g_i, & \mbox{ sur } \Gamma_i, \\
- 	\end{array}
- 	\right.
- 	$$
- 	\item Forme faible :
- 	$$
- 	\int_{\Omega} \nabla u\nabla v + \int_{\Omega} uv   = \int_{\Omega} fv + \sum_{k=0}^2\int_{\Gamma_k} g_kv
- 	$$
- 	\end{itemize}
- 	}
-       \end{column}
-       \begin{column}[c]{.6\textwidth}
- 	{\scriptsize
- 	\begin{itemize}
- 	\item Données :
- 	\begin{eqnarray*}
- 	f &=& (2 \pi^2+1)\sin\pi x \cos\pi y, \\
- 	g_0 &=& \pi(\cos \pi x \cos \pi y - \sin \pi x \sin \pi y) / \sqrt{2}, \\
- 	g_1 &=& -\pi \cos \pi x \cos \pi y, \\
- 	g_2 &=& \pi \sin \pi x \sin \pi y.
- 	\end{eqnarray*}
- 	\item Solution exacte $\sin \pi x \cos \pi y$ :
-  	\begin{figure}[H]
-           \centering
-           \movie[externalviewer=kaffeine]{\includegraphics[width=50mm]{../figures/Sol_2D.png}}{../figures/Sol_2D.png}
-          \end{figure}
- 	\end{itemize}
- 	}
-       \end{column}
-     \end{columns}
+\begin{frame}[containsverbatim]{DOF table}
+  Consider now the case $N=1$ and $\nel=3$. We construct the associated dof table \lstinline!map!
+  \begin{lstlisting}
+    map[0] = {0, 1}
+    map[1] = {1, 2}
+    map[2] = {2, 3}
+  \end{lstlisting}
+  Consider now the case $N=2$ and $\nel=3$. We construct the associated dof table \lstinline!map!
+  \begin{lstlisting}
+    map[0] = {0, 1, 2}
+    map[1] = {2, 3, 4}
+    map[2] = {4, 5, 6}
+  \end{lstlisting}
 \end{frame}
-\begin{frame}{Convergence}
-     \begin{columns}
-      \begin{column}[c]{.5\textwidth}
- 	{\scriptsize
- 	\begin{itemize}
- 	\item Convergence :
-         \begin{figure}[H]
-          \centering
-          \movie[externalviewer=kaffeine]{\hspace{-13mm}\includegraphics[width=7cm]{../figures/Error_2D.png}}{../figures/Error_2D.png}
-         \end{figure}
- 	$$
- 	\|u - u_N \|_{L^2} \sim  e^{1.077 - 0.22 * N^{1.56235}}
- 	$$
- 	\end{itemize}
- 	}
-       \end{column}
-       \begin{column}[c]{.5\textwidth}
- 	{\scriptsize
- 	\vspace{-1mm}
- 	\begin{itemize}
- 	\item Conditionnement :
- 	\begin{figure}[H]
-          \centering
-          \movie[externalviewer=kaffeine]{\hspace{-10mm}\includegraphics[width=7cm]{../figures/Cond_2D.png}}{../figures/Cond_2D.png}
- 	\end{figure}
- 	$$
- 	\kappa \sim 8.38 + 0.32*N^{2.54702}
- 	$$
- 	\end{itemize}
- 	}
-       \end{column}
-     \end{columns}
- \end{frame}
 
- \begin{frame}{Problème 3D sur simplex}
-     \begin{columns}
-       \begin{column}[c]{.4\textwidth}
- 	{\scriptsize
-         \begin{figure}
-          \centering
-          %%\includegraphics[width=25mm]{../figures/tetra.png}
-          \movie[externalviewer=kaffeine]{\includegraphics[width=\textwidth]{../figures/Dubiner_3.jpg}}{../figures/Dubiner_5.jpg}
-          \caption{\scriptsize Base de Dubiner}
-         \end{figure}
- 	\begin{itemize}
- 	\item Forme forte :
- 	$$
- 	\left\{
- 	\begin{array}{ll}
- 	- \Delta u + u = f, & \mbox{ dans } \Omega, \\
- 	\frac{\partial u}{\partial \mathbf n_i} = g_i, & \mbox{ sur } \Gamma_i, \\
- 	\end{array}
- 	\right.
- 	$$
- 	\item Forme faible :
- 	$$
- 	\int_{\Omega} \nabla u\nabla v + \int_{\Omega} uv   = \int_{\Omega} fv + \sum_{k=0}^3\int_{\Gamma_k} g_kv
- 	$$
- 	\end{itemize}
- 	}
-       \end{column}
-       \begin{column}[c]{.6\textwidth}
- 	{\scriptsize
- 	\begin{itemize}
- 	\item Données :
- 	\begin{eqnarray*}
- 	f &=& (3 \pi^2+1)\sin\pi x \cos\pi y \cos\pi z, \\
- 	g_0 &=& \frac{\pi}{\sqrt{3}} (\cos \pi x \cos \pi y \cos\pi z  \\
- 	&-& \sin \pi x \sin \pi y \cos\pi z - \sin \pi x \cos \pi y \sin\pi z), \\
- 	g_1 &=& -\pi \cos \pi x \cos \pi y \cos\pi z, \\
- 	g_2 &=& \pi \sin \pi x \sin \pi y \cos\pi z, \\
- 	g_3 &=& \pi \sin \pi x \cos \pi y \sin\pi z.
- 	\end{eqnarray*}
- 	\item Solution exacte $\sin \pi x \cos \pi y \cos \pi z$.
-%  	\begin{figure}[H]
-%           \centering
-%           \movie[externalviewer=kaffeine]{\includegraphics[width=50mm]{../figures/Sol_3D.png}}{../figures/Sol_3D.png}
-%          \end{figure}
- 	\end{itemize}
- 	}
-       \end{column}
-     \end{columns}
+\begin{frame}[containsverbatim]{Global Assembly}
+  \begin{lstlisting}[mathescape]
+  for( int iloc = 0;iloc < $\nldof$; ++iloc )
+  {
+    int i = map[e][$\iloc$];
+     for( int jloc = 0;jloc < $\nldof$; ++jloc )
+     {
+       int j = map[e][$\jloc$];
+       A( i, j ) += $M^e(\iloc, \jloc)$;
+     }
+     b( i ) += $b^e(\iloc)$;
+  }
+  \end{lstlisting}
 \end{frame}
-\begin{frame}{Convergence}
-     \begin{columns}
-      \begin{column}[c]{.5\textwidth}
- 	{\scriptsize
- 	\begin{itemize}
- 	\item Convergence :
-          \begin{figure}[H]
-            \centering
-           \movie[externalviewer=kaffeine]{\hspace{-13mm}\includegraphics[width=7cm]{../figures/Error_3D.png}}{../figures/Error_3D.png}
-         \end{figure}
- 	$$
- 	\|u - u_N \|_{L^2} \sim  e^{1.30168 - 0.37023 * N^{1.38707}}
- 	$$
- 	\end{itemize}
- 	}
-       \end{column}
-       \begin{column}[c]{.5\textwidth}
- 	{\scriptsize
- 	\vspace{-1mm}
- 	\begin{itemize}
- 	\item Conditionnement :
- 	\begin{figure}[H]
-          \centering
- 	\movie[externalviewer=kaffeine]{\hspace{-10mm}\includegraphics[width=7cm]{../figures/Cond_3D.png}}{../figures/Cond_3D.png}
- 	\end{figure}
- 	$$
- 	\kappa \sim 4.30 + 0.24*N^{3.2812}
- 	$$
- 	\end{itemize}
- 	}
-       \end{column}
-     \end{columns}
- \end{frame}
+
+% \begin{frame}{Case $N=1$, $\nel=3$}
+%   We get the matrix
+%   \begin{equation}
+%     \label{eq:42}A=
+%     \begin{pmatrix}
+%       \frac{4}{h} & \frac{4}{h} & & \\
+%       \frac{4}{h} & \frac{4}{h} & \frac{4}{h} &\\
+%       & \frac{4}{h} & \frac{4}{h} & \frac{4}{h} \\
+%       & & \frac{4}{h} & \frac{4}{h}+1 \\
+%     \end{pmatrix}
+%   \end{equation}
+%   and
+%   \begin{equation}
+%     \label{eq:43}
+%     \begin{pmatrix}
+%       1 + \ \sum_{q=1}^Q w_q (-e^{x^0_q}) \phi_0(\xi_q) \frac{h}{2}\\
+%       \sum_{q=1}^Q w_q (-e^{x^0_q}) \phi_1(\xi_q) \frac{h}{2} + \sum_{q=1}^Q w_q (-e^{x^1_q}) \phi_0(\xi_q) \frac{h}{2}\\
+%       \sum_{q=1}^Q w_q (-e^{x^1_q}) \phi_0(\xi_q) \frac{h}{2} + \sum_{q=1}^Q w_q (-e^{x^2_q}) \phi_0(\xi_q) \frac{h}{2}\\
+%       \sum_{q=1}^Q w_q (-e^{x^2_q}) \phi_1(\xi_q) \frac{h}{2}\\
+%     \end{pmatrix}
+%   \end{equation}
+% \end{frame}
+\section{Life}
+\subsection{Architecture}
+\begin{frame}[plain]{Architecture}
+  \mode<article>{\includegraphics[width=\textwidth]{../../../../../../figures/arch2}}
+  \mode<beamer>{\includegraphics[height=.9\textheight]{../../../../../../figures/arch2}}
+\end{frame}
 
 
 \end{document}
-
-
 \subsection{Newton}
 \label{sec:newton}
 

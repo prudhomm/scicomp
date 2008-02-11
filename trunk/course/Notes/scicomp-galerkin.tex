@@ -105,14 +105,14 @@
   First introduce the Lebesgue inner product $(f,g)$ defined as
   \begin{equation}
     \label{eq:4}
-    (\ f,\ g\ )\ =\ \int_\Omega \ f(\mathbf{x})\ g(\mathbf{x})\ d\mathbf{x}
+    (\ f,\ g\ )\ =\ \int_\Omega \ f(\overrightarrow{x})\ g(\overrightarrow{x})\ d\overrightarrow{x}
   \end{equation}
   To further restrict $R$, we ask $R$ to be ``orthogonal'' to a set of
   \emph{test}(\emph{weight}) functions $v_j$ for
   $j=1...N_{\text{dof}}$ with respect to $(\cdot, \cdot)$:
   \begin{equation}
     \label{eq:5}
-    \int_\Omega\ v_j(\mathbf{x})\ R  = 0 \quad j = 1 ... N_{\text{dof}}
+    \int_\Omega\ v_j(\overrightarrow{x})\ R  = 0 \quad j = 1 ... N_{\text{dof}}
   \end{equation}
   The weighted residual is then said to be zero. Hence the name of the method.
 
@@ -132,8 +132,8 @@
 
   The nature of the scheme is determined by
   \begin{itemize}
-  \item the choice of the expansion functions $\Phi_i(\mathbf{x})$
-  \item the choice of the weights functions $v_j(\mathbf{x})$
+  \item the choice of the expansion functions $\Phi_i(\overrightarrow{x})$
+  \item the choice of the weights functions $v_j(\overrightarrow{x})$
   \end{itemize}
 
   \begin{table}[H]
@@ -144,24 +144,24 @@
     Test/Weights & Type of method\\
 
     \rowcolor[gray]{.7}
-    $v_j(\mathbf{x}) = \delta(\mathbf{x} - \mathbf{x_j})$ 	& Collocation \\
+    $v_j(\overrightarrow{x}) = \delta(\overrightarrow{x} - \overrightarrow{x_j})$ 	& Collocation \\
 
 
     \rowcolor[gray]{1}
-    $v_j(\mathbf{x})=
+    $v_j(\overrightarrow{x})=
       \begin{cases}
         1 & \text{inside} \ \Omega_j\\
         0 & \text{outside} \ \Omega_j
       \end{cases}$ & Finite volume(subdomain)\\
 
     \rowcolor[gray]{.7}
-    $v_j(\mathbf{x}) = \frac{\partial R}{\partial \hat{u}_j}$ & Least square\\
+    $v_j(\overrightarrow{x}) = \frac{\partial R}{\partial \hat{u}_j}$ & Least square\\
 
     \rowcolor[gray]{1}
-    $v_j(\mathbf{x}) = \Phi_j(\mathbf{x})$ & Galerkin\\
+    $v_j(\overrightarrow{x}) = \Phi_j(\overrightarrow{x})$ & Galerkin\\
 
     \rowcolor[gray]{.7}
-    $v_j(\mathbf{x}) = \Psi_j(\mathbf{x}) (\neq \Phi_j(\mathbf{x}))$ & Petrov-Galerkin\\
+    $v_j(\overrightarrow{x}) = \Psi_j(\overrightarrow{x}) (\neq \Phi_j(\overrightarrow{x}))$ & Petrov-Galerkin\\
     \end{tabular}
     \caption{Table of the type of methods}
     \label{tab:1}
@@ -170,13 +170,13 @@
 \end{frame}
 
 \begin{frame}{Collocation}
-  The test function $v_j$ is the Dirac delta function computed at a point $\mathbf{x}_j$.
-  At a collocation point $\mathbf{x}_j$, we have
+  The test function $v_j$ is the Dirac delta function computed at a point $\overrightarrow{x}_j$.
+  At a collocation point $\overrightarrow{x}_j$, we have
   \begin{equation}
     \label{eq:6}
-    ( v_j(\mathbf{x}), R ) = ( \delta(\mathbf{x} - \mathbf{x}_j), R ) =  R(\mathbf{x}_j) = 0
+    ( v_j(\overrightarrow{x}), R ) = ( \delta(\overrightarrow{x} - \overrightarrow{x}_j), R ) =  R(\overrightarrow{x}_j) = 0
   \end{equation}
-  Thus \eqref{eq:1} is satisfied by $u^{\delta}$ at $\mathbf{x}_j$
+  Thus \eqref{eq:1} is satisfied by $u^{\delta}$ at $\overrightarrow{x}_j$
 \end{frame}
 
 \begin{frame}{Finite volume/subdomain}
@@ -186,7 +186,7 @@
 
     \begin{equation}
       \label{eq:7}
-      v_j(\mathbf{x})=
+      v_j(\overrightarrow{x})=
       \begin{cases}
         1 & \text{inside} \ \Omega_j\\
         0 & \text{outside} \ \Omega_j
@@ -275,7 +275,7 @@ In 1D we get
       \frac{\partial u}{\partial x}(1) = g_{\mathcal{N}}
     \end{equation}
     usually enforced \emph{implicitely} (e.g. weakly). In 2/3 D that
-    would be $\nabla u \cdot \mathbf{N} = g_{\mathcal{N}}$ where $\mathbf{N}$ is the outward normal  on $\partial \Omega$.
+    would be $\nabla u \cdot \overrightarrow{N} = g_{\mathcal{N}}$ where $\overrightarrow{N}$ is the outward normal  on $\partial \Omega$.
   \end{itemize}
 \end{frame}
 
@@ -308,7 +308,7 @@ In 1D we get
   We can also have mixed Dirichlet and Neumann boundary conditions known as Robin boundary conditions:
   \begin{equation}
     \label{eq:17}
-    \alpha\ \nabla u \cdot \mathbf{N }\ +\ \beta\ u\ =\ g_{\mathcal{R}}
+    \alpha\ \nabla u \cdot \overrightarrow{N }\ +\ \beta\ u\ =\ g_{\mathcal{R}}
   \end{equation}
   where $\alpha \neq 0$ and $\alpha, \beta, g_{\mathcal{R}}$ known.
   To impose this condition, we express for example in 1D
@@ -885,7 +885,7 @@ In 1D we get
     \begin{array}[c]{rl}
       a(\Phi_i, u^\delta) & = \int_\Omega\ \Phi_i\ \sum_{j=1}^{\ndof}\ \hat{u}_j\ \Phi_j \\
       & = \int_{\Omega^{\text{st}}} \ \phi^e_\iloc(\xi)\ \Big( \sum_{e\ \in\ S_{\text{el}}}\ \sum_{\jloc=0}^{\nldof}\ \hat{u}_\jloc^e\ \phi_\jloc^e(\xi) \Big) J^e(\xi) \\
-      & = \sum_{e\ \in\ S_{\text{el}}}\ \sum_{\jloc=0}^{\nldof}\ \hat{u}_\jloc^e\ \underbrace{\int_{\Omega^{\text{st}}} \ \phi^e_\iloc(\xi)\   \phi_\jloc^e(\xi)  J^e(\xi)}_{\aloc{e}(\phi_\iloc, \phi_\jloc)} 
+      & = \sum_{e\ \in\ S_{\text{el}}}\ \sum_{\jloc=0}^{\nldof}\ \hat{u}_\jloc^e\ \underbrace{\int_{\Omega^{\text{st}}} \ \phi^e_\iloc(\xi)\   \phi_\jloc^e(\xi)  J^e(\xi)}_{\aloc{e}(\phi^e_\iloc, \phi^e_\jloc)} 
     \end{array}
   \end{equation}
 \end{frame}
@@ -898,7 +898,7 @@ In 1D we get
   where
   \begin{equation}
     \label{eq:62}
-    A_{ij} = \sum_{e\ \in\ S_{\text{el}}}\ \sum_{\jloc=0}^{\nldof} \aloc{e}(\iloc,\jloc),\ i = \text{map}(e,\iloc), j = \text{map}(e,\jloc)
+    A_{ij} = \sum_{e\ \in\ S_{\text{el}}}\ \sum_{\jloc=0}^{\nldof} \aloc{e}(\phi^e_\iloc,\phi^e_\jloc),\ i = \text{map}(e,\iloc), j = \text{map}(e,\jloc)
   \end{equation}
 \end{frame}
 
@@ -983,7 +983,7 @@ std::map<std::pair<int,int>, int> dof;
   Denote $K^e(\xi)$ its gradient in $\xi$ ($n\times n$ matrix):
   \begin{equation}
     \label{eq:67}
-    K^e( \xi )\ =\ \nabla\ \chi^e (\xi )\ =\ \sum_{i=0}^{\ngdof}\ G_i\ \nabla \phi_i (\xi)
+    K^e( \xi )\ =\ \nabla\ \chi^e (\xi )\ =\ \sum_{i=0}^{\ngdof}\ G_i\ \nabla^{\text{st}} \phi_i (\xi)
   \end{equation}
   and $B^e(\xi)$ the inverse transposed in $\xi$ ($n\times n$ matrix)
   \begin{equation}
@@ -998,24 +998,29 @@ std::map<std::pair<int,int>, int> dof;
 \end{frame}
 
 \begin{frame}{Change of variables in integrals}
+  Denote $f: \Om{e} \mapsto \setR$ and $\hat{f}: \Omst \mapsto \setR$ such
+  that $\hat{f} = f \circ \chi^e$, and $\overrightarrow{F}: \Om{e} \mapsto
+  \setR{d}$ and $\overrightarrow{\hat{F}}: \Omst \mapsto \setR{d}$ such that
+  $\hat{\overrightarrow{F}} = \overrightarrow{F} \circ \chi^e$, we have the following
+  relations
     \begin{equation}
       \label{eq:71}
-      \int_{\Om{e}} \ f\ dx\ =\ \int_{\Omst} f( \chi^e(\xi) ) J^e( \xi )\ d \xi
+      \int_{\Om{e}} \ f\ dx\ =\ \int_{\Omst} f( \chi^e(\xi) ) J^e( \xi )\ d \xi \ =\ \int_{\Omst} \hat{f}(\xi) J^e( \xi )\ d \xi
   \end{equation}
   \begin{equation}
     \label{eq:70}
-    \int_{\Om{e}}\ \nabla f\ dx\ =\ \int_{\Omst} \Big(\nabla^{\text{st}} f( \chi^e(\xi) ) B^e(\xi)\Big) J^e( \xi )\ d \xi
+    \int_{\Om{e}}\ \nabla f\ dx\ =\ \int_{\Omst} \Big(\nabla^{\text{st}} \underbrace{\hat{f}(\xi)}_{f \circ (\chi^e)^{-1}(\xi)} B^e(\xi)\Big) J^e( \xi )\ d \xi
   \end{equation}
   \begin{equation}
     \label{eq:65}
-    \int_{\partial \Om{e}}\ f( x )\ dx = \int_{\partial \Omst} f( \chi^e(\xi) )\  \| B^e(\xi) \ \mathbf{n^{\text{st}}}(\xi) \|\ J^e( \xi )\ d \xi
+    \int_{\partial \Om{e}}\ f( x )\ dx = \int_{\partial \Omst} \hat{f}(\xi)\  \| B^e(\xi) \ \overrightarrow{n^{\text{st}}}(\xi) \|\ J^e( \xi )\ d \xi
   \end{equation}
     \begin{equation}
       \label{eq:63}
-      \int_{\partial \Om{e}}\ \mathbf{F}( x )\ \cdot\ \mathbf{n}(x) dx = \int_{\partial \Omst} \mathbf{F}( \chi^e(\xi) )\  \cdot \Big(B^e(\xi) \ \mathbf{n^{\text{st}}}(\xi) \Big) \ J^e( \xi )\ d \xi
+      \int_{\partial \Om{e}}\ \overrightarrow{F}( x )\ \cdot\ \overrightarrow{n}(x) dx = \int_{\partial \Omst} \overrightarrow{\hat{F}}( \xi )\  \cdot \Big(B^e(\xi) \ \overrightarrow{n^{\text{st}}}(\xi) \Big) \ J^e( \xi )\ d \xi
   \end{equation}
-  where $\mathbf{n}(x)$ is the \alert{unit outward normal} to $\partial \Om{e}$
-  evaluated in $x \in \partial \Om{e}$, and $\mathbf{n}^{\text{st}}(\xi)$
+  where $\overrightarrow{n}(x)$ is the \alert{unit outward normal} to $\partial \Om{e}$
+  evaluated in $x \in \partial \Om{e}$, and $\overrightarrow{n}^{\text{st}}(\xi)$
   the outward normal to $\Omst$ evaluated in $\xi \in \partial \Omst$.
 \end{frame}
 

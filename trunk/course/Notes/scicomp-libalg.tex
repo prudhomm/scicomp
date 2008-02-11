@@ -1,0 +1,868 @@
+% -*- coding: iso-latin-1 -*-
+%
+% SUMMARY:
+% USAGE:
+%
+% AUTHOR:       Christophe Prud'homme
+% ORG:          Christophe Prud'homme
+% E-MAIL:       prudhomm@zion
+%
+% ORIG-DATE:  7-Apr-04 at 16:48:32
+% LAST-MOD:  7-Apr-04 at 23:07:19 by Christophe Prud'homme
+%
+% DESCRIPTION:
+% DESCRIP-END.
+
+\date{January 21 2008}
+
+\begin{document}
+
+% For every picture that defines or uses external nodes, you'll have
+% to apply the 'remember picture' style. To avoid some typing, we'll
+% apply the style to all pictures.
+\tikzstyle{every picture}+=[remember picture]
+\tikzstyle{na} = [baseline=-.5ex]
+
+%By default all math in TikZ nodes are set in inline mode. Change this to
+% displaystyle so that we don't get small fractions.
+\everymath{\displaystyle}
+
+\lecture[4]{Linear Algebra libraries}{approx}
+\subtitle{}
+
+\begin{frame}
+  \maketitle
+\end{frame}
+
+\begin{frame}
+  \tableofcontents
+\end{frame}
+
+
+\section{Numerical Libraries}
+
+\subsection{Some Libraries}
+\begin{frame}{Some Basic/Standard Libraries}
+  \begin{block}{}
+    \begin{itemize}
+    \item Blas/Lapack/Scalapack (atlas,goto blas)
+      \url{}
+    \item Arpack/Arpack++
+      \url{}
+    \item fftw3
+      \url{}
+    \item SuiteSparse
+      \url{}
+    \item Superlu
+      \url{}
+    \item gmm
+      \url{}
+    \item PETSc
+      \url{}
+    \item Trilinos
+      \url{}
+    \end{itemize}
+
+  \end{block}
+  \begin{alertblock}{Questions}
+    Find their respective website \\
+    Give a 5 lines maximum description of these libraries
+  \end{alertblock}
+\end{frame}
+
+\subsection{What Do They Have in Common?}
+\begin{frame}<1-2>{What Do They Have in Common?}
+  \begin{block}{What Do They Have in Common?}
+    \only<2>{Framework or subroutines for Linear Algebra or computing intensive tasks}
+  \end{block}
+\end{frame}
+
+%%\againframe{scprog}
+
+\begin{frame}{What do these Libraries contain?}
+  \begin{block}{What do these Libraries contain?}
+    \begin{itemize}
+    \item Algebraic Containers :  vectors, matrices, multi-D arrays
+    \item Algorithms (LU, SVD, CG, GMRES,...)
+    \item Utility functions (View, save, transform  ...)
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\subsection{Blitz++}
+\begin{frame}
+  \frametitle{Blitz++: Features}
+  \begin{block}{\url{http://www.oonumerics.org/blitz/}}
+    \begin{itemize}
+    \item Provide an efficient array data structure based on template meta-programming techniques
+    \item Provide Indices data structure to facilite array entries access
+    \item Provide an easy enough interface
+    \end{itemize}
+  \end{block}
+  \begin{alertblock}{Questions}
+    Study \url{http://www.oonumerics.org/blitz/} \\
+    Describe with your own words what Blitz could do for you (max 1 page)
+  \end{alertblock}
+
+\end{frame}
+
+\begin{frame}{Fetch, Compile and Install Blitz}
+  \begin{block}{Fetch, Compile and Install Blitz}
+  \begin{itemize}
+  \item Get the latest version available (which one is it?)
+  \item Compile it (\alert{hint:} use \lstinline!configure! and \lstinline!make!)
+    what options of \lstinline!configure! do you think could be useful?
+  \item Install it in \lstinline!$HOME! directory, say
+    \lstinline!$HOME/blitz! (\alert{hint:} use \lstinline!make install prefix=$HOME/blitz!)
+  \end{itemize}
+  \end{block}
+  \begin{alertblock}{Questions}
+    Write down the exact commands you used
+  \end{alertblock}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Simple Blitz++ Sample Code}
+
+  \begin{filecontents*}{programs/blitz-matlab.m}
+    N=10 ;
+    A = zeros(10,10)
+    A = ones(10,10)
+    A = eyes(10,10)
+    A(N/2,:) = -1
+    A(1:3,N/2) = -2
+    A'
+  \end{filecontents*}
+
+  \begin{alertblock}{Question: Blitz++ versus Matlab}
+    Write a code using Blitz++
+    that would replicate the following Octave commands:
+  \end{alertblock}
+  \lstinputlisting[language=octave,emph={ones,eyes}]{programs/blitz-matlab.m}
+
+
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Solve the Heat Equation using Blitz++}
+
+  \begin{alertblock}{Questions}
+    Write a code using Blitz++ to solve the following equation in 2D
+    on $\Omega = ] 0, 1 [ \times ]0, 1 [$, find $u(x,t)$ such that
+    \begin{align}
+      \label{eq:1}
+      \displaystyle \frac{\partial u}{\partial t} - \Delta u &= 1 \mbox{ on } \Omega\\
+      u(\cdot,t) &= 0 \mbox{ on } \partial \Omega,\ \forall t \geq 0 \\
+      u(x,0) &= 0  \mbox{ on }  \Omega
+    \end{align}
+    Write the code in vectorial form, save results in column format
+    and use octave or gnuplot to visualize the isovalues of $u(x,t)$
+    when it reaches a steady state
+  \end{alertblock}
+
+\end{frame}
+
+\begin{frame}{Similar Libraries and Projects}
+
+  \begin{block}{Similar Libraries and Projects}
+    \begin{itemize}
+    \item Boost.UBlas
+    \item Boost.MultiArray
+    \item Glas
+    \item Gmm
+    \end{itemize}
+  \end{block}
+  \begin{alertblock}{Questions}
+    Find their website\\
+    Describe briefly what they can do
+  \end{alertblock}
+\end{frame}
+% \section{Some Useful Programs}
+
+
+% \begin{frame}[fragile]
+%   \frametitle{The Laplacian in nD, n=1,2,3 -- }
+
+%   \lstinputlisting[firstline=262,lastline=334]{programs/laplacian.cpp}
+% \end{frame}
+
+%%\lecture{\centerline{\Large Gmm++ et PETSc}}{semaine 2}
+
+
+\section{Programming Environment}
+\subsection{C/C++/Fortran}
+\begin{frame}[containsverbatim]{C++ Compiler}
+  There are mainly three stages when compiling a code
+  \begin{enumerate}
+  \item Preprocessing : all lines starting by \lstinline!#! are
+    processed (e.g. inclusion of header file)
+  \item Compiling : transform C++ files into Objects files
+  \item Linking : Link objects files together with libraries to form
+    the executable
+  \end{enumerate}
+\begin{lstlisting}{language=ksh}
+g++ -I$HOME/blitz/include -o myprog myprog.cpp \
+ -lblitz -L$HOME/blitz/lib
+\end{lstlisting}
+  \begin{alertblock}{}
+    \lstinline!man! is your friend, Try also Google
+  \end{alertblock}
+\end{frame}
+
+\subsection{Build Systems}
+\begin{frame}[containsverbatim]{Makefile}
+  A Makefile simplifies the build process of a code
+\begin{lstlisting}{language=makefile}
+CXX=g++
+CXXFLAGS=-O2
+CPPFLAGS=-I$HOME/blitz/include -I$HOME/gmm/include
+LDFLAGS=-L$HOME/blitz/lib
+LIBS=-lblitz -lblas
+PROGRAMS=myprog
+all: $(PROGRAMS)
+# link
+$(PROGRAMS):
+	$(CXX) -o $@ $@.o $(LDFLAGS) $(LIBS)
+# compile
+.cpp.o:
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS)  -c $*.cpp
+# clean the directory
+clean:
+	-rm -f *.o $(TARGETS)
+# dependencies
+myprog:      myprog.o
+
+.SUFFIXES: .cpp .o .hpp
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}{Other Build Systems}
+  \begin{itemize}
+  \item autotools: autoconf,automake,libtool (sh+m4+perl)
+  \item scons (python based)
+  \item cmake
+  \item bjam
+  \item ...
+  \end{itemize}
+\end{frame}
+
+
+\section[Linear Algebra]{Librairies C/C++ d'Algèbre Linéaire}
+\subsection[Gmm++]{Gmm++}
+\begin{frame}{: Matrices Creuses et Solveurs}
+  \begin{itemize}
+  \item Un ensemble de commande génériques (clear, clean, scalar product, scale, norms, ...)
+  \item Structures de données pour vecteurs et matrices creuses
+  \item Opérations vecteurs-vecteurs de formats différents (sparse, dense, skyline)
+  \item Multiplication Matrix-Vector de format différents (sparse, dense, skyline, row major, column major, ...)
+  \item Solveurs linéaires génériques (cg, bicgstag, qmr, gmres ...) avec préconditionneurs pour matrices creuses (ILUT, ILUTP, ILDLT, ...) - issu de la librairie ITL
+  \item Sous-matrices
+  \item Factorisation LU et QR pour les matrices denses
+  \item Calcul de valeurs propres pour les matrices denses
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Web site}
+  \url{http://www-gmm.insa-toulouse.fr/getfem/gmm_intro}
+\end{frame}
+
+\begin{frame}[containsverbatim]{Utilisation Basique}
+\begin{lstlisting}
+gmm::dense_matrix<double> M(3, 3);
+gmm::clear(M); // M = 0.
+M(0,0) = M(1,1) = M(2,2) = 2.0; // M = 2 * Id.
+M(1,2) = 1.0;
+std::vector<double> X(3), B(3), Bagain;
+
+// B = [1 2 3]
+B[0] = 1.0; B[1] = 2.0; B[2] = 3.0;
+gmm::lu_solve(M, X, B);
+gmm::mult(M, X, Bagain);
+std::cout << M << " times " << X
+          << " is equal to " << Bagain << std::endl;
+\end{lstlisting}
+
+\end{frame}
+
+\begin{frame}[containsverbatim]{Dans le cadre d'une EDP}
+\begin{lstlisting}
+// number of degrees of freedom.
+int nbdof = 1000;
+// a sparse matrix
+typedef gmm::rsvector<double> rsvector_t;
+typedef gmm::row_matrix< rsvector_t > csrmat_t;
+csrmat_t M(nbdof, nbdof);
+// Unknown and left hand side.
+std::vector<double> X(nbdof), B(nbdof);
+
+... here the assembly of the pde discretization ...
+... stiffness matrix ...
+... and left hand side ...
+// computation of a preconditioner (ILUT)
+
+gmm::ilut_precond< csrmat_t > P(M, 10, 1e-4);
+// defines an iteration object,
+// with a max residu of 1E-8
+gmm::iteration iter(1E-8);
+// execute the GMRES algorithm
+gmm::gmres(M, X, B, P, 50, iter);
+std::cout << "The result " << X << std::endl;
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}{Le Stockage Creux}
+  \begin{equation*}
+    A=
+    \begin{pmatrix}
+       1 & 2 & 0 & 0 & 10\\
+       0 & 5 & 0 & 7 & 0\\
+       2 & 0 & 1 & 3 & 0\\
+       0 & 0 & 1 & 2 & 3\\
+       0 & 0 & 0 & 0 & 12
+    \end{pmatrix}
+  \end{equation*}
+\end{frame}
+
+\begin{frame}[containsverbatim]{Les Vecteurs}
+\begin{lstlisting}
+// le vecteur standard de gmm
+std::vector<T>
+// write sparse, optimisée pour l'écriture!
+gmm::wsvector<T>
+// read sparse, optimisée pour la lecture!
+gmm::rsvector<T>
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[containsverbatim]{Gmm++: Les Matrices}
+\begin{lstlisting}
+// dense row matrix
+gmm::row_matrix< std::vector<double> > M1(10, 10);
+
+// sparse column matrix
+gmm::col_matrix< gmm::wsvector<double> > M2(5, 20);
+
+// Stockage FORTRAN (column major)
+gmm::dense_matrix<T>
+
+// compressed sparse row
+gmm::csr_matrix<T>
+
+// compressed sparse column
+gmm::csc_matrix<T>
+\end{lstlisting}
+\end{frame}
+
+
+\begin{frame}[containsverbatim]{Assemblage et Stockage}
+\begin{lstlisting}
+typedef gmm::wsvector<double> wsvector_t;
+// rem : non contigue en memoire
+gmm::row_matrix< wsvector_t > M1;
+...
+assembly operation on M1
+...
+M1(i,j) = b;
+...
+// contigue en memoire
+// interfacable avec FORTRAN/UMFPACK/SUPERLU
+gmm::csc_matrix<double> M2;
+
+gmm::clean(M1, 1E-12);
+gmm::copy(M1, M2);
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[containsverbatim]{Quelques Méthodes}
+\begin{lstlisting}
+std::cout << V << std::endl;
+std::cout << M << std::endl;
+// set to zero all the components
+gmm::clear(V);
+
+// set to zero all the components
+gmm::clear(M);
+
+// set to zero all the components
+gmm::clean(V, 1E-10);
+
+// whose modulus is less or
+// idem for a matrix M.
+gmm::clean(M, 1E-10);
+
+// transpose
+gmm::transposed(M)
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[containsverbatim]{Quelques Opérations}
+\begin{lstlisting}
+typedef std::vector<double> vector_t;
+
+// V * 10.0 ---> V
+gmm::scale(V, 10.0);
+vector_t V1(10);
+gmm::wsvector<double> V2(10);
+gmm::clear(V1);
+...
+// V1 + V2 --> V2
+gmm::add(V1, V2);
+cout << V2;
+
+gmm::row_matrix< vector_t > M1(10, 10);
+...
+// M1 * V2 --> V1
+gmm::mult(M1, V2, V1);
+\end{lstlisting}
+  \begin{alertblock}{}
+    Ces opérations sont optimisées
+  \end{alertblock}
+\end{frame}
+
+\begin{frame}[containsverbatim]{Les Normes}
+\begin{lstlisting}
+// sum of the modulus of the components of vector V.
+gmm::vect_norm1(V)
+// Euclidean norm of vector V.
+gmm::vect_norm2(V)
+// Euclidean distance between V1 and V2.
+gmm::vect_dist2(V1, V2)
+// infinity norm of vector V.
+gmm::vect_inf(V)
+// Euclidean norm of matrix M
+// (called also Frobenius norm).
+gmm::mat_euclidean_norm(M)
+// Max norm (defined as max(|m_ij|; i,j ))
+gmm::mat_normmax(M)
+// max(sum(|m_ij|, i), j)
+gmm::mat_norm1(M)
+// max(sum(|m_ij|, j), i)
+gmm::mat_norminf(M)
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[containsverbatim]{Factorisation LU Dense}
+\begin{lstlisting}
+// compute the LU factorization of M in M. ipvt should
+// be an std::vector<size_t> (of size
+// gmm::mat_nrows(M)) which will contain the indices
+// of the pivots.
+gmm::lu_factor(M, ipvt)
+
+// solve the system LUx = b. LU is the LU
+// factorization which has to be computed first.
+gmm::lu_solve(LU, ipvt, x, b)
+
+// solve the system Mx=b calling the lu factorization
+// on a copy of M.
+gmm::lu_solve(M, x, b)
+
+// invert A calling the LU factorization and the latter
+// procedure.
+gmm::lu_inverse(A)
+
+// compute the determinant of A calling the LU
+// factorization and the latter function.
+gmm::lu_det(A)
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[containsverbatim]{Factorisation LU Creuse}
+  \begin{alertblock}{}
+    On utilise SuperLU
+    \begin{itemize}
+    \item \lstinline!CPPFLAGS=-DGMM_USES_SUPERLU!
+    \item \lstinline!CXXFLAGS=-I/usr/include/superlu!
+    \item \lstinline!LIBS=$(LIBS) -lsuperlu -lblas!
+    \end{itemize}
+  \end{alertblock}
+\begin{lstlisting}
+typedef gmm::wsvector<double> wsvector_t;
+gmm::row_matrix< wsvector_t > Dt(ndof,ndof);
+assembly operation on Dt
+gmm::csc_matrix<double> D(ndof,ndof);
+gmm::clean(Dt, 1E-12); gmm::copy(Dt, D);
+// same for F
+std::vector<double> F(ndof);
+std::vector<double> U(ndof);
+
+double condest;
+gmm::SuperLU_solve(D, U, F, condest );
+std::cout << "condition number estimation "
+          << condest << "\n";
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[containsverbatim]{Méthodes Itératives}
+\begin{lstlisting}
+// The matrix
+typedef std::vector<double> vector_t;
+gmm::row_matrix<vector_t> A(10, 10);
+// Right hand side and Unknown
+std::vector<double> B(10), X(10);
+// Optional scalar product for cg
+gmm::identity_matrix PS;
+// Optional preconditioner
+gmm::identity_matrix PR;
+// Iteration object with the max residu
+gmm::iteration iter(10E-9);
+// restart parameter for GMRES
+size_t restart = 50;
+// Conjugate gradient
+gmm::cg(A, X, B, PS, PR, iter);
+// BICGSTAB BiConjugate Gradient Stabilized
+gmm::bicgstab(A, X, B, PR, iter);
+// GMRES generalized minimum residual
+gmm::gmres(A, X, B, PR, restart, iter)
+// Quasi-Minimal Residual method.
+gmm::qmr(A, X, B, PR, iter)
+\end{lstlisting}
+\end{frame}
+
+
+\begin{frame}[containsverbatim]{Préconditionneurs}
+\begin{lstlisting}
+// No preconditioner
+gmm::identity_matrix P;
+
+// diagonal preconditioner
+gmm::diagonal_precond<matrix_type> P(SM);
+
+// incomplete (level 0) ldlt preconditioner.
+// Fast to be computed but less efficient than
+// gmm::ildltt_precond.
+gmm::ildlt_precond<matrix_type> P(SM);
+
+// incomplete ldlt with k fill-in and threshold
+// preconditioner. Efficient but could be costly.
+gmm::ildltt_precond<matrix_type> P(SM, k, threshold);
+
+// incomplete (level 0) ilu preconditioner.
+// Very fast to be computed but less efficient
+// than gmm::ilut_precond
+gmm::ilu_precond<matrix_type> P(SM);
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}{Fetch, Compile and Install Gmm++}
+  \begin{block}{Fetch, Compile and Install Gmm++}
+  \begin{itemize}
+  \item Get the latest version available (which one is it?)
+  \item Compile it (\alert{hint:} use \lstinline!configure! and \lstinline!make!)
+    what options of \lstinline!configure! do you think could be useful?
+  \item Install it in \lstinline!$HOME! directory, say
+    \lstinline!$HOME/blitz! (\alert{hint:} use \lstinline!make install prefix=$HOME/blitz!)
+  \end{itemize}
+  \end{block}
+  \begin{alertblock}{Questions}
+    Write down the exact commands you used
+  \end{alertblock}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Simple Gmm++ Sample Code}
+
+  \begin{filecontents*}{programs/blitz-matlab.m}
+    N=10 ;
+    A = zeros(10,10)
+    A = ones(10,10)
+    A = eyes(10,10)
+    A(N/2,:) = -1
+    A(1:3,N/2) = -2
+    A'
+  \end{filecontents*}
+
+  \begin{alertblock}{Question: Gmm++ versus Matlab}
+    Write a code using Gmm++
+    that would replicate the following Octave commands:
+  \end{alertblock}
+  \lstinputlisting[language=octave,emph={ones,eyes}]{programs/blitz-matlab.m}
+
+
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Solve the Heat Equation using Gmm++}
+
+  \begin{alertblock}{Questions}
+    Write a code using Gmm++ to solve the following equation in 2D
+    on $\Omega = ] 0, 1 [ \times ]0, 1 [$, find $u(x,t)$ such that
+    \begin{align}
+      \label{eq:1}
+      \displaystyle \frac{\partial u}{\partial t} - \Delta u &= 1 \mbox{ on } \Omega\\
+      u(\cdot,t) &= 0 \mbox{ on } \partial \Omega,\ \forall t \geq 0 \\
+      u(x,0) &= 0  \mbox{ on }  \Omega
+    \end{align}
+    Write the code, save results in column format and use octave or
+    gnuplot to visualize the isovalues of $u(x,t)$ when it reaches a
+    steady state
+  \end{alertblock}
+
+\end{frame}
+
+\subsection{PETSc}
+
+\begin{frame}[containsverbatim]{Petsc: Intro}
+  \begin{itemize}
+  \item ``Portable, Extensible Toolkit for Scientific Computation''
+  \item Librairie C pour la résolution de pbs aux EDPs
+  \item PETSc s'appuie sur MPI pour le parallélisme
+  \item Approche orientée objet :
+    Voir \url{http://www-unix.mcs.anl.gov/petsc/petsc-2/}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[containsverbatim]{Petsc: Contenu}
+  \begin{itemize}
+  \item Manipulation de structures de données pour matrices creuses
+  \item Répertoire de solveurs de systèmes linéaires et de préconditionneurs
+  \item Solveurs non linéaires
+  \item Répertoire de méthodes d'intégration numérique de systèmes différentiels
+  \item Outils de calcul parallèle haut niveau reposant sur MPI
+  \end{itemize}
+\end{frame}
+
+
+\begin{frame}[containsverbatim]{PETSc: Hiérarchie}
+
+\begin{tikzpicture}[node distance=1.2cm,scale=.2]
+      \tikzstyle{every entity}=[draw=red!80,fill=red!40,thick]
+      \tikzstyle{level 2}=[sibling distance=10mm,
+      set style={{every node}+=[fill=white]}]
+
+
+      \node[entity] (matrice) []  {\tiny
+        \begin{tabular}[c]{cccccc}
+          \multicolumn{6}{c}{\textbf{Matrices}}\\
+          CSR  & Block CSR & Block Diagonal & Dense & Matrix-Free & Others\\
+          (AIJ) & (BAIJ) & (BDIAG) & & &
+        \end{tabular}
+      };
+      \node[entity] (precond) [above of=matrice]  {\tiny
+        \begin{tabular}[c]{cccccc}
+          \multicolumn{6}{c}{\textbf{Preconditioners}}\\
+          Additive Schwarz & Block Jacobi & Jacobi & ILU & ICC & Others
+        \end{tabular}};
+      \node[entity] (solver) [above of=precond]  {\tiny
+        \begin{tabular}[c]{cccccccc}
+          \multicolumn{8}{c}{\textbf{Solvers}}\\
+          GMRES & CG & CGS & BICGSTAB & TFQMR & Richardson & Chebychev & Others
+        \end{tabular}
+
+      };
+      \node[entity] (time) [above right of=solver,yshift=.5cm,xshift=3cm]  {\tiny
+        \begin{tabular}[c]{cccc}
+          \multicolumn{4}{c}{\textbf{Time Steppers}}\\
+          Euler & Backward Euler & Pseudo Time & Others\\
+          & &  Stepping &
+        \end{tabular}
+
+      };
+      \node[entity] (nlsolver) [left of=time,xshift=-5cm]  {\tiny
+        \begin{tabular}[c]{cc}
+          \multicolumn{2}{c}{\textbf{NonLinear Solvers}}\\
+          \begin{tabular}[c]{c|c}
+            \multicolumn{2}{c}{Newton Based}\\\hline
+            Line Search & Trust Region
+          \end{tabular} & Others
+
+        \end{tabular}
+
+      };
+
+      \node[entity] (distarray) [below left of=matrice,xshift=-3cm,yshift=-.5cm]  {\tiny\textbf{Distributed Array}};
+      \node[entity] (index)    [below right of=distarray,xshift=5cm,yshift=.5cm] {\tiny
+        \begin{tabular}[c]{cccc}
+          \multicolumn{4}{c}{\textbf{Index Sets}}\\
+          Indices & Block Indices & Stride & Others
+        \end{tabular}
+      };
+      \node[entity] (array)   [left of=index,xshift=-3cm,yshift=-.5cm]                  {\tiny\textbf{Array}};
+  \end{tikzpicture}
+\end{frame}
+\begin{frame}[containsverbatim]{Tutoriel}
+  The PETSc website proposes some tutorials
+
+
+  \url{http://www-unix.mcs.anl.gov/petsc/petsc-as/documentation/exercises/index.html}
+\end{frame}
+\begin{frame}
+  \frametitle{PETSc: Exercises}
+
+  \begin{alertblock}{Exercises}
+    \begin{enumerate}
+    \item  Compile the first exercise (0). Write the commands.
+    \item Run the first exercise(0). Write the output.
+    \end{enumerate}
+  \end{alertblock}
+\end{frame}
+
+
+\end{document}
+\subsection{Newton}
+\label{sec:newton}
+
+\begin{frame}{}
+
+\end{frame}
+
+\section[Lagrange]{Lagrange basis}
+\label{sec:lagrange-basis}
+
+\subsection{Interpolation}
+\label{sec:interpolation}
+
+
+\begin{frame}{}
+
+\end{frame}
+
+\subsection{Runge Phenomenon}
+\label{sec:runge-phenomenon}
+
+\begin{frame}{}
+
+\end{frame}
+
+\subsection{Chebyshev polynomials}
+\label{sec:chebysh-polyn}
+
+\begin{frame}{}
+
+\end{frame}
+
+\subsection[Interval]{Interval Approximation}
+\label{sec:interv-interp}
+
+\begin{frame}{}
+
+\end{frame}
+
+
+\section{Multidimension approximation}
+\label{sec:mult-interp}
+
+\subsection{Basic geometry}
+\label{sec:basic-geometry}
+
+\begin{frame}{}
+
+\end{frame}
+
+\subsection{Coordinate systems}
+\label{sec:coordinate-systems}
+
+\begin{frame}{}
+
+\end{frame}
+
+\subsection{Primal basis}
+\label{sec:primal-basis}
+
+\begin{frame}{}
+
+\end{frame}
+
+\subsection{Polynomials and set of polynomials}
+\label{sec:polyn-set-polyn}
+
+\begin{frame}{}
+
+\end{frame}
+
+\subsection{Functionals and sets of functionals}
+\label{sec:functionals}
+
+\begin{frame}{}
+
+\end{frame}
+
+\subsection{Finite elements}
+\label{sec:finite-elements}
+
+\begin{frame}{}
+
+\end{frame}
+
+\subsection{Geometric Transformation}
+\label{sec:geom-transf}
+
+\begin{frame}{}
+
+\end{frame}
+
+\subsection{Curvilinear domain}
+\label{sec:curvilinear-domain}
+
+\begin{frame}{}
+
+\end{frame}
+
+
+\section{Other Representations}
+\label{sec:other-repr}
+
+\subsection{Fourier}
+\label{sec:fourier-polynomials}
+
+\begin{frame}{}
+
+\end{frame}
+
+
+\subsection{Wavelets}
+\label{sec:wavelets}
+
+\begin{frame}{}
+
+\end{frame}
+
+\section{MPI}
+\label{sec:mpi}
+
+\subsection{Send/Recv}
+\label{sec:sendrecv}
+
+\begin{frame}{}
+
+\end{frame}
+
+\section{Programming}
+\label{sec:programming}
+
+\subsection{MPI Send/Recv}
+\label{sec:mpi-sendrecv}
+
+\begin{frame}{}
+
+\end{frame}
+
+\subsection{C++}
+\label{sec:c++}
+
+\begin{frame}{}
+
+\end{frame}
+
+\subsection{Libraries}
+\label{sec:libraries}
+
+\begin{frame}{}
+
+\end{frame}
+
+
+
+\end{document}
+
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "scicomp-libalg-print"
+%%% TeX-PDF-mode: t
+%%% TeX-parse-self: t
+%%% x-symbol-8bits: nil
+%%% TeX-auto-regexp-list: TeX-auto-full-regexp-list
+%%% ispell-local-dictionary: "american"
+%%% End:
+
