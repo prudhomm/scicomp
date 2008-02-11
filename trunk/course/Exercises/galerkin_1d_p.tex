@@ -25,8 +25,9 @@
 \usepackage{multimedia,xmpmulti}
 \usepackage[latin1]{inputenc}
 \usepackage{graphicx}
+\usepackage{float}
 \usepackage{amsmath,amssymb}
-\usepackage{exercise}
+\usepackage[noanswer]{exercise}
 \usepackage{xcolor}
 \definecolor{lbcolor}{rgb}{0.95,0.95,0.95}
 \definecolor{cblue}{rgb}{0.,0.0,0.6}
@@ -176,7 +177,7 @@ x_N  L_1(x_N)  ... L_{10}(x_N)
     \label{eq:10}
     \begin{array}[c]{rl}
       -\Delta u &= f \text{ on } [-1;1]\\
-      \displaystyle \frac{\partial u}{\partial n}(0) &= 1\\
+      \displaystyle \frac{\partial u}{\partial n}(-1) &= e\\
       \displaystyle u(1) + \frac{\partial u}{\partial n}(1) &= 0\\
     \end{array}
   \end{equation}
@@ -200,20 +201,20 @@ x_N  L_1(x_N)  ... L_{10}(x_N)
     \label{eq:12}
     \begin{array}[c]{rl}
       A_{ij} &= (\nabla \phi_i, \nabla \phi_j) - \phi_i(1)\phi_j(1)\\
-      b_i &= (\phi_i,f) - \phi_i(0)
+      b_i &= (\phi_i,f) - e\ \phi_i(-1)
     \end{array}
   \end{equation}
   where $(\cdot,\cdot)$ still denote the $L_2$ scalar product.
 
   \Question Solve the system \eqref{eq:11} from order $N=1$ to $N=10$ for
-  \subQuestion $(\phi_k = L_k)_{k=0...N-1}$ the Legendre polynomials
-  \subQuestion $(\phi_k = h^{e}_k)_{k=0...N-1}$ the Lagrange polynomials at the equidistributed points on $[-1;1]$
-  \subQuestion $(\phi_k = h^{gl}_k)_{k=0...N-1}$ the Lagrange polynomials at the Gauss Lobatto points on $[-1;1]$
+  \subQuestion $(\phi_k = L_k)_{k=0...N}$ the Legendre polynomials
+  \subQuestion $(\phi_k = h^{e}_k)_{k=0...N}$ the Lagrange polynomials at the equidistributed points on $[-1;1]$
+  \subQuestion $(\phi_k = h^{gl}_k)_{k=0...N}$ the Lagrange polynomials at the Gauss Lobatto points on $[-1;1]$
 
   \Question Plot the solution in the previous cases up to order 10
 
   \Question Compute the $L_2$ norm of the error $\|g-u\|$ in the basis
-  and verify that the $L_2$ norm in log-log behaves as a line with slope $N+1$, i.e
+  and verify that the $L_2$ norm in log-log behaves like an exponential with respect to $N$, i.e
   \begin{equation}
     \label{eq:13}
     \|g-u\| \leq C 2^{-(N+1)}
@@ -226,7 +227,7 @@ x_N  L_1(x_N)  ... L_{10}(x_N)
   \verb+'test_pset.cpp'+ file by choosing \verb+degree+ = 9
   (\verb+argv[1] = 9+ at running command).
 Plotting \verb+'legendre.dat'+ with octave gives the figure \ref{fig:1}
-\begin{figure}[h]
+\begin{figure}[H]
   \label{fig:1}
   \centering
   \includegraphics[scale=0.4]{legendre.png}
