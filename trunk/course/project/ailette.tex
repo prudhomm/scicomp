@@ -1,0 +1,288 @@
+\documentclass{article}
+\usepackage{graphicx}
+\usepackage[latin1]{inputenc}
+\usepackage[french]{babel}
+\usepackage{amsmath,amssymb,amsfonts}
+
+\def \x  {\textbf x}
+\def \n  {\textbf n}
+\def \cT {{\cal T}}
+\begin{document}
+
+Le processus de refroidissement d'un processeur est généralement
+constitué d'un ventilateur et d'un radiateur (voir figure
+\ref{fig:pcinpact}). On se propose de modéliser et de simuler la
+dissipation de la chaleur dans un élément de radiateur (figure \ref{fig:ailette}).
+
+\begin{figure}
+  \centering
+  \includegraphics[scale=0.8]{photoPCINpact}
+  \caption{Dispositif de refroidissement d'un
+    processeur (Photo PC INpact)}
+  \label{fig:pcinpact}
+\end{figure}
+\begin{figure}
+  \label{fig:ailette}
+
+\end{figure}
+Les données du problème sont : la géométrie du dispositif, décrite par
+la longueur $L$ et la section transversale $S$, la température $T_0$  générée
+par le processeur et la température ambiante $T_e$. Pour trouver la
+distribution de la température $T$ dans l'ailette, nous supposons que
+la largeur $W$ est grande devant les autres dimensions : $W>>H$ et
+$W>>L$ de sorte que la distribution va être la même dans toute section
+transversale $(x,y)$.
+
+Considérons le domaine de calcul défini par la section transversale de
+l'ailette (figure \ref{??})
+$$
+\Omega = [0,L]\times[-H/2,H/2],\quad
+\mbox{avec } \Gamma = \partial\Omega = \Gamma_1\cup\Gamma_2\cup\Gamma_3\cup\Gamma_4.
+$$
+L'équation de la chaleur en deux dimensions est déduite en écrivant
+l'équilibre thermique d'un élément infinitésimal $dx\times dy$ situé à
+l'intérieur du domaine
+$$
+(q_x-q_{x+dx})dxdz + (q_y-q_{y+dy})dydz = \rho C \frac{\partial
+  T}{\partial t}dxdydz,
+$$
+et en appliquant la loi de Fourier suivant chaque direction. Nous
+obtenons :
+\begin{equation}
+  \frac{\partial}{\partial x}\left(k\frac{\partial T}{\partial
+      x}\right) +
+  \frac{\partial}{\partial y}\left(k\frac{\partial T}{\partial
+      y}\right) =
+  \rho C \frac{\partial T}{\partial t}.
+  \label{eq:model}
+\end{equation}
+L'équation (\ref{eq:model}) s'écrit sous une forme plus compacte
+\begin{equation}
+  \nabla\cdot(k\cdot\nabla T) = \rho C \frac{\partial T}{\partial t}.
+  \label{eq:compact}
+\end{equation}
+Les pertes latérales par convection thermique sont prises en compte au
+niveau des conditions aux limites qui s'écrivent :
+\begin{itemize}
+\item sur $\Gamma_1(x=0)$ la température est imposée : $T = T_0$,
+\item sur $\Gamma_3(x=L)$ nous prenons la condition de flux nul :
+  $\frac{\partial T}{\partial x} = 0$,
+\item sur $\Gamma_2 (y=\frac{H}{2})$ l'équilibre des flux suivant la
+  direction des $y$ nous donne :
+  $$
+  -k\left(\frac{\partial T}{\partial y}\right)_{y=\frac{H}{2}} = h_c(T-T_e),
+  $$
+\item de même, sur $\Gamma_4 (y=-\frac{H}{2})$ le même équilibre des
+  flux  nous donne : 
+  $$
+  -k\left(\frac{\partial T}{\partial y}\right)_{y=-\frac{H}{2}} = - h_c(T-T_e).
+  $$
+\end{itemize}
+L'équation adimensionnalisée correspondante s'écrit :
+$$
+\frac{\partial\theta}{\partial t} -\nabla\cdot(k\cdot\nabla\theta) = 0,
+$$
+avec les grandeurs sans dimension définies comme :
+$$
+t\leftarrow\frac{t}{t_0},\quad x\leftarrow\frac{x}{L},\quad
+y\leftarrow\frac{y}{L},\quad
+\theta\leftarrow\frac{(T-T_e)}{T_e},\quad
+k\leftarrow\frac{\kappa t_0}{L^2}.
+$$
+On suppose aussi que la diffusivité thermique $\kappa$ est constante
+sur le domaine de calcul et en prenant comme temps de référence
+$t_0=\frac{L^2}{\kappa}$, l'équation de la chaleur devient :
+$$
+\frac{\partial\theta}{\partial t} - \Delta\theta = 0.
+$$
+Nous observons également que le problème est symétrique par rapport à
+l'axe des abscisses. Ainsi, il suffit de le résoudre sur la moitié du
+domaine initial en imposant une condition de symétrie pour la
+frontière $(y=0)$.
+
+Finalement, le modèle retenu pour le calcul de la distribution de
+température sur l'ailette est défini par : trouver $\theta(x,y,t)$,
+solution de
+\begin{equation}
+  \frac{\partial\theta}{\partial t} - \Delta\theta = 0,\quad
+  \forall (x,y)\in\Omega=[0,1]\times[0,\frac{H}{2L}],\quad
+  \forall 0<t<t_{max},
+  \label{eq:principale}
+\end{equation}
+qui satisfait les conditions aux limites ($\n$ désigne le vecteur
+normal à la frontière $\Gamma=\partial\Omega$, dirigé vers l'extérieur
+du domaine) :
+\begin{eqnarray}
+  \label{eq:BC1}
+  &\theta = \theta_D = \frac{T_0-T_e}{T_e} &\mbox{ sur } \Gamma_1 (x=0)
+  \quad \mbox{(condition de Dirichlet)}  \\
+    \label{eq:BC2}
+  &\frac{\partial\theta}{\partial \n} = 0 &\mbox{ sur } \Gamma_2 (y=0)
+  \quad \mbox{(condition de Neumann)}  \\
+    \label{eq:BC3}
+  &\frac{\partial\theta}{\partial \n} = 0 &\mbox{ sur } \Gamma_3 (x=1)
+  \quad \mbox{(condition de Neumann)}  \\
+    \label{eq:BC4}
+  &\frac{\partial\theta}{\partial \n} +
+  c\theta = 0 &\mbox{ sur } \Gamma_4
+  (y=\frac{H}{2L}) \quad \mbox{(condition de Robin)},
+  \mbox{ où }c= \left(\frac{h_cL}{k}\right),
+\end{eqnarray}
+et la condition initiale $(t=0)$ :
+\begin{equation}
+  \theta(x,y,0) = \theta_0(x,y) = 0.
+\end{equation}
+\section{Discrétisation en temps}
+Notons $\theta^n(\x)$ la valeur de $\theta$ calculée au point
+$\x=(x,y)\in\Omega$ et à l'instant $t^n=n\delta t$. L'équation
+(\ref{eq:principale}) discrétisée en temps s'écrit :
+\begin{equation}
+  \frac{1}{\delta t}(\theta^{n+1}-\theta^n) - \Delta\theta^{n+1} = 0,
+  \quad\forall\x\in\Omega.
+  \label{eq:discTemps}
+\end{equation}
+On vérifie facilement que l'équation (\ref{eq:discTemps}) munie des
+conditions aux limites (\ref{eq:BC1})-(\ref{eq:BC4}) est remplacée par
+la formulation variationnelle équivalente :
+
+trouver $\theta^{n+1}(\x)\in H^1(\Omega)$, vérifiant
+$\theta^{n+1}(\x)=\theta_D$, $\forall\x\in\Gamma_ D$, et tel que
+\begin{equation}
+  \label{eq:FV}
+  \int_\Omega\left[\frac{1}{\delta t}(\theta^{n+1}-\theta^n)v +
+    \nabla\theta^{n+1}\cdot\nabla v\right]d\Omega +
+  \int_{\Gamma_R}c\theta^{n+1}v d\gamma,\qquad
+  \forall v\in V(\Omega),
+\end{equation}
+où l'on a noté :
+$\Gamma_1=\Gamma_D (Dirichlet)$, $\Gamma_2\cup\Gamma_3=\Gamma_N
+(Neumann)$,
+$\Gamma_4=\Gamma_R (Robin)$,
+$$
+H^1(\Omega) = \{v\in L^2(\Omega);\quad\nabla v\in L^2(\Omega)^2\}
+$$
+$$
+V(\Omega) = \{v\in H^1(\Omega);\quad v|_{\Gamma_D} = 0\},
+$$
+et $L^2(\Omega)$ l'ensemble de fonctions réelles de carrés intégrables
+sur $\Omega$.
+
+\section{Discrétisation en espace pas éléments finis {\it P1}}
+\subsection{Équation de Poisson avec des conditions de Dirichlet
+  homogènes}
+La première étape consiste à discrétiser l'équation de Poisson avec
+des conditions de Dirichlet homogènes sur tout le bord
+$\Gamma$. On suppose ainsi que $\Gamma_D = \partial\Omega$ et on
+s'intéresse au problème suivant : étant donné $f\in L^2(\Omega)$,
+trouver $u\in H^1(\Omega)$ vérifiant :
+\begin{equation}
+  \left\{
+    \begin{array}{rccc}
+      -\Delta u &=& f \mbox{ dans } & \Omega, \\
+      u &=& 0 \mbox{ sur } & \partial\Omega.
+    \end{array}
+  \right.
+\end{equation}
+La formulation variationnelle associée est donc :
+trouver $u\in V(\Omega)$ telle que :
+$$
+\int_\Omega\nabla u\cdot\nabla v = \int_\Omega fv, \quad\forall v\in V(\Omega).
+$$
+Une méthode de Galerkin consiste à choisir une sous-espace de
+dimension finie de $H^1(\Omega)$ dans lequel on cherchera une
+approximation de la solution $u$. En particulier, dans le cadre de la
+méthode des éléments finis $P¹$ conforme, on peut choisir une
+triangulation $\cT_h$ de $\Omega$ sur laquelle on construit
+l'espace des fonctions continues sur $\Omega$ et affines sur chaque
+éléments $K\in\cT_h$. On notera cet espace $V_h$ et on définit
+$$
+V_h^0 = \{v\in V_h;\quad v|_{\partial\Omega}=0\}\subset V(\Omega).
+$$
+
+Notons $N_s$ le nombre de sommets $\x_i$ de la triangulation
+$\cT_h$. On vérifie que la famille $(w_j)_{1\leq j\leq N_s}$ (dite
+famille de fonctions «~chapeaux~») est une base de l'espace vectoriel
+$V_h$. Ces fonctions vérifies :
+\begin{itemize}
+\item  $\forall j\in\{1,\ldots,Ns\},\quad w_j\in V_h$,
+\item $w_j(\x_i) = \delta_{ij}$.
+\end{itemize}
+
+D'un point de vue numérique, nous allons considérer d'abord le
+problème de Neumann (sans les conditions de Dirichlet) que nous
+modifierons par la suite pour résoudre le problème qui nous
+intéresse. On cherche donc $u_h\in V_h$ telle que :
+$$
+\forall v_h\in V_h,\quad \int_\Omega\nabla u_h\cdot\nabla v_h =
+\int_\Omega fv_h,
+$$
+soit encore
+\begin{equation}
+  \label{eq:sysWi}
+\forall 1\leq i \leq N_s,\quad \int_\Omega\nabla u_h\cdot\nabla w_i =
+\int_\Omega fw_i.
+\end{equation}
+Comme $u_h$ appartient aussi à $V_h$, il existe un unique vecteur
+$(U_j)_{1\leq j\leq N_s}\in {\mathbb R}^{N_s}$ tel que
+$$
+u_h = \sum_{j=1}^{N_s} U_jw_j.
+$$
+Le système d'équations (\ref{eq:sysWi}) s'écrit donc :
+$$
+\forall 1\leq i \leq N_s,\quad \int_\Omega
+\nabla \left(\sum_{j=1}^{N_s} U_jw_j\right)\cdot\nabla w_i =
+\int_\Omega fw_i,
+$$
+soit donc
+$$
+\forall 1\leq i \leq N_s,\quad
+\sum_{j=1}^{N_s}\left( \int_\Omega
+\nabla w_j\cdot\nabla w_i\right)U_j =
+\int_\Omega fw_i.
+$$
+En notant ${\displaystyle A_{ij} = \int_\Omega\nabla w_j\cdot\nabla
+  w_i}$ et ${\displaystyle B_i=\int_\Omega fw_i}$, résoudre ce
+problème revient à résoudre le système linéaire $AU=B$.
+
+Pour prendre en compte des conditions de Dirichlet homogène de type
+$u=g$ sur $\partial\Omega$, on peut utiliser une méthode de
+pénalisation (facile à mettre en {\oe}uvre). Pour ce faire, on choisit
+$P\in{\mathbb R}$ très grand ($10^{15}$ par exemple) et on définit :
+
+
+$$
+A^d_{ij} =
+\left\{
+  \begin{array}{ccc}
+    A_{ij} + P &\mbox{ si }& i=j \mbox{ et } x_i\in\partial\Omega,\\
+    A_{ij} &\mbox{sinon},&
+  \end{array}
+\right.
+$$
+et
+$$
+B^d_{i} =
+\left\{
+  \begin{array}{ccc}
+    B_{i} + gP &\mbox{ si }&  x_i\in\partial\Omega,\\
+    B_{i} &\mbox{sinon}.&
+  \end{array}
+\right.
+$$
+
+\section{Implémentation}
+
+\begin{itemize}
+\item Écrire une classe \texttt{R2} pour des couples de
+  \texttt{double}.  On pourra utiliser la classe \texttt{TinyVector<2,double>}
+  de {\bf Blitz++}
+\item Écrire une classe \texttt{Sommet} héritant de la classe
+  \texttt{R2} qui lui ajoutera la notion de référence (\texttt{int})
+\item Écrire une classe \texttt{Rn}. On pourra utiliser la classe
+  \texttt{Array<double,1>} de {\bf Blitz++}
+\end{itemize}
+
+\end{document}
+
+
+
