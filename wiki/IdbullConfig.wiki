@@ -8,8 +8,11 @@ idbull is a ia64 arch with 8 processors. The system is a modified redhat linux d
 
 = Details =
 
+Perform the following commands:
+
  * download the .toprc from the main project page to your $HOME directory for a proper 'top' utility configuration
-* create the file `$HOME/.bash_profile`  if not already created and make sure it contains the following
+
+ * create the file `$HOME/.bash_profile`  if not already created and make sure it contains the following
 {{{
 # .bash_profile
 
