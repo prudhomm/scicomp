@@ -1,0 +1,31 @@
+#summary This page documents the user configuration  on ibull
+
+= Introduction =
+
+idbull is a ia64 arch with 8 processors. The system is a modified redhat linux distribution.
+
+
+
+= Details =
+
+ * download the .toprc from the main project page to your $HOME directory for a proper 'top' utility configuration
+* create the file `$HOME/.bash_profile`  if not already created and make sure it contains the following
+{{{
+# .bash_profile
+
+# Get the aliases and functions
+if [ -f ~/.bashrc ]; then
+        . ~/.bashrc
+fi
+
+# User specific environment and startup programs
+
+PATH=/usr/ljk/bin:/usr/local/mpich/bin:$PATH:$HOME/bin
+
+export PATH
+unset USERNAME
+
+LD_LIBRARY_PATH=/usr/ljk/lib:$LD_LIBRARY_PATH
+export LD_LIBRARY_PATH
+}}}
+ 
