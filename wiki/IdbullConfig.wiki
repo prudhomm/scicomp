@@ -8,7 +8,7 @@ idbull is a ia64 arch with 8 processors. The system is a modified redhat linux d
 
 = Details =
 
-Perform the following commands:
+Perform the following operations:
 
  * download the .toprc from the main project page to your $HOME directory for a proper 'top' utility configuration
 
