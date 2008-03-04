@@ -4,27 +4,49 @@
 \usepackage[french]{babel}
 \usepackage{amsmath,amssymb,amsfonts}
 
+%--------dimension
+\textwidth 160 true mm
+\textheight 220 truemm
+\voffset -15 true mm
+\hoffset -18 true mm
+
 \def \x  {\textbf x}
 \def \n  {\textbf n}
 \def \cT {{\cal T}}
+
+\title{Quelques détails sur le projet de calcul scientifique. Masters
+  IMSN, M2R mathématiques appliquées et MSSPI \\
+\texttt{http://code.google.com/p/scicomp/}}
+\author{M. Ismail et C. Prud'homme}
+
 \begin{document}
+\maketitle
+
+\centerline{\large Toutes les questions doivent être envoyées à
+  \texttt{scicomp-dev@googlegroups.com}} 
+\hspace*{.5cm}
 
 Le processus de refroidissement d'un processeur est généralement
 constitué d'un ventilateur et d'un radiateur (voir figure
 \ref{fig:pcinpact}). On se propose de modéliser et de simuler la
-dissipation de la chaleur dans un élément de radiateur (figure \ref{fig:ailette}).
+dissipation de la chaleur dans un élément de radiateur (figure
+\ref{fig:radiateur}).
 
-\begin{figure}
+\begin{figure}[!h]
   \centering
   \includegraphics[scale=0.8]{photoPCINpact}
   \caption{Dispositif de refroidissement d'un
     processeur (Photo PC INpact)}
   \label{fig:pcinpact}
 \end{figure}
-\begin{figure}
-  \label{fig:ailette}
 
+\begin{figure}[!h]
+  \centering
+  \includegraphics[scale=0.4]{radiateur}
+  \caption{Élément de radiateur}
+  \label{fig:radiateur}
 \end{figure}
+  
 Les données du problème sont : la géométrie du dispositif, décrite par
 la longueur $L$ et la section transversale $S$, la température $T_0$  générée
 par le processeur et la température ambiante $T_e$. Pour trouver la
@@ -34,11 +56,21 @@ $W>>L$ de sorte que la distribution va être la même dans toute section
 transversale $(x,y)$.
 
 Considérons le domaine de calcul défini par la section transversale de
-l'ailette (figure \ref{??})
+l'ailette (figure \ref{fig:sectTrans})
 $$
 \Omega = [0,L]\times[-H/2,H/2],\quad
 \mbox{avec } \Gamma = \partial\Omega = \Gamma_1\cup\Gamma_2\cup\Gamma_3\cup\Gamma_4.
 $$
+
+\begin{figure}[!h]
+  \centering
+  \includegraphics[scale=0.3]{ailetteMod2D}
+  \caption{Section transversale de l'ailette}
+  \label{fig:sectTrans}
+\end{figure}
+
+
+
 L'équation de la chaleur en deux dimensions est déduite en écrivant
 l'équilibre thermique d'un élément infinitésimal $dx\times dy$ situé à
 l'intérieur du domaine
@@ -98,7 +130,15 @@ $$
 Nous observons également que le problème est symétrique par rapport à
 l'axe des abscisses. Ainsi, il suffit de le résoudre sur la moitié du
 domaine initial en imposant une condition de symétrie pour la
-frontière $(y=0)$.
+frontière $(y=0)$ (figure \ref{fig:sectTransSym}).
+
+\begin{figure}[!h]
+  \centering
+  \includegraphics[scale=0.3]{ailetteMod2DSym}
+  \caption{Domaine de calcul}
+  \label{fig:sectTransSym}
+\end{figure}
+
 
 Finalement, le modèle retenu pour le calcul de la distribution de
 température sur l'ailette est défini par : trouver $\theta(x,y,t)$,
@@ -132,6 +172,9 @@ et la condition initiale $(t=0)$ :
 \begin{equation}
   \theta(x,y,0) = \theta_0(x,y) = 0.
 \end{equation}
+
+
+
 \section{Discrétisation en temps}
 Notons $\theta^n(\x)$ la valeur de $\theta$ calculée au point
 $\x=(x,y)\in\Omega$ et à l'instant $t^n=n\delta t$. L'équation
@@ -167,9 +210,9 @@ $$
 et $L^2(\Omega)$ l'ensemble de fonctions réelles de carrés intégrables
 sur $\Omega$.
 
-\section{Discrétisation en espace pas éléments finis {\it P1}}
-\subsection{Équation de Poisson avec des conditions de Dirichlet
-  homogènes}
+\section{Exemple de discrétisation en espace. Éléments finis {\it P1}}
+%\subsection{Équation de Poisson avec des conditions de Dirichlet
+%  homogènes}
 La première étape consiste à discrétiser l'équation de Poisson avec
 des conditions de Dirichlet homogènes sur tout le bord
 $\Gamma$. On suppose ainsi que $\Gamma_D = \partial\Omega$ et on
@@ -244,45 +287,69 @@ En notant ${\displaystyle A_{ij} = \int_\Omega\nabla w_j\cdot\nabla
   w_i}$ et ${\displaystyle B_i=\int_\Omega fw_i}$, résoudre ce
 problème revient à résoudre le système linéaire $AU=B$.
 
-Pour prendre en compte des conditions de Dirichlet homogène de type
-$u=g$ sur $\partial\Omega$, on peut utiliser une méthode de
-pénalisation (facile à mettre en {\oe}uvre). Pour ce faire, on choisit
-$P\in{\mathbb R}$ très grand ($10^{15}$ par exemple) et on définit :
+% Pour prendre en compte des conditions de Dirichlet homogène de type
+% $u=g$ sur $\partial\Omega$, on peut utiliser une méthode de
+% pénalisation (facile à mettre en {\oe}uvre). Pour ce faire, on choisit
+% $P\in{\mathbb R}$ très grand ($10^{15}$ par exemple) et on définit :
 
 
-$$
-A^d_{ij} =
-\left\{
-  \begin{array}{ccc}
-    A_{ij} + P &\mbox{ si }& i=j \mbox{ et } x_i\in\partial\Omega,\\
-    A_{ij} &\mbox{sinon},&
-  \end{array}
-\right.
-$$
-et
-$$
-B^d_{i} =
-\left\{
-  \begin{array}{ccc}
-    B_{i} + gP &\mbox{ si }&  x_i\in\partial\Omega,\\
-    B_{i} &\mbox{sinon}.&
-  \end{array}
-\right.
-$$
+% $$
+% A^d_{ij} =
+% \left\{
+%   \begin{array}{ccc}
+%     A_{ij} + P &\mbox{ si }& i=j \mbox{ et } x_i\in\partial\Omega,\\
+%     A_{ij} &\mbox{sinon},&
+%   \end{array}
+% \right.
+% $$
+% et
+% $$
+% B^d_{i} =
+% \left\{
+%   \begin{array}{ccc}
+%     B_{i} + gP &\mbox{ si }&  x_i\in\partial\Omega,\\
+%     B_{i} &\mbox{sinon}.&
+%   \end{array}
+% \right.
+% $$
 
 \section{Implémentation}
 
-\begin{itemize}
-\item Écrire une classe \texttt{R2} pour des couples de
-  \texttt{double}.  On pourra utiliser la classe \texttt{TinyVector<2,double>}
-  de {\bf Blitz++}
-\item Écrire une classe \texttt{Sommet} héritant de la classe
-  \texttt{R2} qui lui ajoutera la notion de référence (\texttt{int})
-\item Écrire une classe \texttt{Rn}. On pourra utiliser la classe
-  \texttt{Array<double,1>} de {\bf Blitz++}
-\end{itemize}
+Pour réaliser ce projet, on propose d'utiliser la librairie \texttt{Life}.
+Le point de départ sera l'exemple \texttt{laplacien.cpp} fourni avec le
+tutoriel (voir \texttt{/usr/ljk/share/doc/life} sur \texttt{idbull}).
+
+% \begin{itemize}
+% \item Écrire une classe \texttt{R2} pour des couples de
+%   \texttt{double}.  On pourra utiliser la classe \texttt{TinyVector<2,double>}
+%   de {\bf Blitz++}
+% \item Écrire une classe \texttt{Sommet} héritant de la classe
+%   \texttt{R2} qui lui ajoutera la notion de référence (\texttt{int})
+% \item Écrire une classe \texttt{Rn}. On pourra utiliser la classe
+%   \texttt{Array<double,1>} de {\bf Blitz++}
+% \end{itemize}
+
+\nocite{*}
+\bibliographystyle{plain}
+\bibliography{bib}
+
+\begin{thebibliography}{10}
+  
+\bibitem{danaila:03}
+  {I. Danaila, F. Hecht and O. Pironneau}.
+  \newblock {\em Simulation numérique en C++}.
+  \newblock Dunod, Paris, 2003.
+  
+\bibitem{prudhomm:06}
+  {C. Prud'homme}.
+  \newblock{\em Life: Overview of a unified C++ implementation of the finite and
+    spectral element methods in 1d, 2d and 3d}.
+  \newblock{In Workshop On State-Of-The-Art In Scientific
+    And Parallel Computing, Lecture Notes in Computer Science, page
+    10}.
+  \newblock{Springer-Verlag, 2006}.
+  
+\end{thebibliography}
+
 
 \end{document}
-
-
-
